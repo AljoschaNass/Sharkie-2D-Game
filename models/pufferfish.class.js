@@ -7,5 +7,13 @@ class Pufferfish extends MovableObject {
 
         this.x = 200 + Math.random() * 500 * 0.8;
         this.y = Math.random() * 480 * 0.75;
+
+        this.animate();
+    }
+
+    animate() {
+        setInterval(() => {
+            this.x -= 0.5;
+        }, 1000 / 60);
     }
 }
