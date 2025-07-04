@@ -96,9 +96,12 @@ class Character extends MovableObject {
     ];
     world;
     currentImageSet = this.IMAGES_IDLE;
+
+    speed = 1.5;
     
     idleTimeout;
     isIdleTooLong = false;
+
 
     constructor(){
         super().loadImage("/img/1.Sharkie/1.IDLE/1.png");
@@ -107,13 +110,34 @@ class Character extends MovableObject {
         this.animate();        
     }
 
-    animate() {        
+
+    animate() {       
+        setInterval(() => {
+            if (this.world.keyboard.UP) {
+                this.y -= this.speed;
+            }
+            if (this.world.keyboard.DOWN) {
+                this.y += this.speed;
+            }
+            if (this.world.keyboard.LEFT) {
+                this.x -= this.speed;
+            }
+            if (this.world.keyboard.RIGHT) {
+                this.x += this.speed;
+            }
+        }, 1000 / 60)
+        
         setInterval(() => {
             let noKeyDown = !this.world.keyboard.SPACE &&
                             !this.world.keyboard.UP &&
                             !this.world.keyboard.DOWN &&
                             !this.world.keyboard.LEFT &&
                             !this.world.keyboard.RIGHT;
+
+            let swim =  this.world.keyboard.UP || 
+                        this.world.keyboard.DOWN || 
+                        this.world.keyboard.LEFT || 
+                        this.world.keyboard.RIGHT;
 
             if (noKeyDown) {
                 this.currentImageSet = this.IMAGES_IDLE;
@@ -128,22 +152,10 @@ class Character extends MovableObject {
                 this.idleTimeout = null;
                 this.isIdleTooLong = false;
             }
-            // if (noKeyDown) {
-            //     this.currentImageSet = this.IMAGES_IDLE;
-            // }
             if (this.isIdleTooLong) {
                 this.currentImageSet = this.IMAGES_LONG_IDLE;
             }
-            if (this.world.keyboard.UP) {
-                this.currentImageSet = this.IMAGES_SWIM;
-            }
-            if (this.world.keyboard.DOWN) {
-                this.currentImageSet = this.IMAGES_SWIM;
-            }
-            if (this.world.keyboard.LEFT) {
-                this.currentImageSet = this.IMAGES_SWIM;
-            }
-            if (this.world.keyboard.RIGHT) {
+            if (swim) {
                 this.currentImageSet = this.IMAGES_SWIM;
             }
             if (this.world.keyboard.SPACE) {
@@ -154,7 +166,7 @@ class Character extends MovableObject {
             let i = this.currentImage % this.currentImageSet.length;
             let path = this.currentImageSet[i];
             this.img = this.imageCache[path];
-            this.currentImage++;            
-        }, 200);      
+            this.currentImage++;      
+        }, 150);      
     }
 }
