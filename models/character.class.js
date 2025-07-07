@@ -104,8 +104,15 @@ class Character extends MovableObject {
 
 
     constructor(){
-        super().loadImage("/img/1.Sharkie/1.IDLE/1.png");
-        this.loadImages(this.IMAGES_IDLE)
+        super().loadImage(this.currentImageSet[0]);
+        // this.loadImages(this.IMAGES_IDLE);
+        // this.loadImages(this.IMAGES_LONG_IDLE);
+        // this.loadImages(this.IMAGES_ATTACK_BUBBLE_TRAP);
+        // this.loadImages(this.IMAGES_ATTACK_FIN_SLAP);
+        // this.loadImages(this.IMAGES_HURT_POISONED);
+        // this.loadImages(this.IMAGES_HURT_ELECTIC_SHOCKED);
+        // this.loadImages(this.IMAGES_DEAD_POISONED);
+        // this.loadImages(this.IMAGES_DEAD_ELECTIC_SHOCKED);
 
         this.animate();        
     }
@@ -128,7 +135,7 @@ class Character extends MovableObject {
                 this.otherDirection = false;
             }
             this.world.camera_x = -this.x + 50;            
-        }, 1000 / 60)
+        }, 1000 / 60);
         
         setInterval(() => {
             let noKeyDown = !this.world.keyboard.SPACE &&

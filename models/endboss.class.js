@@ -5,6 +5,7 @@ class Endboss extends MovableObject {
     x = 1000;
     y = 0;
     currentImage = 0;
+    characterReachedEndboss = false;
 
 
     IMAGES_INTRODUCE = [
@@ -43,26 +44,32 @@ class Endboss extends MovableObject {
         'img/2.Enemy/3.FinalEnemy/Attack/6.png',
     ];
     currentImageSet = this.IMAGES_INTRODUCE;
-    hasPlayedIntroduce = false;
 
 
     constructor(){
-        super().loadImage("img/2.Enemy/3.FinalEnemy/2.floating/1.png");
+        super().loadImage("");
         this.loadImages(this.IMAGES_INTRODUCE);
-
-        this.animate();        
+        this.animate();
     }
 
 
     animate() {
-        // this.moveLeft();
         setInterval(() => {
-
-            if (this.world.character.x > 350 && !hasPlayedIntroduce) {
-                this.currentImageSet = this.IMAGES_INTRODUCE;
+            if (this.world.character.x > 650) {
+                this.characterReachedEndboss = true;
             }
-            this.loadImages(this.currentImageSet);            
-            this.playAnimation(this.currentImageSet);   
+            if (this.characterReachedEndboss) {
+                this.showEndboss();
+            }
+            if (this.animationIsPlayed) {
+                this.loadImages(this.IMAGES_FLOATING);            
+                this.playAnimation(this.IMAGES_FLOATING); 
+            }
         }, 200);
+    }
+
+    showEndboss() {
+            this.loadImages(this.IMAGES_INTRODUCE);
+            this.playAnimationOnce(this.IMAGES_INTRODUCE);
     }
 }
