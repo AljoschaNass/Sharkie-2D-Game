@@ -164,12 +164,8 @@ class Character extends MovableObject {
             if (this.world.keyboard.SPACE) {
                 this.currentImageSet = this.IMAGES_ATTACK_FIN_SLAP;
             }
-            this.loadImages(this.currentImageSet)
-
-            let i = this.currentImage % this.currentImageSet.length;
-            let path = this.currentImageSet[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;      
+            this.loadImages(this.currentImageSet);
+            this.playAnimation(this.currentImageSet);   
         }, 150);      
     }
 }

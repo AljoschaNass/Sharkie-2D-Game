@@ -62,11 +62,7 @@ class Endboss extends MovableObject {
                 this.currentImageSet = this.IMAGES_INTRODUCE;
             }
             this.loadImages(this.currentImageSet);            
-
-            let i = this.currentImage % this.currentImageSet.length;
-            let path = this.currentImageSet[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;
+            this.playAnimation(this.currentImageSet);   
         }, 200);
     }
 }
