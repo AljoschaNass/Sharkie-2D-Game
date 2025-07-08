@@ -41,7 +41,7 @@ window.addEventListener("keyup", (event) => {
     if (event.keyCode == 39) {
         keyboard.RIGHT = false;
     }
-    if (event.keyCode == 32) {
-        keyboard.SPACE = false;
-    }
+    // if (event.keyCode == 32) {
+    //     keyboard.SPACE = false;
+    // }
 });

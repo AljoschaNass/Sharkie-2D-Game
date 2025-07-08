@@ -47,8 +47,8 @@ class Endboss extends MovableObject {
 
 
     constructor(){
-        super().loadImage("");
-        this.loadImages(this.IMAGES_INTRODUCE);
+        super().loadImages(this.IMAGES_INTRODUCE);
+        this.loadImages(this.IMAGES_FLOATING);            
         this.animate();
     }
 
@@ -62,14 +62,12 @@ class Endboss extends MovableObject {
                 this.showEndboss();
             }
             if (this.animationIsPlayed) {
-                this.loadImages(this.IMAGES_FLOATING);            
                 this.playAnimation(this.IMAGES_FLOATING); 
             }
         }, 200);
     }
 
     showEndboss() {
-            this.loadImages(this.IMAGES_INTRODUCE);
-            this.playAnimationOnce(this.IMAGES_INTRODUCE);
+        this.playAnimationOnce(this.IMAGES_INTRODUCE);
     }
 }

@@ -16,7 +16,7 @@ class MovableObject {
         this.img.src = path;
     }
 
-    
+
     loadImages(arr) {
         arr.forEach(path => {
             this.img = new Image();
@@ -72,5 +72,5 @@ class MovableObject {
                 this.animationIsPlayed = true;
             }
         }
-    }  
+    }
 }

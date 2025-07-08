@@ -1,4 +1,10 @@
 class Character extends MovableObject {
+    world;
+    speed = 1.5;
+    currentImageSet = this.IMAGES_IDLE;
+    sharkIsAttacking = false;
+    idleTimeout;
+    isIdleTooLong = false;
     IMAGES_IDLE = [
         '/img/1.Sharkie/1.IDLE/1.png',
         '/img/1.Sharkie/1.IDLE/2.png',
@@ -94,26 +100,10 @@ class Character extends MovableObject {
         'img/1.Sharkie/6.dead/2.Electro_shock/9.png',
         'img/1.Sharkie/6.dead/2.Electro_shock/10.png'
     ];
-    world;
-    currentImageSet = this.IMAGES_IDLE;
-
-    speed = 1.5;
-    
-    idleTimeout;
-    isIdleTooLong = false;
 
 
     constructor(){
-        super().loadImage(this.currentImageSet[0]);
-        // this.loadImages(this.IMAGES_IDLE);
-        // this.loadImages(this.IMAGES_LONG_IDLE);
-        // this.loadImages(this.IMAGES_ATTACK_BUBBLE_TRAP);
-        // this.loadImages(this.IMAGES_ATTACK_FIN_SLAP);
-        // this.loadImages(this.IMAGES_HURT_POISONED);
-        // this.loadImages(this.IMAGES_HURT_ELECTIC_SHOCKED);
-        // this.loadImages(this.IMAGES_DEAD_POISONED);
-        // this.loadImages(this.IMAGES_DEAD_ELECTIC_SHOCKED);
-
+        super().loadImage(this.IMAGES_IDLE[0]);
         this.animate();        
     }
 
@@ -149,30 +139,57 @@ class Character extends MovableObject {
                         this.world.keyboard.LEFT || 
                         this.world.keyboard.RIGHT;
 
-            if (noKeyDown) {
-                this.currentImageSet = this.IMAGES_IDLE;
-                if (!this.idleTimeout) {
-                    this.idleTimeout = setTimeout(() => {
-                        this.isIdleTooLong = true;
-                        this.currentImageSet = this.IMAGES_LONG_IDLE;
-                    }, 8000);
-                }
-            } else {
-                clearTimeout(this.idleTimeout);
-                this.idleTimeout = null;
-                this.isIdleTooLong = false;
-            }
-            if (this.isIdleTooLong) {
-                this.currentImageSet = this.IMAGES_LONG_IDLE;
-            }
-            if (swim) {
-                this.currentImageSet = this.IMAGES_SWIM;
-            }
-            if (this.world.keyboard.SPACE) {
+            if (this.world.keyboard.SPACE || this.sharkIsAttacking) {
                 this.currentImageSet = this.IMAGES_ATTACK_FIN_SLAP;
+                this.attack();
+            } else {
+                if (noKeyDown && !this.sharkIsAttacking) {
+                    this.currentImageSet = this.IMAGES_IDLE;
+                    if (!this.idleTimeout) {
+                        this.idleTimeout = setTimeout(() => {
+                            this.isIdleTooLong = true;
+                            this.currentImageSet = this.IMAGES_LONG_IDLE;
+                        }, 8000);
+                    }
+                } else {
+                    clearTimeout(this.idleTimeout);
+                    this.idleTimeout = null;
+                    this.isIdleTooLong = false;
+                }
+                if (this.isIdleTooLong) {
+                    this.currentImageSet = this.IMAGES_LONG_IDLE;
+                }
+                if (swim) {
+                    this.currentImageSet = this.IMAGES_SWIM;
+                }
             }
+            
             this.loadImages(this.currentImageSet);
             this.playAnimation(this.currentImageSet);   
         }, 150);      
     }
+
+
+    attack() {    
+        this.sharkIsAttacking = true;
+        this.world.keyboard.SPACE = false;
+        this.loadImages(this.IMAGES_ATTACK_FIN_SLAP);
+        this.playAttackAnimation(this.IMAGES_ATTACK_FIN_SLAP);
+        this.world.keyboard.SPACE = false;        
+    }
+
+
+    playAttackAnimation(images) {        
+        if (this.sharkIsAttacking) {
+            let i = this.currentImage % images.length;
+            let path = images[i];
+            this.img = this.imageCache[path];
+            this.currentImage++;              
+            if (this.currentImage >= images.length) {
+                this.sharkIsAttacking = false;
+                this.world.keyboard.SPACE = false;
+                this.currentImage = 0;                  
+            }
+        }
+    } 
 }
