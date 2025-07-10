@@ -1,6 +1,6 @@
 class Character extends MovableObject {
     world;
-    speed = 1.5;
+    speed = 2;
     currentImageSet = this.IMAGES_IDLE;
     sharkIsAttacking = false;
     idleTimeout;
