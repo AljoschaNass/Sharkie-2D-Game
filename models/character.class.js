@@ -117,17 +117,16 @@ class Character extends MovableObject {
     animate() {       
         setInterval(() => {
             if (this.world.keyboard.UP && this.y > -90) {
-                this.y -= this.speed;
-            }
+                this.moveUp();            }
             if (this.world.keyboard.DOWN && this.y < 300) {
-                this.y += this.speed;
+                this.moveDown();
             }
             if (this.world.keyboard.LEFT && this.x > -100) {
-                this.x -= this.speed;
+                this.moveLeft();
                 this.otherDirection = true;
             }
             if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEnd_x) {
-                this.x += this.speed;
+                this.moveRight();
                 this.otherDirection = false;
             }
             this.world.camera_x = -this.x + 50;            
@@ -159,9 +158,7 @@ class Character extends MovableObject {
                     this.currentImageSet = this.IMAGES_IDLE;
                 }
                 if (!this.idleTimeout) {
-                    this.idleTimeout = setTimeout(() => {
-                        this.isIdleTooLong = true;
-                    }, 8000);
+                    this.setTimerLongIdle();
                 }
             }
             this.loadImages(this.currentImageSet);
@@ -192,6 +189,14 @@ class Character extends MovableObject {
             }
         }
     } 
+
+
+    setTimerLongIdle() {
+        this.idleTimeout = setTimeout(() => {
+            this.isIdleTooLong = true;
+        }, 8000);
+    }
+
 
     resetTimerLongIdle() {
         clearTimeout(this.idleTimeout);
