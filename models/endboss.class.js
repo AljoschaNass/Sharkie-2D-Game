@@ -4,6 +4,12 @@ class Endboss extends MovableObject {
     width = 300;
     x = 1000;
     y = 0;
+    offset = {
+        top: 95,
+        left: 12,
+        bottom: 40,
+        right: 18
+    };
     currentImage = 0;
     characterReachedEndboss = false;
 

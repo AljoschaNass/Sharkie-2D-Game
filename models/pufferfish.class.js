@@ -1,6 +1,12 @@
 class Pufferfish extends MovableObject {
     height = 70;
     width = 70;
+    offset = {
+        top: 0,
+        left: 0,
+        bottom: 15,
+        right: 0
+    };
     IMAGES_SWIM = [
         'img/2.Enemy/1.Pufferfish/1.Swim/1.swim1.png',
         'img/2.Enemy/1.Pufferfish/1.Swim/1.swim2.png',

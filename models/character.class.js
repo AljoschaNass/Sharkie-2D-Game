@@ -1,6 +1,12 @@
 class Character extends MovableObject {
     world;
     speed = 2;
+    offset = {
+        top: 100,
+        left: 40,
+        bottom: 45,
+        right: 35
+    };
     currentImageSet = this.IMAGES_IDLE;
     sharkIsAttacking = false;
     idleTimeout;
@@ -134,7 +140,7 @@ class Character extends MovableObject {
                             !this.world.keyboard.LEFT &&
                             !this.world.keyboard.RIGHT;
 
-            let swim =  this.world.keyboard.UP || 
+            let isSwimming =  this.world.keyboard.UP || 
                         this.world.keyboard.DOWN || 
                         this.world.keyboard.LEFT || 
                         this.world.keyboard.RIGHT;
@@ -142,28 +148,22 @@ class Character extends MovableObject {
             if (this.world.keyboard.SPACE || this.sharkIsAttacking) {
                 this.currentImageSet = this.IMAGES_ATTACK_FIN_SLAP;
                 this.attack();
-            } else {
-                if (noKeyDown && !this.sharkIsAttacking) {
-                    this.currentImageSet = this.IMAGES_IDLE;
-                    if (!this.idleTimeout) {
-                        this.idleTimeout = setTimeout(() => {
-                            this.isIdleTooLong = true;
-                            this.currentImageSet = this.IMAGES_LONG_IDLE;
-                        }, 8000);
-                    }
-                } else {
-                    clearTimeout(this.idleTimeout);
-                    this.idleTimeout = null;
-                    this.isIdleTooLong = false;
-                }
+                this.resetTimerLongIdle();
+            } else if (isSwimming) {
+                this.currentImageSet = this.IMAGES_SWIM;
+                this.resetTimerLongIdle();
+            } else if (noKeyDown && !this.sharkIsAttacking) {
                 if (this.isIdleTooLong) {
                     this.currentImageSet = this.IMAGES_LONG_IDLE;
+                } else {
+                    this.currentImageSet = this.IMAGES_IDLE;
                 }
-                if (swim) {
-                    this.currentImageSet = this.IMAGES_SWIM;
+                if (!this.idleTimeout) {
+                    this.idleTimeout = setTimeout(() => {
+                        this.isIdleTooLong = true;
+                    }, 8000);
                 }
             }
-            
             this.loadImages(this.currentImageSet);
             this.playAnimation(this.currentImageSet);   
         }, 150);      
@@ -192,4 +192,10 @@ class Character extends MovableObject {
             }
         }
     } 
+
+    resetTimerLongIdle() {
+        clearTimeout(this.idleTimeout);
+        this.idleTimeout = null;
+        this.isIdleTooLong = false;
+    }
 }
