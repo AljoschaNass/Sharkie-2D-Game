@@ -144,25 +144,29 @@ class Character extends MovableObject {
                         this.world.keyboard.LEFT || 
                         this.world.keyboard.RIGHT;
 
-            if (this.world.keyboard.SPACE || this.sharkIsAttacking) {
-                this.currentImageSet = this.IMAGES_ATTACK_FIN_SLAP;
-                this.attack();
-                this.resetTimerLongIdle();
-            } else if (isSwimming) {
-                this.currentImageSet = this.IMAGES_SWIM;
-                this.resetTimerLongIdle();
-            } else if (noKeyDown && !this.sharkIsAttacking) {
-                if (this.isIdleTooLong) {
-                    this.currentImageSet = this.IMAGES_LONG_IDLE;
-                } else {
-                    this.currentImageSet = this.IMAGES_IDLE;
+            if (this.energy <= 0) {                
+                this.dieCharacter();  
+            } else {
+                if (this.world.keyboard.SPACE || this.sharkIsAttacking) {
+                    this.currentImageSet = this.IMAGES_ATTACK_FIN_SLAP;
+                    this.attack();
+                    this.resetTimerLongIdle();
+                } else if (isSwimming) {
+                    this.currentImageSet = this.IMAGES_SWIM;
+                    this.resetTimerLongIdle();
+                } else if (noKeyDown && !this.sharkIsAttacking) {
+                    if (this.isIdleTooLong) {
+                        this.currentImageSet = this.IMAGES_LONG_IDLE;
+                    } else {
+                        this.currentImageSet = this.IMAGES_IDLE;
+                    }
+                    if (!this.idleTimeout) {
+                        this.setTimerLongIdle();
+                    }
                 }
-                if (!this.idleTimeout) {
-                    this.setTimerLongIdle();
-                }
+                this.loadImages(this.currentImageSet);
+                this.playAnimation(this.currentImageSet);   
             }
-            this.loadImages(this.currentImageSet);
-            this.playAnimation(this.currentImageSet);   
         }, 150);      
     }
 
@@ -173,6 +177,18 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_ATTACK_FIN_SLAP);
         this.playAttackAnimation(this.IMAGES_ATTACK_FIN_SLAP);
         this.world.keyboard.SPACE = false;        
+    }
+
+
+    hurtCharacter() {
+        this.loadImages(this.IMAGES_HURT_POISONED);
+        this.playAnimationOnce(this.IMAGES_HURT_POISONED);
+    }
+
+
+    dieCharacter() {
+        this.loadImages(this.IMAGES_DEAD_POISONED);
+        this.playAnimationOnce(this.IMAGES_DEAD_POISONED);
     }
 
 

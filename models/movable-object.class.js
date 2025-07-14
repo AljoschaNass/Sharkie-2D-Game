@@ -4,6 +4,7 @@ class MovableObject {
     height = 220;
     width = 220;
     speed = 0.5
+    energy = 100;
     img;
     imageCache = {};
     currentImage = 0;
@@ -90,6 +91,19 @@ class MovableObject {
 
     moveLeft(){
         this.x -= this.speed;
+    }
+
+
+    hit() {
+        this.energy -= 5;
+        if (this.energy < 0) {
+            this.energy = 0;
+        }
+    }
+
+
+    isDead() {
+        return this.energy == 0;
     }
 
 
