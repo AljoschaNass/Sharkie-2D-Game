@@ -110,6 +110,13 @@ class Character extends MovableObject {
 
     constructor(){
         super().loadImage(this.IMAGES_IDLE[0]);
+        this.loadImages(this.IMAGES_IDLE);
+        this.loadImages(this.IMAGES_LONG_IDLE);
+        this.loadImages(this.IMAGES_SWIM);
+        this.loadImages(this.IMAGES_ATTACK_FIN_SLAP);
+        this.loadImages(this.IMAGES_HURT_POISONED);
+        this.loadImages(this.IMAGES_DEAD_POISONED);
+
         this.animate();        
     }
 
@@ -133,61 +140,42 @@ class Character extends MovableObject {
         }, 1000 / 60);
         
         setInterval(() => {
-            let noKeyDown = !this.world.keyboard.SPACE &&
-                            !this.world.keyboard.UP &&
-                            !this.world.keyboard.DOWN &&
-                            !this.world.keyboard.LEFT &&
-                            !this.world.keyboard.RIGHT;
-
-            let isSwimming =  this.world.keyboard.UP || 
-                        this.world.keyboard.DOWN || 
-                        this.world.keyboard.LEFT || 
-                        this.world.keyboard.RIGHT;
-
-            if (this.energy <= 0) {                
+            if (this.isDead()) {                                
                 this.dieCharacter();  
-            } else {
-                if (this.world.keyboard.SPACE || this.sharkIsAttacking) {
-                    this.currentImageSet = this.IMAGES_ATTACK_FIN_SLAP;
-                    this.attack();
-                    this.resetTimerLongIdle();
-                } else if (isSwimming) {
-                    this.currentImageSet = this.IMAGES_SWIM;
-                    this.resetTimerLongIdle();
-                } else if (noKeyDown && !this.sharkIsAttacking) {
-                    if (this.isIdleTooLong) {
-                        this.currentImageSet = this.IMAGES_LONG_IDLE;
-                    } else {
-                        this.currentImageSet = this.IMAGES_IDLE;
-                    }
-                    if (!this.idleTimeout) {
-                        this.setTimerLongIdle();
-                    }
+            } else if (this.isAttacking()) {
+                this.attack();
+                this.resetTimerLongIdle();
+            } else if (this.isSwimming()) {
+                this.playAnimation(this.IMAGES_SWIM);
+                this.resetTimerLongIdle();
+            } else if (this.isIdle()) {
+                if (this.isIdleTooLong) {
+                    this.playAnimation(this.IMAGES_LONG_IDLE);
+                } else {
+                    this.playAnimation(this.IMAGES_IDLE);
                 }
-                this.loadImages(this.currentImageSet);
-                this.playAnimation(this.currentImageSet);   
+                if (!this.idleTimeout) {
+                    this.setTimerLongIdle();
+                }
             }
-        }, 150);      
+        }, 150);
     }
 
 
     attack() {    
         this.sharkIsAttacking = true;
         this.world.keyboard.SPACE = false;
-        this.loadImages(this.IMAGES_ATTACK_FIN_SLAP);
         this.playAttackAnimation(this.IMAGES_ATTACK_FIN_SLAP);
         this.world.keyboard.SPACE = false;        
     }
 
 
     hurtCharacter() {
-        this.loadImages(this.IMAGES_HURT_POISONED);
         this.playAnimationOnce(this.IMAGES_HURT_POISONED);
     }
 
 
     dieCharacter() {
-        this.loadImages(this.IMAGES_DEAD_POISONED);
         this.playAnimationOnce(this.IMAGES_DEAD_POISONED);
     }
 
@@ -218,5 +206,28 @@ class Character extends MovableObject {
         clearTimeout(this.idleTimeout);
         this.idleTimeout = null;
         this.isIdleTooLong = false;
+    }
+
+
+    isIdle() {
+        return !this.world.keyboard.SPACE &&
+            !this.world.keyboard.UP &&
+            !this.world.keyboard.DOWN &&
+            !this.world.keyboard.LEFT &&
+            !this.world.keyboard.RIGHT &&
+            !this.sharkIsAttacking;
+    }
+
+
+    isAttacking() {
+        return this.world.keyboard.SPACE || this.sharkIsAttacking;
+    }
+
+
+    isSwimming() {
+        return this.world.keyboard.UP || 
+            this.world.keyboard.DOWN || 
+            this.world.keyboard.LEFT || 
+            this.world.keyboard.RIGHT;
     }
 }
