@@ -5,6 +5,7 @@ class MovableObject {
     width = 220;
     speed = 0.5
     energy = 100;
+    lastHit = 0;
     img;
     imageCache = {};
     currentImage = 0;
@@ -98,7 +99,15 @@ class MovableObject {
         this.energy -= 5;
         if (this.energy < 0) {
             this.energy = 0;
+        } else {
+            this.lastHit = new Date().getTime();
         }
+    }
+
+
+    isHurt() {
+        let timePassed = new Date().getTime() - this.lastHit;
+        return timePassed < 1000;
     }
 
 

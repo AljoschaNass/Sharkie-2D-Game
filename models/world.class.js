@@ -29,7 +29,6 @@ class World {
                 if (this.character.isCollding(enemy)) {
                     this.character.hit();
                     this.character.hurtCharacter();
-                    console.log('Collision with Character', enemy, 'Energy:', this.character.energy);
                 }
             });
         }, 500);
