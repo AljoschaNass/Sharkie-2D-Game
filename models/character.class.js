@@ -170,9 +170,9 @@ class Character extends MovableObject {
     }
 
 
-    // hurtCharacter() {
-    //     this.playAnimationOnce(this.IMAGES_HURT_POISONED);
-    // }
+    hurtCharacter() {
+        this.playAnimationOnce(this.IMAGES_HURT_POISONED);
+    }
 
 
     dieCharacter() {

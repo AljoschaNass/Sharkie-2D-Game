@@ -1,14 +1,7 @@
-class MovableObject {
-    x = 0;
-    y = 100;
-    height = 220;
-    width = 220;
+class MovableObject extends DrawableObjekt{
     speed = 0.5
     energy = 100;
     lastHit = 0;
-    img;
-    imageCache = {};
-    currentImage = 0;
     otherDirection = false;
     animationIsPlayed = false;
     offset = {
@@ -17,11 +10,6 @@ class MovableObject {
         bottom: 0,
         right: 0
     };
-
-
-    draw(ctx) {
-        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    }
 
 
     drawFrame(ctx) {
@@ -49,21 +37,6 @@ class MovableObject {
             ctx.rect(hitboxX, hitboxY, hitboxWidth, hitboxHeight);
             ctx.stroke();
         }
-    }
-
-
-    loadImage(path){
-        this.img = new Image();
-        this.img.src = path;
-    }
-
-
-    loadImages(arr) {
-        arr.forEach(path => {
-            this.img = new Image();
-            this.img.src = path;
-            this.imageCache[path] = this.img;
-        });
     }
 
 
