@@ -42,7 +42,7 @@ class World {
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
-        // this.addObjectsToMap(this.statusBar);
+        this.addToMap(this.statusBar);
         this.ctx.translate(-this.camera_x, 0);
 
         let self = this;
