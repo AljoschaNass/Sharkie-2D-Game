@@ -1,23 +1,10 @@
 class StatusBar extends DrawableObjekt {
-    x = -45;
+    x = 20;
     y = 0;
-    height = 40;
-    width = 260;
-    percentage = 100;
-    IMAGES = [
-        'img/4.Marcadores/green/Life/life_0.png',
-        'img/4.Marcadores/green/Life/life_20.png',
-        'img/4.Marcadores/green/Life/life_40.png',
-        'img/4.Marcadores/green/Life/life_60.png',
-        'img/4.Marcadores/green/Life/life_80.png',
-        'img/4.Marcadores/green/Life/life_100.png'
-    ];
-
-
-    constructor() {
-        super().loadImages(this.IMAGES);
-        this.setPercentage(100);
-    }
+    height = 50;
+    width = 200;
+    percentage;
+    IMAGES = [];
 
 
     setPercentage(percentage) {

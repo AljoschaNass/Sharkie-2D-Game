@@ -1,7 +1,9 @@
 class World {
     character = new Character();
     level = level1;
-    statusBar = new StatusBar();
+    poisonStatusBar = new PoisonStatusBar();
+    healthStatusBar = new HealthStatusBar();
+    coinStatusBar = new CoinStatusBar();
     canvas;
     ctx;
     keyboard;
@@ -29,6 +31,7 @@ class World {
             this.level.enemies.forEach( (enemy) => {
                 if (this.character.isCollding(enemy)) {
                     this.character.hit();
+                    this.healthStatusBar.setPercentage(this.character.energy);
                     this.character.hurtCharacter();
                 }
             });
@@ -42,8 +45,11 @@ class World {
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
-        this.addToMap(this.statusBar);
         this.ctx.translate(-this.camera_x, 0);
+        this.addToMap(this.poisonStatusBar);
+        this.addToMap(this.healthStatusBar);
+        this.addToMap(this.coinStatusBar);
+
 
         let self = this;
         requestAnimationFrame(function() {
