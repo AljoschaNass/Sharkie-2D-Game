@@ -11,6 +11,7 @@ class Character extends MovableObject {
     sharkIsAttacking = false;
     idleTimeout;
     isIdleTooLong = false;
+    introLongIdleDone = false;
     IMAGES_IDLE = [
         '/img/1.Sharkie/1.IDLE/1.png',
         '/img/1.Sharkie/1.IDLE/2.png',
@@ -117,7 +118,7 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_HURT_POISONED);
         this.loadImages(this.IMAGES_DEAD_POISONED);
 
-        this.animate();        
+        this.animate();     
     }
 
 
@@ -150,7 +151,7 @@ class Character extends MovableObject {
                 this.resetTimerLongIdle();
             } else if (this.isIdle()) {
                 if (this.isIdleTooLong) {
-                    this.playAnimation(this.IMAGES_LONG_IDLE);
+                    this.playLongIdleAnimation(this.IMAGES_LONG_IDLE);
                 } else {
                     this.playAnimation(this.IMAGES_IDLE);
                 }
@@ -177,6 +178,37 @@ class Character extends MovableObject {
 
     dieCharacter() {
         this.playAnimationOnce(this.IMAGES_DEAD_POISONED);
+    }
+
+
+    playLongIdleAnimation(images) {
+        if (this.currentImage > 14) {
+                this.currentImage = 0;
+        }
+
+        if (!this.introLongIdleDone) {
+            const i = this.currentImage;
+            const path = images[i];
+            this.img = this.imageCache[path];
+            this.currentImage++;
+
+            if (this.currentImage >= images.length) {
+                this.introLongIdleDone = true;
+                this.currentImage = 10;
+            }
+        } else {
+            const loopStart = 10;
+            const loopEnd = images.length - 1;
+
+            const i = this.currentImage;
+            const path = images[i];
+            this.img = this.imageCache[path];
+            this.currentImage++;
+
+            if (this.currentImage > loopEnd) {
+                this.currentImage = loopStart;
+            }
+        }
     }
 
 
