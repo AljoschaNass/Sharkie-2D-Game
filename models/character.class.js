@@ -140,7 +140,7 @@ class Character extends MovableObject {
             this.world.camera_x = -this.x + 50;            
         }, 1000 / 60);
         
-        setInterval(() => {
+        setInterval(() => {            
             if (this.isDead()) {                                
                 this.dieCharacter();  
             } else if (this.isAttacking()) {
@@ -149,7 +149,7 @@ class Character extends MovableObject {
             } else if (this.isSwimming()) {
                 this.playAnimation(this.IMAGES_SWIM);
                 this.resetTimerLongIdle();
-            } else if (this.isIdle()) {
+            } else if (this.isIdle() && !this.isHurt()) {
                 if (this.isIdleTooLong) {
                     this.playLongIdleAnimation(this.IMAGES_LONG_IDLE);
                 } else {
@@ -172,7 +172,10 @@ class Character extends MovableObject {
 
 
     hurtCharacter() {
-        this.playAnimationOnce(this.IMAGES_HURT_POISONED);
+        if (!this.isDead()) {
+            this.playAnimationOnce(this.IMAGES_HURT_POISONED);
+            this.resetTimerLongIdle();
+        }
     }
 
 

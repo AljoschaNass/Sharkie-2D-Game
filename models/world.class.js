@@ -35,6 +35,11 @@ class World {
                     this.character.hurtCharacter();
                 }
             });
+            this.level.poisonWaterItems.forEach( (poisonWater) => {
+                if (this.character.isCollding(poisonWater)) {
+                    console.log('Collision with Poison!');
+                }
+            });
         }, 500);
     }
 
@@ -45,11 +50,11 @@ class World {
         this.addObjectsToMap(this.level.backgroundObjects);
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.level.poisonWaterItems);
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.poisonStatusBar);
         this.addToMap(this.healthStatusBar);
         this.addToMap(this.coinStatusBar);
-
 
         let self = this;
         requestAnimationFrame(function() {
