@@ -35,11 +35,14 @@ class World {
                     this.character.hurtCharacter();
                 }
             });
-            this.level.poisonWaterItems.forEach( (poisonWater) => {
+            for (let i = this.level.poisonWaterItems.length - 1; i >= 0; i--) {
+                const poisonWater = this.level.poisonWaterItems[i];
                 if (this.character.isCollding(poisonWater)) {
-                    console.log('Collision with Poison!');
+                    this.character.collectedPoisonBottles = this.character.collectedPoisonBottles + 21;
+                    this.poisonStatusBar.setPercentage(this.character.collectedPoisonBottles);
+                    this.level.poisonWaterItems.splice(i, 1);
                 }
-            });
+            }
         }, 500);
     }
 

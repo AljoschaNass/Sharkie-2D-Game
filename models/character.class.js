@@ -1,6 +1,7 @@
 class Character extends MovableObject {
     world;
     speed = 2;
+    collectedPoisonBottles = 0;
     offset = {
         top: 100,
         left: 40,
