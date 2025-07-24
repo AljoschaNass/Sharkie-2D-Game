@@ -6,9 +6,14 @@ const level1 = new Level(
     new Endboss()
 ],
 [
-    new PoisonWater,
-    new PoisonWater,
-    new PoisonWater
+    new PoisonWater(),
+    new PoisonWater(),
+    new PoisonWater()
+],
+[
+    new Coin(),
+    new Coin(),
+    new Coin()
 ],
 [
     new BackgroundObject("img/3.Background/Layers/5. Water/D2.png", -719),

@@ -35,7 +35,7 @@ class DrawableObjekt {
 
 
     drawFrame(ctx) {
-        if (this instanceof Character || this instanceof Pufferfish || this instanceof Endboss || this instanceof PoisonWater) {
+        if (this instanceof Character || this instanceof Pufferfish || this instanceof Endboss || this instanceof PoisonWater || this instanceof Coin) {
             ctx.beginPath();
             ctx.lineWidth = '5';
             ctx.strokeStyle = 'blue';
@@ -46,7 +46,7 @@ class DrawableObjekt {
 
 
     drawHitbox(ctx) {
-        if (this instanceof Character || this instanceof Pufferfish || this instanceof Endboss || this instanceof PoisonWater) {
+        if (this instanceof Character || this instanceof Pufferfish || this instanceof Endboss || this instanceof PoisonWater || this instanceof Coin) {
             ctx.beginPath();
             ctx.lineWidth = '3';
             ctx.strokeStyle = 'red';

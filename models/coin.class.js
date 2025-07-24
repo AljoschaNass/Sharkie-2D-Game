@@ -5,4 +5,21 @@ class Coin extends CollectableObject {
         'img/4.Marcadores/1. Coins/3.png',
         'img/4.Marcadores/1. Coins/4.png'
     ];
+    width = 40;
+    height = 40;
+
+
+    constructor(){
+        super().loadImage("img/4.Marcadores/1. Coins/1.png");
+        this.loadImages(this.IMAGES_ANIMATE);
+        this.calculateXPosition();
+        this.calculateYPosition();
+        this.animate();
+    }
+
+    animate() {
+        setInterval(() => {
+            this.playAnimation(this.IMAGES_ANIMATE);   
+        }, 300);
+    }
 }

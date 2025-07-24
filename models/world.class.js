@@ -28,21 +28,9 @@ class World {
 
     checkCollisions() {
         setInterval(() => {
-            this.level.enemies.forEach( (enemy) => {
-                if (this.character.isCollding(enemy)) {
-                    this.character.hit();
-                    this.healthStatusBar.setPercentage(this.character.energy);
-                    this.character.hurtCharacter();
-                }
-            });
-            for (let i = this.level.poisonWaterItems.length - 1; i >= 0; i--) {
-                const poisonWater = this.level.poisonWaterItems[i];
-                if (this.character.isCollding(poisonWater)) {
-                    this.character.collectedPoisonBottles = this.character.collectedPoisonBottles + 21;
-                    this.poisonStatusBar.setPercentage(this.character.collectedPoisonBottles);
-                    this.level.poisonWaterItems.splice(i, 1);
-                }
-            }
+            this.collisionWithEnemy();
+            this.collectPoisonWater();
+            this.collectCoin();
         }, 500);
     }
 
@@ -51,9 +39,10 @@ class World {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
-        this.addToMap(this.character);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.level.poisonWaterItems);
+        this.addObjectsToMap(this.level.coins);
+        this.addToMap(this.character);
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.poisonStatusBar);
         this.addToMap(this.healthStatusBar);
@@ -97,5 +86,40 @@ class World {
     flipImageBack(mo) {
         mo.x = mo.x * -1;
         this.ctx.restore();
+    }
+
+
+    collisionWithEnemy() {
+        this.level.enemies.forEach( (enemy) => {
+            if (this.character.isCollding(enemy)) {
+                this.character.hit();
+                this.healthStatusBar.setPercentage(this.character.energy);
+                this.character.hurtCharacter();
+            }
+        });
+    }
+
+
+    collectPoisonWater() {
+        for (let i = this.level.poisonWaterItems.length - 1; i >= 0; i--) {
+            const poisonWater = this.level.poisonWaterItems[i];
+            if (this.character.isCollding(poisonWater)) {
+                this.character.collectedPoisonBottles = this.character.collectedPoisonBottles + 21;
+                this.poisonStatusBar.setPercentage(this.character.collectedPoisonBottles);
+                this.level.poisonWaterItems.splice(i, 1);
+            }
+        }
+    }
+
+
+    collectCoin() {
+        for (let i = this.level.coins.length - 1; i >= 0; i--) {
+            const coin = this.level.coins[i];
+            if (this.character.isCollding(coin)) {
+                this.character.collectedCoins = this.character.collectedCoins + 21;
+                this.coinStatusBar.setPercentage(this.character.collectedCoins);
+                this.level.coins.splice(i, 1);
+            }
+        }
     }
 }
