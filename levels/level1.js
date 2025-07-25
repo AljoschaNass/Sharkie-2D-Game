@@ -1,8 +1,8 @@
 const level1 = new Level(
 [
-    new Pufferfish(),
-    new Pufferfish(),
-    new Pufferfish(),
+    new Pufferfish('green'),
+    new Pufferfish('orange'),
+    new Pufferfish('red'),
     new Endboss()
 ],
 [
