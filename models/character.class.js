@@ -142,13 +142,15 @@ class Character extends MovableObject {
             this.world.camera_x = -this.x + 50;            
         }, 1000 / 60);
         
-        setInterval(() => {            
+        setInterval(() => {                        
             if (this.isDead()) {                                
                 this.dieCharacter();  
             } else if (this.isAttacking()) {
+                this.setOffset(100, 45);
                 this.attack();
                 this.resetTimerLongIdle();
             } else if (this.isSwimming()) {
+                this.setOffset(100, 45);
                 this.playAnimation(this.IMAGES_SWIM);
                 this.resetTimerLongIdle();
             } else if (this.isIdle() && !this.isHurt()) {
@@ -188,9 +190,8 @@ class Character extends MovableObject {
 
     playLongIdleAnimation(images) {
         if (this.currentImage > 14) {
-                this.currentImage = 0;
+            this.currentImage = 0;
         }
-
         if (!this.introLongIdleDone) {
             const i = this.currentImage;
             const path = images[i];
@@ -204,12 +205,11 @@ class Character extends MovableObject {
         } else {
             const loopStart = 10;
             const loopEnd = images.length - 1;
-
+            this.setOffset(125, 20);
             const i = this.currentImage;
             const path = images[i];
             this.img = this.imageCache[path];
             this.currentImage++;
-
             if (this.currentImage > loopEnd) {
                 this.currentImage = loopStart;
             }
@@ -266,5 +266,11 @@ class Character extends MovableObject {
             this.world.keyboard.DOWN || 
             this.world.keyboard.LEFT || 
             this.world.keyboard.RIGHT;
+    }
+
+
+    setOffset(top, bottom) {
+        this.offset.top = top;
+        this.offset.bottom = bottom;
     }
 }

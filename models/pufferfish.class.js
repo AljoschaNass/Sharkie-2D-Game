@@ -1,5 +1,5 @@
 class Pufferfish extends MovableObject {
-    height = 70;
+    height = 60;
     width = 70;
     offset = {
         top: 0,
@@ -120,6 +120,7 @@ class Pufferfish extends MovableObject {
             const path = currentImages[frameIndex];
             this.img = this.imageCache[path];
             frameIndex++;
+            this.setOffset(currentImages);
             if (frameIndex >= currentImages.length) {
                 frameIndex = 0;
                 this.repeatCounter++;
@@ -155,5 +156,14 @@ class Pufferfish extends MovableObject {
             { images: this.IMAGES_BUBBLESWIM, repeat: 2 },
             { images: [...this.IMAGES_TRANSITION].reverse(), repeat: 1 }
         ];
+    }
+
+
+    setOffset(currentImages) {
+        if (currentImages != this.IMAGES_BUBBLESWIM) {
+            this.offset.bottom = 15;
+        } else if (currentImages === this.IMAGES_BUBBLESWIM) {
+            this.offset.bottom = 0;
+        }
     }
 }
