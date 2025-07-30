@@ -34,8 +34,12 @@ class MovableObject extends DrawableObjekt{
     }
 
 
-    hit() {
-        this.energy -= 5;
+    hit(enemy) {
+        damage = 5;
+        if (enemy instanceof Endboss) {
+            damage = 15;
+        }
+        this.energy -= damage;
         if (this.energy < 0) {
             this.energy = 0;
         } else {
