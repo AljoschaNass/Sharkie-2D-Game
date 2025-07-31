@@ -1,10 +1,10 @@
-class Pufferfish extends MovableObject {
-    height = 60;
-    width = 70;
+class Jellyfish extends MovableObject {
+    height = 80;
+    width = 60;
     offset = {
         top: 0,
         left: 0,
-        bottom: 15,
+        bottom: 0,
         right: 0
     };
     IMAGES_SWIM = [];
@@ -67,15 +67,19 @@ class Pufferfish extends MovableObject {
         this.color = color;
         this.selectColor();
         this.calculatePosition();
+        this.waveOffset = Math.random() * 1000;
+        this.baseY = this.y;
         this.animate();
     }
 
 
     animate() {
         setInterval(() => {
-            this.moveLeft();
+            this.moveLeftWithWave();
         }, 1000 / 60);
-        this.loopAnimationSequence();
+        setInterval(() => {
+            this.playAnimation(this.IMAGES_SWIM);
+        }, 250);
     }
 
 
@@ -92,28 +96,6 @@ class Pufferfish extends MovableObject {
     }
 
 
-    loopAnimationSequence() {
-        let currentSequenceIndex = 0;
-        let frameIndex = 0;
-
-        setInterval(() => {
-            const current = this.sequences[currentSequenceIndex];
-            const currentImages = current.images;
-            const path = currentImages[frameIndex];
-            this.img = this.imageCache[path];
-            frameIndex++;
-            if (frameIndex >= currentImages.length) {
-                frameIndex = 0;
-                this.repeatCounter++;
-                if (this.repeatCounter >= current.repeat) {
-                    this.repeatCounter = 0;
-                    currentSequenceIndex = (currentSequenceIndex + 1) % this.sequences.length;
-                }
-            }
-        }, 200);
-    }
-
-
     calculatePosition() {
         this.x = 200 + Math.random() * 500 * 0.8;
         this.y = Math.random() * 480 * 0.75;
@@ -126,5 +108,11 @@ class Pufferfish extends MovableObject {
 
         this.IMAGES_SWIM = this[`IMAGES_SWIM_${suffix}`] || [];
         this.IMAGES_DEAD = this[`IMAGES_DEAD_${suffix}`] || [];
+    }
+
+
+    moveLeftWithWave() {
+        this.x -= this.speed;
+        this.y = this.baseY + Math.sin((Date.now() + this.waveOffset) / 300) * 20;
     }
 }

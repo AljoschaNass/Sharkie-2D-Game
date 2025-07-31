@@ -3,7 +3,11 @@ const level1 = new Level(
     new Pufferfish('green'),
     new Pufferfish('orange'),
     new Pufferfish('red'),
-    new Endboss()
+        new Endboss(),
+    new Jellyfish('lila'),
+    new Jellyfish('yellow'),
+    new Jellyfish('green'),
+    new Jellyfish('pink')
 ],
 [
     new PoisonWater(),

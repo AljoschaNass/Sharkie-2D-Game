@@ -113,14 +113,20 @@ class Character extends MovableObject {
 
     constructor(){
         super().loadImage(this.IMAGES_IDLE[0]);
+        this.loadAllImages();
+        this.animate();     
+    }
+
+
+    loadAllImages() {
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_LONG_IDLE);
         this.loadImages(this.IMAGES_SWIM);
         this.loadImages(this.IMAGES_ATTACK_FIN_SLAP);
         this.loadImages(this.IMAGES_HURT_POISONED);
+        this.loadImages(this.IMAGES_HURT_ELECTIC_SHOCKED);
         this.loadImages(this.IMAGES_DEAD_POISONED);
-
-        this.animate();     
+        this.loadImages(this.IMAGES_DEAD_ELECTIC_SHOCKED);
     }
 
 
@@ -175,16 +181,25 @@ class Character extends MovableObject {
     }
 
 
-    hurtCharacter() {
+    hurtCharacter(enemy) {
+        let hurtImages = this.IMAGES_HURT_POISONED;
+        if (enemy instanceof Jellyfish) {
+            hurtImages = this.IMAGES_HURT_ELECTIC_SHOCKED;
+        } 
         if (!this.isDead()) {
-            this.playAnimationOnce(this.IMAGES_HURT_POISONED);
+            this.playAnimationOnce(hurtImages);
             this.resetTimerLongIdle();
         }
     }
 
 
     dieCharacter() {
-        this.playAnimationOnce(this.IMAGES_DEAD_POISONED);
+        if (this.lastDamageFrom == 'poison') {
+            this.playAnimationOnce(this.IMAGES_DEAD_POISONED);
+        }
+        if (this.lastDamageFrom == 'electric') {
+            this.playAnimationOnce(this.IMAGES_DEAD_ELECTIC_SHOCKED);
+        }
     }
 
 

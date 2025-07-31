@@ -91,12 +91,10 @@ class World {
 
     collisionWithEnemy() {
         this.level.enemies.forEach( (enemy) => {
-            if (this.character.isCollding(enemy)) {
-                console.log(enemy);
-                
+            if (this.character.isCollding(enemy)) {                
                 this.character.hit(enemy);
                 this.healthStatusBar.setPercentage(this.character.energy);
-                this.character.hurtCharacter();
+                this.character.hurtCharacter(enemy);
             }
         });
     }

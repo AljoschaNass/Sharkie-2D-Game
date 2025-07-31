@@ -4,6 +4,8 @@ class MovableObject extends DrawableObjekt{
     lastHit = 0;
     otherDirection = false;
     animationIsPlayed = false;
+        lastDamageFrom = 'poison';
+
 
 
     isCollding(mo) {
@@ -35,9 +37,17 @@ class MovableObject extends DrawableObjekt{
 
 
     hit(enemy) {
-        damage = 5;
-        if (enemy instanceof Endboss) {
+        let damage = 5;
+        this.lastDamageFrom = 'poison';
+        switch (true) {
+        case enemy instanceof Endboss:
+            this.lastDamageFrom = 'poison';
             damage = 15;
+            break;
+        case enemy instanceof Jellyfish && (enemy.color === 'green' || enemy.color === 'pink'):
+            damage = 10;
+            this.lastDamageFrom = 'electric';
+            break;
         }
         this.energy -= damage;
         if (this.energy < 0) {
