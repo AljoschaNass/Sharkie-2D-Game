@@ -1,3 +1,16 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+
+    margin: 0;
+    box-sizing: border-box;
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -6,4 +19,43 @@ body {
 
 canvas {
     background-color: black;
+}
+
+.d_none {
+    display: none;
+}
+
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.dialogCredits,
+.dialogPrivacy {
+    border-radius: 12px;
+    padding: 16px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
+
+.dialogCredits h2,
+.dialogPrivacy h2 {
+    text-align: center;
+    margin: 0;
+}
+
+.dialogCredits footer,
+.dialogPrivacy footer {
+    margin-top: 8px;
+}
+
+.dialogCredits.opened::backdrop,
+.dialogPrivacy.opened::backdrop {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: all 0.2s ease-in;
 }
