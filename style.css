@@ -15,10 +15,13 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-image: url("img/3.Background/hintergrund-meer-hell.png");
+    background-position: center;
 }
 
 canvas {
     background-color: black;
+    display: block;
 }
 
 .d_none {
@@ -58,4 +61,16 @@ button {
     opacity: 1;
     background-color: rgba(0, 0, 0, 0.5);
     transition: all 0.2s ease-in;
+}
+
+@media only screen and (max-width: 720px) {
+    canvas {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-height: 480px) {
+    canvas {
+        height: 100vh;
+    }
 }
