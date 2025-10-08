@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'Bubblegum Sans';
+  src: url('fonts/Bubblegum_Sans/BubblegumSans-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -17,6 +24,7 @@ body {
     align-items: center;
     background-image: url("img/3.Background/hintergrund-meer-hell.png");
     background-position: center;
+    font-family: 'Bubblegum Sans', sans-serif;
 }
 
 canvas {
@@ -28,40 +36,106 @@ canvas {
     display: none;
 }
 
-button {
-    background: none;
-    border: none;
-    cursor: pointer;
+.startScreen {
+  position: relative;
+  width: 720px;
+  height: 480px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  font-family: 'Bubblegum Sans', sans-serif;
+  background-image: url("img/3.Background/Dark/1.png");
+  background-size: cover;
 }
 
-.dialogCredits,
-.dialogPrivacy {
-    border-radius: 12px;
-    padding: 16px;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
+/* .background {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #003366 0%, #000c1a 100%);
+  background-image: url('img/3.Background/water-bg.png');
+  background-size: cover;
+  background-position: center;
+  animation: moveWater 12s infinite alternate ease-in-out;
+  z-index: 0;
+  opacity: 0.85;
 }
 
-.dialogCredits h2,
-.dialogPrivacy h2 {
-    text-align: center;
-    margin: 0;
+@keyframes moveWater {
+  0% { transform: scale(1) translateY(0); }
+  100% { transform: scale(1.05) translateY(-15px); }
+} */
+
+.content {
+  position: relative;
+  z-index: 2;
+  max-width: 650px;
+  height: 480px;
+  padding: 2rem;
 }
 
-.dialogCredits footer,
-.dialogPrivacy footer {
-    margin-top: 8px;
+.title {
+  font-size: 5rem;
+  letter-spacing: 3px;
+  margin-bottom: 0.5rem;
+  color: #4fd1ff;
+  text-shadow: 0 0 25px #00bfff, 0 0 10px #0099ff;
 }
 
-.dialogCredits.opened::backdrop,
-.dialogPrivacy.opened::backdrop {
-    opacity: 1;
-    background-color: rgba(0, 0, 0, 0.5);
-    transition: all 0.2s ease-in;
+.subtitle {
+  font-size: 1.3rem;
+  margin-bottom: 3rem;
+  color: #b3e5ff;
 }
+
+.menu {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  justify-items: center;
+}
+
+.btn {
+  width: 200px;
+  background: rgba(0, 51, 102, 0.7);
+  border: 2px solid #4fd1ff;
+  border-radius: 15px;
+  color: #fff;
+  font-size: 1.2rem;
+  padding: 0.9rem 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: #4fd1ff;
+  color: #001a33;
+  transform: scale(1.07);
+  box-shadow: 0 0 25px #00bfff;
+}
+
+.shark {
+  position: absolute;
+  bottom: 1%;
+  left: -300px;
+  width: 300px;
+  height: 180px;
+  background: url('img/1.Sharkie/3.Swim/3.png') no-repeat center/contain;
+  animation: swimAcross 20s linear infinite;
+  z-index: 1;
+  opacity: 0.95;
+}
+
+@keyframes swimAcross {
+  0% { transform: translateX(-300px) scaleX(1); }
+  50% { transform: translateX(calc(100vw + 300px)) scaleX(1); }
+  50.01% { transform: translateX(calc(100vw + 300px)) scaleX(-1); }
+  100% { transform: translateX(-300px) scaleX(-1); }
+}
+
+
+
 
 @media only screen and (max-width: 720px) {
     canvas {

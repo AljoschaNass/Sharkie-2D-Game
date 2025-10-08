@@ -29,11 +29,26 @@
     <script src="js/game.js"></script>
 </head>
 <body onload="init()">
-    <h1>Sharkie</h1>
 
-    <canvas id="canvas" width="720" height="480"></canvas>
+    <canvas id="canvas" class="d_none" width="720" height="480"></canvas>
 
-    <div class="startScreen " id="startScreen"></div>
+    <div class="startScreen" id="startScreen">
+        <div class="background"></div>
+
+        <div class="content">
+            <h1 class="title">Sharkie</h1>
+            <p class="subtitle">Begib dich mit Sharkie auf ein Abenteuer durch die Tiefen des Ozeans!</p>
+
+            <div class="menu">
+                <button class="btn" id="start-btn">Start Game</button>
+                <button class="btn">Options</button>
+                <button class="btn">Credits</button>
+                <button class="btn">Privacy Policy</button>
+            </div>
+        </div>
+
+        <div class="shark"></div>
+    </div>
 
     <dialog class="dialogCredits" id="credits">
         <header>
