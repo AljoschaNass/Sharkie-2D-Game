@@ -121,7 +121,8 @@ canvas {
   left: -300px;
   width: 300px;
   height: 180px;
-  background: url('img/1.Sharkie/3.Swim/3.png') no-repeat center/contain;
+  background-size: contain;
+  background-repeat: no-repeat;
   animation: swimAcross 20s linear infinite;
   z-index: 1;
   opacity: 0.95;
