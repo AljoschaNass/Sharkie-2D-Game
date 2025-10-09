@@ -1,0 +1,65 @@
+.dialogOptions {
+  width: 500px;
+  background: rgba(0, 51, 102, 0.85);
+  border: 2px solid #4fd1ff;
+  border-radius: 20px;
+  color: #b3e5ff;
+  font-family: 'Bubblegum Sans', sans-serif;
+  padding: 2rem;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 30px #00bfff;
+}
+
+.dialogOptions::backdrop {
+  background: rgba(0, 10, 30, 0.7);
+}
+
+.dialogOptions h2 {
+  font-size: 2rem;
+  color: #4fd1ff;
+  text-shadow: 0 0 15px #00bfff;
+  margin-bottom: 1rem;
+}
+
+.options-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+}
+
+.volume-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: 80%;
+  text-align: left;
+}
+
+.volume-controls input[type="range"] {
+  width: 100%;
+  accent-color: #4fd1ff;
+}
+
+.controls-info {
+  text-align: left;
+  width: 80%;
+}
+
+.controls-info h3 {
+  color: #4fd1ff;
+  margin-bottom: 0.5rem;
+}
+
+.controls-info ul {
+  list-style: none;
+  padding-left: 0;
+  line-height: 1.8rem;
+}
+
+.dialogOptions footer {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+}

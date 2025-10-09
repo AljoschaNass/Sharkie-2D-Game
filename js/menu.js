@@ -1,4 +1,3 @@
-document.addEventListener("DOMContentLoaded", () => {
   const shark = document.getElementById("shark");
   const sharkFrames = [
     "img/1.Sharkie/3.Swim/1.png",
@@ -14,5 +13,17 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(() => {
     shark.style.backgroundImage = `url(${sharkFrames[currentFrame]})`;
     currentFrame = (currentFrame + 1) % sharkFrames.length;
-  }, 150);
+}, 150);
+
+
+const optionsMenu = document.getElementById('optionsMenu');
+const closeOptions = document.getElementById('closeOptions');
+const optionsBtn = document.querySelector('.btn-options');
+
+optionsBtn.addEventListener('click', () => {
+  optionsMenu.showModal();
+});
+
+closeOptions.addEventListener('click', () => {
+  optionsMenu.close();
 });
