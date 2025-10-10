@@ -17,13 +17,26 @@
 
 
 const optionsMenu = document.getElementById('optionsMenu');
-const closeOptions = document.getElementById('closeOptions');
-const optionsBtn = document.querySelector('.btn-options');
+  const optionsBtn = document.querySelector('.btn-options');
+  const closeOptions = document.getElementById('closeOptions');
 
-optionsBtn.addEventListener('click', () => {
-  optionsMenu.showModal();
-});
+  const soundToggle = document.getElementById('soundToggle');
+  const musicToggle = document.getElementById('musicToggle');
 
-closeOptions.addEventListener('click', () => {
-  optionsMenu.close();
-});
+  optionsBtn.addEventListener('click', () => optionsMenu.showModal());
+  closeOptions.addEventListener('click', () => optionsMenu.close());
+
+  function toggleButton(btn) {
+    const isActive = btn.classList.toggle('inactive');
+    btn.textContent = isActive ? btn.textContent.replace('Ein', 'Aus') : btn.textContent.replace('Aus', 'Ein');
+  }
+
+  soundToggle.addEventListener('click', () => {
+    soundToggle.classList.toggle('inactive');
+    soundToggle.textContent = soundToggle.classList.contains('inactive') ? '🔇 Aus' : '🔊 Ein';
+  });
+
+  musicToggle.addEventListener('click', () => {
+    musicToggle.classList.toggle('inactive');
+    musicToggle.textContent = musicToggle.classList.contains('inactive') ? '🚫 Aus' : '🎶 Ein';
+  });
