@@ -57,82 +57,50 @@
         </div>
     </div>
 
-    <!-- <dialog class="dialogOptions" id="optionsMenu">
-        <header>
-            <h2>OPTIONS</h2>
-        </header>
-
-        <section class="options-section">
-            <div class="volume-controls">
-                <label for="musicVolume">🎵 Musiklautstärke</label>
-                <input type="range" id="musicVolume" min="0" max="100" value="70">
-                
-                <label for="effectVolume">🔊 Effektlautstärke</label>
-                <input type="range" id="effectVolume" min="0" max="100" value="80">
-            </div>
-
-            <div class="controls-info">
-                <h3>🎮 Steuerung</h3>
-                <ul>
-                    <li>⬆️ / ⬇️ / ⬅️ / ➡️ – Bewegung</li>
-                    <li>🅳 – Spezialangriff</li>
-                    <li>⎵ (Leertaste) – Finnen-Schlag</li>
-                </ul>
-            </div>
-        </section>
-
-        <footer>
-            <button class="btn btn-small" id="closeOptions">Zurück</button>
-        </footer>
-</dialog> -->
 
 <dialog class="dialogOptions" id="optionsMenu">
-  <header>
-    <h2>OPTIONS</h2>
-  </header>
+  <div class="options-wrapper">
+    <header>
+      <h2>Options</h2>
+    </header>
 
-  <section class="options-content">
-    <div class="audio-settings">
-      <h3>🎵 Sound & Music</h3>
-      <div class="setting">
-        <label for="soundToggle">Soundeffekte</label>
-        <button id="soundToggle" class="toggle-btn active">🔊 Ein</button>
-      </div>
-      <div class="setting">
-        <label for="musicToggle">Musik</label>
-        <button id="musicToggle" class="toggle-btn active">🎶 Ein</button>
-      </div>
-    </div>
-
-    <hr>
-
-    <div class="controls">
-        <h3>🎮 Steuerung</h3>
-        <div class="controls-grid">
-            <div class="control-item">
-                <img src="img/Buttons/Key/arrow keys.png" alt="Arrow keys" class="key-img">
-                <span>Move Shark</span>
-            </div>
-
-            <div class="control-item">
-                <img src="img/Buttons/Key/D key.png" alt="Key D" class="key-img">
-                <span>Bubble Attack</span>
-            </div>
-
-            <div class="control-item">
-                <img src="img/Buttons/Key/Space Bar key.png" alt="Space key" class="key-img">
-                <span>Finslap</span>
-            </div>
+    <section class="options-content">
+      <div class="audio-settings">
+        <h3>Sounds & Music</h3>
+        <div class="setting">
+          <label for="soundToggle">Sounds</label>
+          <button id="soundToggle" class="toggle-btn active">🔊 On</button>
         </div>
-    </div>
+        <div class="setting">
+          <label for="musicToggle">Music</label>
+          <button id="musicToggle" class="toggle-btn active">🎶 On</button>
+        </div>
+      </div>
 
-  </section>
+      <div class="controls">
+        <h3>Controls</h3>
+        <div class="controls-grid">
+          <div class="control-item">
+            <img src="img/Buttons/Key/arrow keys.png" alt="Arrow keys" class="key-img">
+            <span>Move Sharkie</span>
+          </div>
+          <div class="control-item">
+            <img src="img/Buttons/Key/D key.png" alt="Key D" class="key-img">
+            <span>Bubble Attack</span>
+          </div>
+          <div class="control-item">
+            <img src="img/Buttons/Key/Space Bar key.png" alt="Space key" class="key-img">
+            <span>Fin Slap</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <footer>
-    <button id="closeOptions" class="btn-small">X Close</button>
-  </footer>
+    <footer>
+      <button id="closeOptions" class="btn btn-small">← Back</button>
+    </footer>
+  </div>
 </dialog>
-
 
 
 </body>
