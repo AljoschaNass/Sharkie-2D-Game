@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/startScreen.css">
     <link rel="stylesheet" href="css/options-page.css">
     <link rel="stylesheet" href="css/credits-page.css">
+    <link rel="stylesheet" href="css/privacy-police-page.css">
     <link rel="icon" type="image/x-icon" href="./img/1.Sharkie/1.IDLE/1.png"/>
 
     <script src="models/world.class.js"></script>
@@ -42,7 +43,7 @@
 
         <div class="content">
             <h1 class="title">Sharkie</h1>
-            <p class="subtitle">Begib dich mit Sharkie auf ein Abenteuer durch die Tiefen des Ozeans!</p>
+            <p class="subtitle">Join Sharkie on an adventure through the depths of the ocean!</p>
 
             <div class="menu">
                 <button class="btn btn-start" id="start-btn">Start Game</button>
@@ -136,6 +137,49 @@
 
   <footer>
     <button id="closeCreditsMenu" class="btn btn-small">X Close</button>
+  </footer>
+</dialog>
+
+<dialog class="dialogPrivacy" id="privacyMenu" aria-labelledby="privacyTitle">
+  <header>
+    <h2 id="privacyTitle">PRIVACY POLICY</h2>
+  </header>
+
+  <section class="privacy-content">
+    <div class="privacy-left">
+      <h3>Data & Privacy</h3>
+      <p>
+        This game does <strong>not</strong> collect, store or transmit any personal
+        data from players. No login, cookies, analytics or tracking technologies
+        are used by the game itself.
+      </p>
+      <br>
+      <h3>Local Data</h3>
+      <p>
+        Any local data (e.g. settings, volume) is stored only in your browser's
+        localStorage and is used solely to remember your preferences on this device.
+        You can clear it anytime via your browser settings.
+      </p>
+    </div>
+
+    <div class="privacy-right">
+      <h3>Audio & Third-Party Assets</h3>
+      <p>
+        Sounds and music included are licensed from royalty-free providers
+        (e.g. Pixabay, Mixkit) or are original assets. Third-party libraries,
+        if any, are used only for UI/helpers and do not collect user data.
+      </p>
+      <br>
+      <h3>Contact</h3>
+      <p>
+        If you have questions or requests concerning privacy, please contact:
+        <br><a href="mailto:nassaljoscha@gmail.com">nassaljoscha@gmail.com</a>
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <button id="closePrivacyMenu" class="btn btn-small">X Close</button>
   </footer>
 </dialog>
 

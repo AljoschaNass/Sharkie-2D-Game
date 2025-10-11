@@ -48,7 +48,7 @@ musicToggle.addEventListener('click', () => {
 
 
 const creditsMenu = document.getElementById('creditsMenu');
-const creditsBtn = document.querySelector('.btn-credits'); // füge diesen Button auf der Startpage hinzu
+const creditsBtn = document.querySelector('.btn-credits');
 const closeCreditsMenu = document.getElementById('closeCreditsMenu');
 
 creditsBtn.addEventListener('click', () => creditsMenu.showModal());
@@ -62,4 +62,22 @@ creditsMenu.addEventListener('click', (e) => {
     e.clientY >= rect.top &&
     e.clientY <= rect.bottom;
   if (!isInDialog) creditsMenu.close();
+});
+
+
+const privacyMenu = document.getElementById('privacyMenu');
+const privacyBtn = document.querySelector('.btn-privacy');
+const closePrivacyMenu = document.getElementById('closePrivacyMenu');
+
+privacyBtn.addEventListener('click', () => privacyMenu.showModal());
+closePrivacyMenu.addEventListener('click', () => privacyMenu.close());
+
+privacyMenu.addEventListener('click', (e) => {
+  const rect = privacyMenu.getBoundingClientRect();
+  const isInDialog =
+    e.clientX >= rect.left &&
+    e.clientX <= rect.right &&
+    e.clientY >= rect.top &&
+    e.clientY <= rect.bottom;
+  if (!isInDialog) privacyMenu.close();
 });
