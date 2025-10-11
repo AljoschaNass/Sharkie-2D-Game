@@ -45,3 +45,21 @@ musicToggle.addEventListener('click', () => {
   musicToggle.classList.toggle('inactive');
   musicToggle.textContent = musicToggle.classList.contains('inactive') ? '🚫 Off' : '🎶 On';
 });
+
+
+const creditsMenu = document.getElementById('creditsMenu');
+const creditsBtn = document.querySelector('.btn-credits'); // füge diesen Button auf der Startpage hinzu
+const closeCreditsMenu = document.getElementById('closeCreditsMenu');
+
+creditsBtn.addEventListener('click', () => creditsMenu.showModal());
+closeCreditsMenu.addEventListener('click', () => creditsMenu.close());
+
+creditsMenu.addEventListener('click', (e) => {
+  const rect = creditsMenu.getBoundingClientRect();
+  const isInDialog =
+    e.clientX >= rect.left &&
+    e.clientX <= rect.right &&
+    e.clientY >= rect.top &&
+    e.clientY <= rect.bottom;
+  if (!isInDialog) creditsMenu.close();
+});

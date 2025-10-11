@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/buttons.css">
     <link rel="stylesheet" href="css/startScreen.css">
     <link rel="stylesheet" href="css/options-page.css">
+    <link rel="stylesheet" href="css/credits-page.css">
     <link rel="icon" type="image/x-icon" href="./img/1.Sharkie/1.IDLE/1.png"/>
 
     <script src="models/world.class.js"></script>
@@ -57,7 +58,6 @@
         </div>
     </div>
 
-
 <dialog class="dialogOptions" id="optionsMenu">
   <div class="options-wrapper">
     <header>
@@ -97,9 +97,46 @@
     </section>
 
     <footer>
-      <button id="closeOptions" class="btn btn-small">← Back</button>
+      <button id="closeOptions" class="btn btn-small">X Close</button>
     </footer>
   </div>
+</dialog>
+
+<dialog class="dialogCredits" id="creditsMenu">
+  <header>
+    <h2>CREDITS</h2>
+  </header>
+
+  <section class="credits-content">
+    <div class="credits-left">
+      <h3>A Game By</h3>
+      <p>
+        <strong>Aljoscha Naß</strong><br>
+        Developed as part of the Developer Academy Challenge<br>
+        Contact: 
+        <a href="mailto:nassaljoscha@gmail.com">nassaljoscha@gmail.com</a>
+      </p>
+      <br>
+      <h3>Idea & Concept</h3>
+      <p>A friendly shark on an adventure through the depths of the ocean.</p>
+    </div>
+
+    <div class="credits-right">
+      <h3>Special Thanks</h3>
+      <ul>
+        <li>Developer Academy Team</li>
+        <li>Community Feedback</li>
+        <li>All Players & Testers</li>
+      </ul>
+      <br>
+      <h3>🎵 Music & Sound</h3>
+      <p>All sound effects are from royalty-free sources (Pixabay / Mixkit).</p>
+    </div>
+  </section>
+
+  <footer>
+    <button id="closeCreditsMenu" class="btn btn-small">X Close</button>
+  </footer>
 </dialog>
 
 
