@@ -60,10 +60,9 @@
         </div>
     </div>
 
-<dialog class="dialogOptions" id="optionsMenu">
-  <div class="options-wrapper">
-    <header>
-      <h2>Options</h2>
+<dialog class="allDialogs dialogOptions" id="optionsMenu">
+    <header class="dialogHeaders">
+      <h2>OPTIONS</h2>
     </header>
 
     <section class="options-content">
@@ -95,17 +94,16 @@
             <span>Fin Slap</span>
           </div>
         </div>
-      </div>
     </section>
 
-    <footer>
+    <footer class="dialogFooters">
       <button id="closeOptions" class="btn btn-small">X Close</button>
     </footer>
   </div>
 </dialog>
 
-<dialog class="dialogCredits" id="creditsMenu">
-  <header>
+<dialog class="allDialogs dialogCredits" id="creditsMenu">
+  <header class="dialogHeaders">
     <h2>CREDITS</h2>
   </header>
 
@@ -136,14 +134,14 @@
     </div>
   </section>
 
-  <footer>
+  <footer class="dialogFooters">
     <button id="closeCreditsMenu" class="btn btn-small">X Close</button>
   </footer>
 </dialog>
 
-<dialog class="dialogPrivacy" id="privacyMenu" aria-labelledby="privacyTitle">
-  <header>
-    <h2 id="privacyTitle">PRIVACY POLICY</h2>
+<dialog class="allDialogs dialogPrivacy" id="privacyMenu" aria-labelledby="privacyTitle">
+  <header class="dialogHeaders">
+    <h2>PRIVACY POLICY</h2>
   </header>
 
   <section class="privacy-content">
@@ -179,7 +177,7 @@
     </div>
   </section>
 
-  <footer>
+  <footer class="dialogFooters">
     <button id="closePrivacyMenu" class="btn btn-small">X Close</button>
   </footer>
 </dialog>

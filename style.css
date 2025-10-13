@@ -35,6 +35,41 @@ canvas {
     display: none !important;
 }
 
+h2 {
+  text-align: center;
+  color: #4fd1ff;
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+  text-shadow: 0 0 20px #00bfff;
+  margin-bottom: 1rem;
+}
+
+.allDialogs {
+  border: none;
+  border-radius: 20px;
+  background: rgba(0, 25, 50, 0.92);
+  color: #b3e5ff;
+  max-width: 700px;
+  height: 460px;
+  box-shadow: 0 0 30px #00bfff;
+  font-family: 'Bubblegum Sans', sans-serif;
+  overflow: hidden;
+  margin-inline: auto;
+  margin-top: 10px;
+  padding: 1.5rem 2rem; 
+  animation: fadeIn 0.5s ease-in forwards;
+  opacity: 0;
+}
+
+.allDialogs::backdrop {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+}
+
+.dialogsFooters {
+    text-align: center;
+}
+
 .startScreen {
   position: relative;
   width: 720px;

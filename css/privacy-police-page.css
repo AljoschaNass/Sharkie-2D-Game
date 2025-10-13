@@ -1,43 +1,10 @@
 .dialogPrivacy {
-  border: none;
-  border-radius: 20px;
-  background: rgba(0, 25, 50, 0.92);
-  backdrop-filter: blur(6px);
-  color: #b3e5ff;
-  max-width: 700px;
-  height: 460px;
-  padding: 0;
-  box-shadow: 0 0 30px #00bfff;
-  font-family: 'Bubblegum Sans', sans-serif;
-  overflow: hidden;
-  margin-inline: auto;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  animation: fadeIn 0.5s ease-in forwards;
-  opacity: 0;
-}
-
-.dialogPrivacy::backdrop {
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(3px);
 }
 
 .dialogPrivacy:not([open]) {
   display: none;
-}
-
-.dialogPrivacy header {
-  padding: 1rem 1.25rem;
-  text-align: center;
-  border-bottom: 1px solid rgba(79,209,255,0.08);
-}
-
-.dialogPrivacy header h2 {
-  color: #4fd1ff;
-  margin: 0;
-  font-size: 1.8rem;
-  letter-spacing: 1px;
-  text-shadow: 0 0 15px #00bfff;
 }
 
 .privacy-content {
@@ -78,6 +45,4 @@
 
 .dialogPrivacy footer {
   padding: 0.9rem 1rem;
-  text-align: center;
-  border-top: 1px solid rgba(79,209,255,0.06);
 }

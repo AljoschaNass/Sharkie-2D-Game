@@ -1,31 +1,5 @@
 .dialogCredits {
-  border: none;
-  border-radius: 15px;
-  background: rgba(0, 25, 50, 0.92);
-  color: #b3e5ff;
-  max-width: 700px;
-  height: 460px;
-  padding: 2rem;
-  box-shadow: 0 0 25px #00bfff;
-  font-family: 'Bubblegum Sans', sans-serif;
-  overflow: hidden;
-  margin-inline: auto;
-  margin-top: 10px;
-  animation: fadeIn 0.5s ease-in forwards;
-  opacity: 0;
-}
-
-.dialogCredits::backdrop {
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(3px);
-}
-
-.dialogCredits header h2 {
-  color: #4fd1ff;
-  text-align: center;
-  margin-bottom: 1.5rem;
-  font-size: 2.2rem;
-  text-shadow: 0 0 15px #00bfff;
+  padding: 1.5rem 2rem; 
 }
 
 .credits-content {
@@ -75,6 +49,5 @@
 }
 
 .dialogCredits footer {
-  text-align: center;
   margin-top: 2rem;
 }
