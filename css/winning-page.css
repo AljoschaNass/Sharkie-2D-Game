@@ -1,0 +1,14 @@
+.winScreen {
+  position: relative;
+  width: 720px;
+  height: 480px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  background: url('../img/Buttons/Tittles/you-win/winning-shark.png') no-repeat center/cover;
+  font-family: 'Bubblegum Sans', sans-serif;
+  padding: 4%;
+  gap: 3%;
+}

@@ -1,7 +1,7 @@
 .dialogCredits {
   border: none;
   border-radius: 15px;
-  background: rgba(0, 25, 50, 0.95);
+  background: rgba(0, 25, 50, 0.92);
   color: #b3e5ff;
   max-width: 700px;
   height: 460px;
@@ -11,6 +11,8 @@
   overflow: hidden;
   margin-inline: auto;
   margin-top: 10px;
+  animation: fadeIn 0.5s ease-in forwards;
+  opacity: 0;
 }
 
 .dialogCredits::backdrop {

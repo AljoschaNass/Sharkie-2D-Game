@@ -1,4 +1,6 @@
   const shark = document.getElementById("shark");
+  const sharkWin = document.getElementById("shark-win");
+
   const sharkFrames = [
     "img/1.Sharkie/3.Swim/1.png",
     "img/1.Sharkie/3.Swim/2.png",
@@ -12,6 +14,7 @@
 
   setInterval(() => {
     shark.style.backgroundImage = `url(${sharkFrames[currentFrame]})`;
+    sharkWin.style.backgroundImage = `url(${sharkFrames[currentFrame]})`;
     currentFrame = (currentFrame + 1) % sharkFrames.length;
 }, 150);
 
@@ -81,3 +84,32 @@ privacyMenu.addEventListener('click', (e) => {
     e.clientY <= rect.bottom;
   if (!isInDialog) privacyMenu.close();
 });
+
+
+const winScreen = document.getElementById('winScreen');
+const canvasRef = document.getElementById('canvas');
+const startScreen = document.getElementById('startScreen');
+
+const btnRestart = document.getElementById('btnRestart');
+const btnOptions = document.getElementById('btnOptions');
+const btnMenu = document.getElementById('btnMenu');
+
+// Zeigt den Win-Screen an
+function showWinScreen() {
+  canvasRef.classList.add('d_none');
+  winScreen.classList.remove('d_none');
+}
+
+// Restart Game
+btnRestart.addEventListener('click', () => {
+  winScreen.classList.add('d_none');
+  canvasRef.classList.remove('d_none');
+  init(); // deine Spielfunktion
+});
+
+// Zurück zum Hauptmenü
+btnMenu.addEventListener('click', () => {
+  winScreen.classList.add('d_none');
+  startScreen.classList.remove('d_none');
+});
+

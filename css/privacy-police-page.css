@@ -13,6 +13,8 @@
   margin-inline: auto;
   display: grid;
   grid-template-rows: auto 1fr auto;
+  animation: fadeIn 0.5s ease-in forwards;
+  opacity: 0;
 }
 
 .dialogPrivacy::backdrop {
@@ -49,6 +51,10 @@
 .privacy-content a {
   color: #4fd1ff;
   text-decoration: none;
+}
+
+.privacy-content a:hover {
+  text-decoration: underline;
 }
 
 .privacy-left,

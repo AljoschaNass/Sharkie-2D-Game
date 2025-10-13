@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/options-page.css">
     <link rel="stylesheet" href="css/credits-page.css">
     <link rel="stylesheet" href="css/privacy-police-page.css">
+    <link rel="stylesheet" href="css/winning-page.css">
     <link rel="icon" type="image/x-icon" href="./img/1.Sharkie/1.IDLE/1.png"/>
 
     <script src="models/world.class.js"></script>
@@ -38,7 +39,7 @@
 
     <canvas id="canvas" class="d_none" width="720" height="480"></canvas>
 
-    <div class="startScreen" id="startScreen">
+    <div class="startScreen d_none" id="startScreen">
         <div class="background"></div>
 
         <div class="content">
@@ -183,6 +184,11 @@
   </footer>
 </dialog>
 
+<section id="winScreen" class="winScreen">
+    <div class="shark shark-win" id="shark-win"></div>
+    <button id="btnRestart" class="btn btn-start">Restart Game</button>
+    <button id="btnMenu" class="btn btn-small">Main Menu</button>
+</section>
 
 </body>
 </html>
