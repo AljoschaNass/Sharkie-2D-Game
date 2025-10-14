@@ -1,13 +1,3 @@
-.dialogOptions {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.dialogOptions:not([open]) {
-  display: none;
-}
-
 .options-content {
   display: flex;
   justify-content: space-between;
@@ -89,8 +79,4 @@
 .key-img {
   height: 40px;
   filter: drop-shadow(0 0 6px #00bfff);
-}
-
-.dialogOptions footer {
-  margin-top: 1rem;
 }

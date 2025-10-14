@@ -1,16 +1,6 @@
-.dialogPrivacy {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-}
-
-.dialogPrivacy:not([open]) {
-  display: none;
-}
-
 .privacy-content {
   display: flex;
   gap: 1.25rem;
-  padding: 1.25rem;
   align-items: start;
   justify-content: space-between;
 }
@@ -41,8 +31,4 @@
   color: #d7f4ff;
   line-height: 1.45;
   font-size: 0.98rem;
-}
-
-.dialogPrivacy footer {
-  padding: 0.9rem 1rem;
 }

@@ -59,6 +59,14 @@ h2 {
   padding: 1.5rem 2rem; 
   animation: fadeIn 0.5s ease-in forwards;
   opacity: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.allDialogs:not([open]) {
+  display: none;
 }
 
 .allDialogs::backdrop {
@@ -90,23 +98,6 @@ h2 {
   from { opacity: 0; transform: scale(0.98); }
   to { opacity: 1; transform: scale(1); }
 }
-
-/* .background {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, #003366 0%, #000c1a 100%);
-  background-image: url('img/3.Background/water-bg.png');
-  background-size: cover;
-  background-position: center;
-  animation: moveWater 12s infinite alternate ease-in-out;
-  z-index: 0;
-  opacity: 0.85;
-}
-
-@keyframes moveWater {
-  0% { transform: scale(1) translateY(0); }
-  100% { transform: scale(1.05) translateY(-15px); }
-} */
 
 .content {
   position: relative;

@@ -11,4 +11,6 @@
   font-family: 'Bubblegum Sans', sans-serif;
   padding: 4%;
   gap: 3%;
+  background-position: bottom;
+  background-size: 130%;
 }
