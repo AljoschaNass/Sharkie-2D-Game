@@ -1,6 +1,6 @@
   const shark = document.getElementById("shark");
   const sharkWin = document.getElementById("shark-win");
-
+  let currentFrame = 0;
   const sharkFrames = [
     "img/1.Sharkie/3.Swim/1.png",
     "img/1.Sharkie/3.Swim/2.png",
@@ -10,8 +10,6 @@
     "img/1.Sharkie/3.Swim/6.png"
   ];
 
-  let currentFrame = 0;
-
   setInterval(() => {
     shark.style.backgroundImage = `url(${sharkFrames[currentFrame]})`;
     sharkWin.style.backgroundImage = `url(${sharkFrames[currentFrame]})`;
@@ -19,25 +17,34 @@
 }, 150);
 
 
-const optionsMenu = document.getElementById('optionsMenu');
-const optionsBtn = document.querySelector('.btn-options');
-const closeOptions = document.getElementById('closeOptions');
+function setupDialog(openBtnSelector, dialogId, closeBtnId) {
+  const dialog = document.getElementById(dialogId);
+  const openBtn = document.querySelector(openBtnSelector);
+  const closeBtn = document.getElementById(closeBtnId);
+
+  if (!dialog || !openBtn || !closeBtn) return;
+
+  openBtn.addEventListener('click', () => dialog.showModal());
+  closeBtn.addEventListener('click', () => dialog.close());
+
+  dialog.addEventListener('click', (e) => {
+    const rect = dialog.getBoundingClientRect();
+    const inside =
+      e.clientX >= rect.left &&
+      e.clientX <= rect.right &&
+      e.clientY >= rect.top &&
+      e.clientY <= rect.bottom;
+    if (!inside) dialog.close();
+  });
+}
+
+setupDialog('.btn-options', 'optionsMenu', 'closeOptions');
+setupDialog('.btn-credits', 'creditsMenu', 'closeCreditsMenu');
+setupDialog('.btn-privacy', 'privacyMenu', 'closePrivacyMenu');
+
 
 const soundToggle = document.getElementById('soundToggle');
 const musicToggle = document.getElementById('musicToggle');
-
-optionsBtn.addEventListener('click', () => optionsMenu.showModal());
-closeOptions.addEventListener('click', () => optionsMenu.close());
-
-optionsMenu.addEventListener('click', (e) => {
-  const rect = optionsMenu.getBoundingClientRect();
-  const clickedOutside =
-    e.clientX < rect.left ||
-    e.clientX > rect.right ||
-    e.clientY < rect.top ||
-    e.clientY > rect.bottom;
-  if (clickedOutside) optionsMenu.close();
-});
 
 soundToggle.addEventListener('click', () => {
   soundToggle.classList.toggle('inactive');
@@ -50,66 +57,53 @@ musicToggle.addEventListener('click', () => {
 });
 
 
-const creditsMenu = document.getElementById('creditsMenu');
-const creditsBtn = document.querySelector('.btn-credits');
-const closeCreditsMenu = document.getElementById('closeCreditsMenu');
+const canvasRef = document.getElementById('canvas');
 
-creditsBtn.addEventListener('click', () => creditsMenu.showModal());
-closeCreditsMenu.addEventListener('click', () => creditsMenu.close());
-
-creditsMenu.addEventListener('click', (e) => {
-  const rect = creditsMenu.getBoundingClientRect();
-  const isInDialog =
-    e.clientX >= rect.left &&
-    e.clientX <= rect.right &&
-    e.clientY >= rect.top &&
-    e.clientY <= rect.bottom;
-  if (!isInDialog) creditsMenu.close();
-});
-
-
-const privacyMenu = document.getElementById('privacyMenu');
-const privacyBtn = document.querySelector('.btn-privacy');
-const closePrivacyMenu = document.getElementById('closePrivacyMenu');
-
-privacyBtn.addEventListener('click', () => privacyMenu.showModal());
-closePrivacyMenu.addEventListener('click', () => privacyMenu.close());
-
-privacyMenu.addEventListener('click', (e) => {
-  const rect = privacyMenu.getBoundingClientRect();
-  const isInDialog =
-    e.clientX >= rect.left &&
-    e.clientX <= rect.right &&
-    e.clientY >= rect.top &&
-    e.clientY <= rect.bottom;
-  if (!isInDialog) privacyMenu.close();
-});
-
+const startScreen = document.getElementById('startScreen');
+const startBtn = document.getElementById('start-btn');
 
 const winScreen = document.getElementById('winScreen');
-const canvasRef = document.getElementById('canvas');
-const startScreen = document.getElementById('startScreen');
-
 const btnRestart = document.getElementById('btnRestart');
-const btnOptions = document.getElementById('btnOptions');
 const btnMenu = document.getElementById('btnMenu');
 
-// Zeigt den Win-Screen an
+const gameOverScreen = document.getElementById('gameOverScreen');
+const btnRestartGameOver = document.getElementById('btnRestartGameOver');
+const btnMenuGameOver = document.getElementById('btnMenuGameOver');
+
+
 function showWinScreen() {
   canvasRef.classList.add('d_none');
   winScreen.classList.remove('d_none');
 }
 
-// Restart Game
+function showGameOverScreen() {
+  canvasRef.classList.add('d_none');
+  gameOverScreen.classList.remove('d_none');
+}
+
 btnRestart.addEventListener('click', () => {
   winScreen.classList.add('d_none');
   canvasRef.classList.remove('d_none');
-  init(); // deine Spielfunktion
+  init();
 });
 
-// Zurück zum Hauptmenü
 btnMenu.addEventListener('click', () => {
   winScreen.classList.add('d_none');
   startScreen.classList.remove('d_none');
 });
 
+btnRestartGameOver.addEventListener('click', () => {
+  gameOverScreen.style.display = 'none';
+  canvasRef.classList.remove('d_none');
+});
+
+btnMenuGameOver.addEventListener('click', () => {
+  gameOverScreen.style.display = 'none';  
+  startScreen.classList.remove('d_none');  
+  canvasRef.classList.add('d_none');
+});
+
+startBtn.addEventListener('click', () => {
+  startScreen.classList.add('d_none');  
+  canvasRef.classList.remove('d_none');
+});

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/credits-page.css">
     <link rel="stylesheet" href="css/privacy-police-page.css">
     <link rel="stylesheet" href="css/winning-page.css">
+    <link rel="stylesheet" href="css/game-over-screen.css">
     <link rel="icon" type="image/x-icon" href="./img/1.Sharkie/1.IDLE/1.png"/>
 
     <script src="models/world.class.js"></script>
@@ -39,7 +40,7 @@
 
     <canvas id="canvas" class="d_none" width="720" height="480"></canvas>
 
-    <div class="startScreen d_none" id="startScreen">
+    <section class="startScreen" id="startScreen">
         <div class="background"></div>
 
         <div class="content">
@@ -58,135 +59,143 @@
 
             <div class="shark" id="shark"></div>
         </div>
-    </div>
+    </section>
 
-<dialog class="allDialogs dialogOptions" id="optionsMenu">
+    <dialog class="allDialogs dialogOptions" id="optionsMenu">
+        <header class="dialogHeaders">
+        <h2>OPTIONS</h2>
+        </header>
+
+        <section class="options-content">
+        <div class="audio-settings">
+            <h3>Sounds & Music</h3>
+            <div class="setting">
+            <label for="soundToggle">Sounds</label>
+            <button id="soundToggle" class="toggle-btn active">🔊 On</button>
+            </div>
+            <div class="setting">
+            <label for="musicToggle">Music</label>
+            <button id="musicToggle" class="toggle-btn active">🎶 On</button>
+            </div>
+        </div>
+
+        <div class="controls">
+            <h3>Controls</h3>
+            <div class="controls-grid">
+            <div class="control-item">
+                <img src="img/Buttons/Key/arrow keys.png" alt="Arrow keys" class="key-img">
+                <span>Move Sharkie</span>
+            </div>
+            <div class="control-item">
+                <img src="img/Buttons/Key/D key.png" alt="Key D" class="key-img">
+                <span>Bubble Attack</span>
+            </div>
+            <div class="control-item">
+                <img src="img/Buttons/Key/Space Bar key.png" alt="Space key" class="key-img">
+                <span>Fin Slap</span>
+            </div>
+            </div>
+        </section>
+
+        <footer class="dialogFooters">
+        <button id="closeOptions" class="btn btn-small">X Close</button>
+        </footer>
+    </div>
+    </dialog>
+
+    <dialog class="allDialogs dialogCredits" id="creditsMenu">
     <header class="dialogHeaders">
-      <h2>OPTIONS</h2>
+        <h2>CREDITS</h2>
     </header>
 
-    <section class="options-content">
-      <div class="audio-settings">
-        <h3>Sounds & Music</h3>
-        <div class="setting">
-          <label for="soundToggle">Sounds</label>
-          <button id="soundToggle" class="toggle-btn active">🔊 On</button>
+    <section class="credits-content">
+        <div class="credits-left">
+        <h3>A Game By</h3>
+        <p>
+            <strong>Aljoscha Naß</strong><br>
+            Developed as part of the Developer Academy Challenge<br>
+            Contact: 
+            <a href="mailto:nassaljoscha@gmail.com">nassaljoscha@gmail.com</a>
+        </p>
+        <br>
+        <h3>Idea & Concept</h3>
+        <p>A friendly shark on an adventure through the depths of the ocean.</p>
         </div>
-        <div class="setting">
-          <label for="musicToggle">Music</label>
-          <button id="musicToggle" class="toggle-btn active">🎶 On</button>
-        </div>
-      </div>
 
-      <div class="controls">
-        <h3>Controls</h3>
-        <div class="controls-grid">
-          <div class="control-item">
-            <img src="img/Buttons/Key/arrow keys.png" alt="Arrow keys" class="key-img">
-            <span>Move Sharkie</span>
-          </div>
-          <div class="control-item">
-            <img src="img/Buttons/Key/D key.png" alt="Key D" class="key-img">
-            <span>Bubble Attack</span>
-          </div>
-          <div class="control-item">
-            <img src="img/Buttons/Key/Space Bar key.png" alt="Space key" class="key-img">
-            <span>Fin Slap</span>
-          </div>
+        <div class="credits-right">
+        <h3>Special Thanks</h3>
+        <ul>
+            <li>Developer Academy Team</li>
+            <li>Community Feedback</li>
+            <li>All Players & Testers</li>
+        </ul>
+        <br>
+        <h3>🎵 Music & Sound</h3>
+        <p>All sound effects are from royalty-free sources (Pixabay / Mixkit).</p>
         </div>
     </section>
 
     <footer class="dialogFooters">
-      <button id="closeOptions" class="btn btn-small">X Close</button>
+        <button id="closeCreditsMenu" class="btn btn-small">X Close</button>
     </footer>
-  </div>
-</dialog>
+    </dialog>
 
-<dialog class="allDialogs dialogCredits" id="creditsMenu">
-  <header class="dialogHeaders">
-    <h2>CREDITS</h2>
-  </header>
+    <dialog class="allDialogs dialogPrivacy" id="privacyMenu" aria-labelledby="privacyTitle">
+    <header class="dialogHeaders">
+        <h2>PRIVACY POLICY</h2>
+    </header>
 
-  <section class="credits-content">
-    <div class="credits-left">
-      <h3>A Game By</h3>
-      <p>
-        <strong>Aljoscha Naß</strong><br>
-        Developed as part of the Developer Academy Challenge<br>
-        Contact: 
-        <a href="mailto:nassaljoscha@gmail.com">nassaljoscha@gmail.com</a>
-      </p>
-      <br>
-      <h3>Idea & Concept</h3>
-      <p>A friendly shark on an adventure through the depths of the ocean.</p>
-    </div>
+    <section class="privacy-content">
+        <div class="privacy-left">
+        <h3>Data & Privacy</h3>
+        <p>
+            This game does <strong>not</strong> collect, store or transmit any personal
+            data from players. No login, cookies, analytics or tracking technologies
+            are used by the game itself.
+        </p>
+        <br>
+        <h3>Local Data</h3>
+        <p>
+            Any local data (e.g. settings, volume) is stored only in your browser's
+            localStorage and is used solely to remember your preferences on this device.
+            You can clear it anytime via your browser settings.
+        </p>
+        </div>
 
-    <div class="credits-right">
-      <h3>Special Thanks</h3>
-      <ul>
-        <li>Developer Academy Team</li>
-        <li>Community Feedback</li>
-        <li>All Players & Testers</li>
-      </ul>
-      <br>
-      <h3>🎵 Music & Sound</h3>
-      <p>All sound effects are from royalty-free sources (Pixabay / Mixkit).</p>
-    </div>
-  </section>
+        <div class="privacy-right">
+        <h3>Audio & Third-Party Assets</h3>
+        <p>
+            Sounds and music included are licensed from royalty-free providers
+            (e.g. Pixabay, Mixkit) or are original assets. Third-party libraries,
+            if any, are used only for UI/helpers and do not collect user data.
+        </p>
+        <br>
+        <h3>Contact</h3>
+        <p>
+            If you have questions or requests concerning privacy, please contact:
+            <br><a href="mailto:nassaljoscha@gmail.com">nassaljoscha@gmail.com</a>
+        </p>
+        </div>
+    </section>
 
-  <footer class="dialogFooters">
-    <button id="closeCreditsMenu" class="btn btn-small">X Close</button>
-  </footer>
-</dialog>
+    <footer class="dialogFooters">
+        <button id="closePrivacyMenu" class="btn btn-small">X Close</button>
+    </footer>
+    </dialog>
 
-<dialog class="allDialogs dialogPrivacy" id="privacyMenu" aria-labelledby="privacyTitle">
-  <header class="dialogHeaders">
-    <h2>PRIVACY POLICY</h2>
-  </header>
+    <section id="winScreen" class="winScreen d_none">
+        <div class="shark shark-win" id="shark-win"></div>
+        <button id="btnRestart" class="btn btn-start">Restart Game</button>
+        <button id="btnMenu" class="btn btn-small">Main Menu</button>
+    </section>
 
-  <section class="privacy-content">
-    <div class="privacy-left">
-      <h3>Data & Privacy</h3>
-      <p>
-        This game does <strong>not</strong> collect, store or transmit any personal
-        data from players. No login, cookies, analytics or tracking technologies
-        are used by the game itself.
-      </p>
-      <br>
-      <h3>Local Data</h3>
-      <p>
-        Any local data (e.g. settings, volume) is stored only in your browser's
-        localStorage and is used solely to remember your preferences on this device.
-        You can clear it anytime via your browser settings.
-      </p>
-    </div>
+    <section id="gameOverScreen" class="gameOverScreen d_none">
+        <h1 class="gameOverTitle">GAME OVER</h1>
 
-    <div class="privacy-right">
-      <h3>Audio & Third-Party Assets</h3>
-      <p>
-        Sounds and music included are licensed from royalty-free providers
-        (e.g. Pixabay, Mixkit) or are original assets. Third-party libraries,
-        if any, are used only for UI/helpers and do not collect user data.
-      </p>
-      <br>
-      <h3>Contact</h3>
-      <p>
-        If you have questions or requests concerning privacy, please contact:
-        <br><a href="mailto:nassaljoscha@gmail.com">nassaljoscha@gmail.com</a>
-      </p>
-    </div>
-  </section>
-
-  <footer class="dialogFooters">
-    <button id="closePrivacyMenu" class="btn btn-small">X Close</button>
-  </footer>
-</dialog>
-
-<section id="winScreen" class="winScreen">
-    <div class="shark shark-win" id="shark-win"></div>
-    <button id="btnRestart" class="btn btn-start">Restart Game</button>
-    <button id="btnMenu" class="btn btn-small">Main Menu</button>
-</section>
+        <button id="btnRestartGameOver" class="btn btn-start">Restart Game</button>
+        <button id="btnMenuGameOver" class="btn btn-small">Main Menu</button>
+        <img src="img/1.Sharkie/6.dead/1.Poisoned/sin subir/DES 2_00011.png" alt="">
+    </section>
 
 </body>
 </html>

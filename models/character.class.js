@@ -200,6 +200,7 @@ class Character extends MovableObject {
         if (this.lastDamageFrom == 'electric') {
             this.playAnimationOnce(this.IMAGES_DEAD_ELECTIC_SHOCKED);
         }
+        showGameOverScreen();
     }
 
 
