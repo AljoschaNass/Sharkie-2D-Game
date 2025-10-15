@@ -57,7 +57,7 @@ musicToggle.addEventListener('click', () => {
 });
 
 
-const canvasRef = document.getElementById('canvas');
+const canvasRef = document.getElementById('game-container');
 
 const startScreen = document.getElementById('startScreen');
 const startBtn = document.getElementById('start-btn');

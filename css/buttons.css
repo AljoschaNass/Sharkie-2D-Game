@@ -30,7 +30,6 @@
 
 .btn-start:hover {
   transform: scale(1.1);
-  /* background: #6fe3ff; */
   background: rgba(0, 51, 102, 0.6);
   border: 2px solid #4fd1ff;
   color: #fff;
@@ -68,6 +67,18 @@
   background: #4fd1ff;
   color: #001a33;
   transform: scale(1.05);
+}
+
+#pause-btn, #mute-btn {
+  border-radius: 8px;
+  padding: 4px 10px;
+  background: none;
+  border: none;
+}
+
+#pause-btn:hover, #mute-btn:hover {
+  background: none;
+  box-shadow: none;
 }
 
 @keyframes float {
