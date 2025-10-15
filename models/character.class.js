@@ -201,6 +201,7 @@ class Character extends MovableObject {
             this.playAnimationOnce(this.IMAGES_DEAD_ELECTIC_SHOCKED);
         }
         showGameOverScreen();
+        this.energy = 100;
     }
 
 

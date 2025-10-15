@@ -1,22 +1,37 @@
 class World {
-    character = new Character();
-    level = level1;
-    poisonStatusBar = new PoisonStatusBar();
-    healthStatusBar = new HealthStatusBar();
-    coinStatusBar = new CoinStatusBar();
+    character;
+    level;
+    poisonStatusBar;
+    healthStatusBar;
+    coinStatusBar;
     canvas;
     ctx;
     keyboard;
     camera_x = 0;
-    
+    collisionIntervalId;
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.level = createLevel1();
+        this.character = new Character();
+        this.character.energy = 100;
+        this.poisonStatusBar = new PoisonStatusBar();
+        this.healthStatusBar = new HealthStatusBar();
+        this.healthStatusBar.setPercentage(100);
+        this.coinStatusBar = new CoinStatusBar();
         this.draw();
         this.setWorld();
+        this.clearCollisionInterval();
         this.checkCollisions();
+    }
+
+    clearCollisionInterval() {
+        if (this.collisionIntervalId) {
+            clearInterval(this.collisionIntervalId);
+            this.collisionIntervalId = null;
+        }
     }
 
 
@@ -27,7 +42,7 @@ class World {
 
 
     checkCollisions() {
-        setInterval(() => {
+        this.collisionIntervalId = setInterval(() => {
             this.collisionWithEnemy();
             this.collectPoisonWater();
             this.collectCoin();

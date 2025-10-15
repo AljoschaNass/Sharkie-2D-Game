@@ -1,11 +1,13 @@
+
 let canvas;
 let world;
 let keyboard = new Keyboard();
 
-
 function init() {
     canvas = document.getElementById("canvas");
+    canvas.classList.remove("d_none");
     world = new World(canvas, keyboard);
+    document.getElementById("startScreen").classList.add("d_none");
 }
 
 

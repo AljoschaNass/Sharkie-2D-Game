@@ -93,17 +93,19 @@ btnMenu.addEventListener('click', () => {
 });
 
 btnRestartGameOver.addEventListener('click', () => {
-  gameOverScreen.style.display = 'none';
+  gameOverScreen.classList.add('d_none');
   canvasRef.classList.remove('d_none');
+  init();
 });
 
 btnMenuGameOver.addEventListener('click', () => {
-  gameOverScreen.style.display = 'none';  
-  startScreen.classList.remove('d_none');  
+  gameOverScreen.classList.add('d_none');
+  startScreen.classList.remove('d_none');
   canvasRef.classList.add('d_none');
 });
 
 startBtn.addEventListener('click', () => {
   startScreen.classList.add('d_none');  
   canvasRef.classList.remove('d_none');
+  init();
 });
