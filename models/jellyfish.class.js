@@ -75,10 +75,15 @@ class Jellyfish extends MovableObject {
 
     animate() {
         setInterval(() => {
-            this.moveLeftWithWave();
+            if (!gamePaused) {
+                this.moveLeftWithWave();
+            }
         }, 1000 / 60);
+
         setInterval(() => {
-            this.playAnimation(this.IMAGES_SWIM);
+            if (!gamePaused) {
+                this.playAnimation(this.IMAGES_SWIM);
+            }
         }, 250);
     }
 

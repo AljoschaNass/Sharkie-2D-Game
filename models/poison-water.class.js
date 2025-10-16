@@ -29,7 +29,9 @@ class PoisonWater extends CollectableObject {
 
     animate() {
         setInterval(() => {
-            this.playAnimation(this.IMAGES_WATER);   
+            if (!gamePaused) {
+                this.playAnimation(this.IMAGES_WATER);  
+            } 
         }, 200);
     }
 }

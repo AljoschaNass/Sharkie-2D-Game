@@ -47,7 +47,8 @@ h2 {
 .allDialogs {
   border: none;
   border-radius: 20px;
-  background: rgba(0, 25, 50, 0.92);
+  /* background: rgba(0, 25, 50, 0.92);  */
+  background: rgba(0, 25, 50, 0.2); 
   color: #b3e5ff;
   max-width: 700px;
   height: 460px;

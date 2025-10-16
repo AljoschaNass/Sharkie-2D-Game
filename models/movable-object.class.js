@@ -37,23 +37,25 @@ class MovableObject extends DrawableObjekt{
 
 
     hit(enemy) {
-        let damage = 5;
-        this.lastDamageFrom = 'poison';
-        switch (true) {
-        case enemy instanceof Endboss:
+        if (!gamePaused) {
+            let damage = 5;
             this.lastDamageFrom = 'poison';
-            damage = 15;
-            break;
-        case enemy instanceof Jellyfish && (enemy.color === 'green' || enemy.color === 'pink'):
-            damage = 10;
-            this.lastDamageFrom = 'electric';
-            break;
-        }
-        this.energy -= damage;
-        if (this.energy < 0) {
-            this.energy = 0;
-        } else {
-            this.lastHit = new Date().getTime();
+            switch (true) {
+            case enemy instanceof Endboss:
+                this.lastDamageFrom = 'poison';
+                damage = 15;
+                break;
+            case enemy instanceof Jellyfish && (enemy.color === 'green' || enemy.color === 'pink'):
+                damage = 10;
+                this.lastDamageFrom = 'electric';
+                break;
+            }
+            this.energy -= damage;
+            if (this.energy < 0) {
+                this.energy = 0;
+            } else {
+                this.lastHit = new Date().getTime();
+            }
         }
     }
 

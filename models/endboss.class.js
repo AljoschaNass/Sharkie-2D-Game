@@ -61,14 +61,16 @@ class Endboss extends MovableObject {
 
     animate() {
         setInterval(() => {
-            if (this.world.character.x > 650) {
-                this.characterReachedEndboss = true;
-            }
-            if (this.characterReachedEndboss) {
-                this.showEndboss();
-            }
-            if (this.animationIsPlayed) {
-                this.playAnimation(this.IMAGES_FLOATING); 
+            if (!gamePaused) {
+                if (this.world.character.x > 650) {
+                    this.characterReachedEndboss = true;
+                }
+                if (this.characterReachedEndboss) {
+                    this.showEndboss();
+                }
+                if (this.animationIsPlayed) {
+                    this.playAnimation(this.IMAGES_FLOATING); 
+                }
             }
         }, 200);
     }

@@ -132,41 +132,45 @@ class Character extends MovableObject {
 
     animate() {       
         setInterval(() => {
-            if (this.world.keyboard.UP && this.y > -90) {
-                this.moveUp();            }
-            if (this.world.keyboard.DOWN && this.y < 300) {
-                this.moveDown();
-            }
-            if (this.world.keyboard.LEFT && this.x > -100) {
-                this.moveLeft();
-                this.otherDirection = true;
-            }
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEnd_x) {
-                this.moveRight();
-                this.otherDirection = false;
-            }
-            this.world.camera_x = -this.x + 50;            
+            if (!gamePaused) {
+                if (this.world.keyboard.UP && this.y > -90) {
+                    this.moveUp();            }
+                if (this.world.keyboard.DOWN && this.y < 300) {
+                    this.moveDown();
+                }
+                if (this.world.keyboard.LEFT && this.x > -100) {
+                    this.moveLeft();
+                    this.otherDirection = true;
+                }
+                if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEnd_x) {
+                    this.moveRight();
+                    this.otherDirection = false;
+                }
+                this.world.camera_x = -this.x + 50;  
+            }          
         }, 1000 / 60);
         
-        setInterval(() => {                        
-            if (this.isDead()) {                                
-                this.dieCharacter();  
-            } else if (this.isAttacking()) {
-                this.setOffset(100, 45);
-                this.attack();
-                this.resetTimerLongIdle();
-            } else if (this.isSwimming()) {
-                this.setOffset(100, 45);
-                this.playAnimation(this.IMAGES_SWIM);
-                this.resetTimerLongIdle();
-            } else if (this.isIdle() && !this.isHurt()) {
-                if (this.isIdleTooLong) {
-                    this.playLongIdleAnimation(this.IMAGES_LONG_IDLE);
-                } else {
-                    this.playAnimation(this.IMAGES_IDLE);
-                }
-                if (!this.idleTimeout) {
-                    this.setTimerLongIdle();
+        setInterval(() => {     
+            if (!gamePaused) {
+                if (this.isDead()) {                                
+                    this.dieCharacter();  
+                } else if (this.isAttacking()) {
+                    this.setOffset(100, 45);
+                    this.attack();
+                    this.resetTimerLongIdle();
+                } else if (this.isSwimming()) {
+                    this.setOffset(100, 45);
+                    this.playAnimation(this.IMAGES_SWIM);
+                    this.resetTimerLongIdle();
+                } else if (this.isIdle() && !this.isHurt()) {
+                    if (this.isIdleTooLong) {
+                        this.playLongIdleAnimation(this.IMAGES_LONG_IDLE);
+                    } else {
+                        this.playAnimation(this.IMAGES_IDLE);
+                    }
+                    if (!this.idleTimeout) {
+                        this.setTimerLongIdle();
+                    }
                 }
             }
         }, 150);
@@ -182,13 +186,15 @@ class Character extends MovableObject {
 
 
     hurtCharacter(enemy) {
-        let hurtImages = this.IMAGES_HURT_POISONED;
-        if (enemy instanceof Jellyfish) {
-            hurtImages = this.IMAGES_HURT_ELECTIC_SHOCKED;
-        } 
-        if (!this.isDead()) {
-            this.playAnimationOnce(hurtImages);
-            this.resetTimerLongIdle();
+        if (!gamePaused) {
+            let hurtImages = this.IMAGES_HURT_POISONED;
+            if (enemy instanceof Jellyfish) {
+                hurtImages = this.IMAGES_HURT_ELECTIC_SHOCKED;
+            } 
+            if (!this.isDead()) {
+                this.playAnimationOnce(hurtImages);
+                this.resetTimerLongIdle();
+            }
         }
     }
 

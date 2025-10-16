@@ -85,13 +85,15 @@ class Pufferfish extends MovableObject {
         this.selectColor();
         this.setSequences();
         this.calculatePosition();
-        this.animate();
+        this.animate();        
     }
 
 
     animate() {
         setInterval(() => {
-            this.moveLeft();
+            if (!gamePaused) {
+                this.moveLeft();
+            }
         }, 1000 / 60);
         this.loopAnimationSequence();
     }
@@ -115,18 +117,20 @@ class Pufferfish extends MovableObject {
         let frameIndex = 0;
 
         setInterval(() => {
-            const current = this.sequences[currentSequenceIndex];
-            const currentImages = current.images;
-            const path = currentImages[frameIndex];
-            this.img = this.imageCache[path];
-            frameIndex++;
-            this.setOffset(currentImages);
-            if (frameIndex >= currentImages.length) {
-                frameIndex = 0;
-                this.repeatCounter++;
-                if (this.repeatCounter >= current.repeat) {
-                    this.repeatCounter = 0;
-                    currentSequenceIndex = (currentSequenceIndex + 1) % this.sequences.length;
+            if (!gamePaused) {
+                const current = this.sequences[currentSequenceIndex];
+                const currentImages = current.images;
+                const path = currentImages[frameIndex];
+                this.img = this.imageCache[path];
+                frameIndex++;
+                this.setOffset(currentImages);
+                if (frameIndex >= currentImages.length) {
+                    frameIndex = 0;
+                    this.repeatCounter++;
+                    if (this.repeatCounter >= current.repeat) {
+                        this.repeatCounter = 0;
+                        currentSequenceIndex = (currentSequenceIndex + 1) % this.sequences.length;
+                    }
                 }
             }
         }, 200);
