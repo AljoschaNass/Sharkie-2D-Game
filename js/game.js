@@ -2,6 +2,8 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let gamePaused = false;
+
 
 function init() {
     canvas = document.getElementById("canvas");

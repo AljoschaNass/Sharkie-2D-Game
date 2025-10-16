@@ -1,3 +1,9 @@
+const pauseBtnGlobal = document.getElementById('pause-btn');
+if (pauseBtnGlobal) {
+  pauseBtnGlobal.addEventListener('click', () => {
+    gamePaused = true;
+  });
+}
   const shark = document.getElementById("shark");
   const sharkWin = document.getElementById("shark-win");
   let currentFrame = 0;
@@ -21,10 +27,15 @@ function setupDialog(openBtnSelector, dialogId, closeBtnId) {
   const dialog = document.getElementById(dialogId);
   const openBtn = document.querySelector(openBtnSelector);
   const closeBtn = document.getElementById(closeBtnId);
+  // Erweiterung: Pause-Button für Options-Dialog
+  const pauseBtn = dialogId === 'optionsMenu' ? document.getElementById('pause-btn') : null;
 
   if (!dialog || !openBtn || !closeBtn) return;
 
   openBtn.addEventListener('click', () => dialog.showModal());
+  if (pauseBtn) {
+    pauseBtn.addEventListener('click', () => dialog.showModal());
+  }
   closeBtn.addEventListener('click', () => dialog.close());
 
   dialog.addEventListener('click', (e) => {
