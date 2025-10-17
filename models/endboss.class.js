@@ -2,8 +2,8 @@ class Endboss extends MovableObject {
     world;
     height = 300;
     width = 300;
-    x = 1000;
-    y = 0;
+    x = 1150;
+    y = 50;
     offset = {
         top: 95,
         left: 12,
@@ -70,12 +70,23 @@ class Endboss extends MovableObject {
                 }
                 if (this.animationIsPlayed) {
                     this.playAnimation(this.IMAGES_FLOATING); 
+                    this.startMovingLeft();
                 }
             }
         }, 200);
     }
 
+
     showEndboss() {
         this.playAnimationOnce(this.IMAGES_INTRODUCE);
+    }
+
+    
+    startMovingLeft() {
+        this.moveLeftInterval = setInterval(() => {
+            if (!gamePaused) {
+                this.x -= 0.5;
+            }
+        }, 40);
     }
 }

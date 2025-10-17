@@ -54,7 +54,15 @@ class World {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
-        this.addObjectsToMap(this.level.enemies);
+        this.level.enemies.forEach(enemy => {
+            if (enemy instanceof Endboss) {
+                if (enemy.characterReachedEndboss) {
+                    this.addToMap(enemy);
+                }
+            } else {
+                this.addToMap(enemy);
+            }
+        });
         this.addObjectsToMap(this.level.poisonWaterItems);
         this.addObjectsToMap(this.level.coins);
         this.addToMap(this.character);

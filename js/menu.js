@@ -55,19 +55,51 @@ setupDialog('.btn-options', 'optionsMenu', 'closeOptions');
 setupDialog('.btn-credits', 'creditsMenu', 'closeCreditsMenu');
 setupDialog('.btn-privacy', 'privacyMenu', 'closePrivacyMenu');
 
-
 const soundToggle = document.getElementById('soundToggle');
 const musicToggle = document.getElementById('musicToggle');
+const muteBtn = document.getElementById('mute-btn');
+const muteImg = muteBtn.querySelector('img');
+
+function restoreAudioSettings() {
+  const soundInactive = localStorage.getItem('soundInactive') === 'true';
+  const musicInactive = localStorage.getItem('musicInactive') === 'true';
+
+  soundToggle.classList.toggle('inactive', soundInactive);
+  musicToggle.classList.toggle('inactive', musicInactive);
+
+  soundToggle.textContent = soundInactive ? '🔇 Off' : '🔊 On';
+  musicToggle.textContent = musicInactive ? '🚫 Off' : '🎶 On';
+
+  updateMuteIconFromStorage();
+}
+
+function updateMuteIconFromStorage() {
+  const soundInactive = localStorage.getItem('soundInactive') === 'true';
+  const musicInactive = localStorage.getItem('musicInactive') === 'true';
+
+  muteImg.src = (soundInactive && musicInactive)
+    ? 'img/Buttons/Key/sound_off.png'
+    : 'img/Buttons/Key/sound_on.png';
+}
+
+function toggleSetting(button, key, icons) {
+  button.classList.toggle('inactive');
+  const inactive = button.classList.contains('inactive');
+  localStorage.setItem(key, inactive);
+  button.textContent = inactive ? icons.off : icons.on;
+  updateMuteIconFromStorage();
+}
 
 soundToggle.addEventListener('click', () => {
-  soundToggle.classList.toggle('inactive');
-  soundToggle.textContent = soundToggle.classList.contains('inactive') ? '🔇 Off' : '🔊 On';
+  toggleSetting(soundToggle, 'soundInactive', { off: '🔇 Off', on: '🔊 On' });
 });
 
 musicToggle.addEventListener('click', () => {
-  musicToggle.classList.toggle('inactive');
-  musicToggle.textContent = musicToggle.classList.contains('inactive') ? '🚫 Off' : '🎶 On';
+  toggleSetting(musicToggle, 'musicInactive', { off: '🚫 Off', on: '🎶 On' });
 });
+
+restoreAudioSettings();
+
 
 
 const canvasRef = document.getElementById('game-container');
