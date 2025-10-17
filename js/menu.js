@@ -60,6 +60,9 @@ const musicToggle = document.getElementById('musicToggle');
 const muteBtn = document.getElementById('mute-btn');
 const muteImg = muteBtn.querySelector('img');
 
+/**
+ * Lädt gespeicherte Audio-Einstellungen und aktualisiert UI & Icon.
+ */
 function restoreAudioSettings() {
   const soundInactive = localStorage.getItem('soundInactive') === 'true';
   const musicInactive = localStorage.getItem('musicInactive') === 'true';
@@ -71,8 +74,12 @@ function restoreAudioSettings() {
   musicToggle.textContent = musicInactive ? '🚫 Off' : '🎶 On';
 
   updateMuteIconFromStorage();
+  applyAudioMuteState(soundInactive, musicInactive);
 }
 
+/**
+ * Aktualisiert das Mute-Icon basierend auf gespeicherten Zuständen.
+ */
 function updateMuteIconFromStorage() {
   const soundInactive = localStorage.getItem('soundInactive') === 'true';
   const musicInactive = localStorage.getItem('musicInactive') === 'true';
@@ -82,23 +89,71 @@ function updateMuteIconFromStorage() {
     : 'img/Buttons/Key/sound_on.png';
 }
 
-function toggleSetting(button, key, icons) {
+/**
+ * Wendet den Muting-Zustand auf echte Audio-Objekte an.
+ * Hier musst du an deine Audio-/Musik-Objekte anpassen.
+ */
+function applyAudioMuteState(soundInactive, musicInactive) {
+  // Beispiel: wenn du Audio-Elemente hast, z. B. `gameMusic` & `soundEffects`
+  if (window.gameMusic) {
+    window.gameMusic.muted = musicInactive;
+  }
+  if (window.soundEffects) {
+    // Wenn soundEffects eine Liste ist:
+    window.soundEffects.forEach(se => se.muted = soundInactive);
+  }
+}
+
+/**
+ * Toggles einen Button, speichert Zustand & icon, und wendet auf Audio an.
+ */
+function toggleSetting(button, storageKey, icons, isMusic) {
   button.classList.toggle('inactive');
   const inactive = button.classList.contains('inactive');
-  localStorage.setItem(key, inactive);
+  localStorage.setItem(storageKey, inactive);
   button.textContent = inactive ? icons.off : icons.on;
+
+  // auch Audio anwenden
+  const soundInactive = localStorage.getItem('soundInactive') === 'true';
+  const musicInactive = localStorage.getItem('musicInactive') === 'true';
+  applyAudioMuteState(soundInactive, musicInactive);
+
   updateMuteIconFromStorage();
 }
 
+// Klick-Events für Toggles
 soundToggle.addEventListener('click', () => {
-  toggleSetting(soundToggle, 'soundInactive', { off: '🔇 Off', on: '🔊 On' });
+  toggleSetting(soundToggle, 'soundInactive', { off: '🔇 Off', on: '🔊 On' }, false);
 });
-
 musicToggle.addEventListener('click', () => {
-  toggleSetting(musicToggle, 'musicInactive', { off: '🚫 Off', on: '🎶 On' });
+  toggleSetting(musicToggle, 'musicInactive', { off: '🚫 Off', on: '🎶 On' }, true);
 });
 
+/**
+ * Handler für Mute-Button:
+ * Wenn beide aktuell deaktiviert sind, dann setze beides aktiv (An), andernfalls beides aus.
+ */
+muteBtn.addEventListener('click', () => {
+  const soundInactive = localStorage.getItem('soundInactive') === 'true';
+  const musicInactive = localStorage.getItem('musicInactive') === 'true';
+
+  if (soundInactive && musicInactive) {
+    // beide aktuell aus → schalte beides an
+    localStorage.setItem('soundInactive', false);
+    localStorage.setItem('musicInactive', false);
+  } else {
+    // sonst: beides aus
+    localStorage.setItem('soundInactive', true);
+    localStorage.setItem('musicInactive', true);
+  }
+
+  // wende Änderungen an
+  restoreAudioSettings();
+});
+
+// Initial beim Laden aufrufen
 restoreAudioSettings();
+
 
 
 
