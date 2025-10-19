@@ -1,4 +1,5 @@
 class World {
+    audioManager;
     character;
     level;
     poisonStatusBar;
@@ -14,6 +15,7 @@ class World {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.audioManager = new AudioManager();
         this.level = createLevel1();
         this.character = new Character();
         this.character.energy = 100;
@@ -26,6 +28,7 @@ class World {
         this.clearCollisionInterval();
         this.checkCollisions();
     }
+
 
     clearCollisionInterval() {
         if (this.collisionIntervalId) {
@@ -118,6 +121,7 @@ class World {
                 this.character.hit(enemy);
                 this.healthStatusBar.setPercentage(this.character.energy);
                 this.character.hurtCharacter(enemy);
+                this.audioManager.play('hit');
             }
         });
     }
@@ -130,6 +134,7 @@ class World {
                 this.character.collectedPoisonBottles = this.character.collectedPoisonBottles + 21;
                 this.poisonStatusBar.setPercentage(this.character.collectedPoisonBottles);
                 this.level.poisonWaterItems.splice(i, 1);
+                this.audioManager.play('poison');
             }
         }
     }
@@ -142,6 +147,7 @@ class World {
                 this.character.collectedCoins = this.character.collectedCoins + 21;
                 this.coinStatusBar.setPercentage(this.character.collectedCoins);
                 this.level.coins.splice(i, 1);
+                this.audioManager.play('coin');
             }
         }
     }

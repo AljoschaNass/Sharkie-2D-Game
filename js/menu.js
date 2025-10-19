@@ -142,11 +142,13 @@ const btnMenuGameOver = document.getElementById('btnMenuGameOver');
 function showWinScreen() {
   canvasRef.classList.add('d_none');
   winScreen.classList.remove('d_none');
+  world.audioManager.stopMusic();
 }
 
 function showGameOverScreen() {
   canvasRef.classList.add('d_none');
   gameOverScreen.classList.remove('d_none');
+  world.audioManager.stopMusic();
 }
 
 btnRestart.addEventListener('click', () => {

@@ -10,6 +10,7 @@ function init() {
     canvas.classList.remove("d_none");
     world = new World(canvas, keyboard);
     document.getElementById("startScreen").classList.add("d_none");
+    world.audioManager.playMusic('backgroundMusic');
 }
 
 
