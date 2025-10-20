@@ -117,6 +117,22 @@ class Character extends MovableObject {
         this.animate();     
     }
 
+        restart() {
+        this.x = 0;
+        this.y = 100;
+        this.energy = 100;
+        this.collectedPoisonBottles = 0;
+        this.collectedCoins = 0;
+        this.currentImage = 0;
+        this.currentImageSet = this.IMAGES_IDLE;
+        this.sharkIsAttacking = false;
+        this.isIdleTooLong = false;
+        this.introLongIdleDone = false;
+        this.lastDamageFrom = 'poison';
+        this.otherDirection = false;
+        this.resetTimerLongIdle();
+    }
+
 
     loadAllImages() {
         this.loadImages(this.IMAGES_IDLE);

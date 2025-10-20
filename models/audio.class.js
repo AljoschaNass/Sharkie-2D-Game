@@ -46,6 +46,18 @@ class AudioManager {
     }
   }
 
+
+  stopMusic() {
+    const musicKeys = ['backgroundMusic', 'winMusic'];
+    musicKeys.forEach(key => {
+      const sound = this.sounds[key];
+      if (sound) {
+        sound.pause();
+        sound.currentTime = 0;
+      }
+    });
+  }
+  
  
   stopAll() {
     Object.values(this.sounds).forEach(sound => {

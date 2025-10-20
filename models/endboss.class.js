@@ -59,6 +59,21 @@ class Endboss extends MovableObject {
     }
 
 
+    restart() {
+        this.x = 1150;
+        this.y = 50;
+        this.energy = 100;
+        this.currentImage = 0;
+        this.characterReachedEndboss = false;
+        this.currentImageSet = this.IMAGES_INTRODUCE;
+        this.animationIsPlayed = false;
+        // if (this.moveLeftInterval) {
+        //     clearInterval(this.moveLeftInterval);
+        //     this.moveLeftInterval = null;
+        // }
+    }
+
+
     animate() {
         setInterval(() => {
             if (!gamePaused) {
