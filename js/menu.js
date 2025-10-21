@@ -168,11 +168,13 @@ btnRestartGameOver.addEventListener('click', () => {
   init();
 });
 
+
 btnMenuGameOver.addEventListener('click', () => {
   gameOverScreen.classList.add('d_none');
   startScreen.classList.remove('d_none');
   canvasRef.classList.add('d_none');
 });
+
 
 startBtn.addEventListener('click', () => {
   startScreen.classList.add('d_none');  
