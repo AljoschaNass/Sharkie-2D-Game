@@ -46,6 +46,7 @@ class World {
 
     checkCollisions() {
         this.collisionIntervalId = setInterval(() => {
+            if (typeof gamePaused !== 'undefined' && gamePaused) return;
             this.collisionWithEnemy();
             this.collectPoisonWater();
             this.collectCoin();
@@ -54,6 +55,12 @@ class World {
 
 
     draw() {        
+        if (typeof gamePaused !== 'undefined' && gamePaused) {
+            let self = this;
+            requestAnimationFrame(function() { self.draw(); });
+            return;
+        }
+
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
@@ -121,7 +128,7 @@ class World {
                 this.character.hit(enemy);
                 this.healthStatusBar.setPercentage(this.character.energy);
                 this.character.hurtCharacter(enemy);
-                this.audioManager.play('hit');
+                this.audioManager.playSound('hit');
             }
         });
     }
@@ -134,7 +141,7 @@ class World {
                 this.character.collectedPoisonBottles = this.character.collectedPoisonBottles + 21;
                 this.poisonStatusBar.setPercentage(this.character.collectedPoisonBottles);
                 this.level.poisonWaterItems.splice(i, 1);
-                this.audioManager.play('poison');
+                this.audioManager.playSound('poison');
             }
         }
     }
@@ -147,7 +154,7 @@ class World {
                 this.character.collectedCoins = this.character.collectedCoins + 21;
                 this.coinStatusBar.setPercentage(this.character.collectedCoins);
                 this.level.coins.splice(i, 1);
-                this.audioManager.play('coin');
+                this.audioManager.playSound('coin');
             }
         }
     }

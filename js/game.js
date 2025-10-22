@@ -6,6 +6,7 @@ let gamePaused = false;
 
 
 function init() {
+    gamePaused = false;
     canvas = document.getElementById("canvas");
     canvas.classList.remove("d_none");
     world = new World(canvas, keyboard);

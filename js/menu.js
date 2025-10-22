@@ -142,13 +142,16 @@ const btnMenuGameOver = document.getElementById('btnMenuGameOver');
 function showWinScreen() {
   canvasRef.classList.add('d_none');
   winScreen.classList.remove('d_none');
-  world.audioManager.stopMusic();
+  if (typeof gamePaused !== 'undefined') gamePaused = true;
+  if (world && world.audioManager) world.audioManager.stopAll();
 }
 
 function showGameOverScreen() {
   canvasRef.classList.add('d_none');
   gameOverScreen.classList.remove('d_none');
-  world.audioManager.stopMusic();
+  if (typeof gamePaused !== 'undefined') gamePaused = true;
+  if (world && world.audioManager) world.audioManager.stopAll();
+  world.audioManager.playSound('gameOverVoice');
 }
 
 btnRestart.addEventListener('click', () => {
@@ -160,6 +163,7 @@ btnRestart.addEventListener('click', () => {
 btnMenu.addEventListener('click', () => {
   winScreen.classList.add('d_none');
   startScreen.classList.remove('d_none');
+  world.audioManager.stopAll();
 });
 
 btnRestartGameOver.addEventListener('click', () => {
