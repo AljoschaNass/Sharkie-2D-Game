@@ -272,7 +272,10 @@ class Character extends MovableObject {
 
     setTimerLongIdle() {
         this.idleTimeout = setTimeout(() => {
-            this.isIdleTooLong = true;
+            this.isIdleTooLong = true;            
+            if (this.world && this.world.audioManager && typeof this.world.audioManager.playLoopingSound === 'function') {
+                this.world.audioManager.playLoopingSound('snoringSound');                
+            }
         }, 8000);
     }
 
@@ -280,6 +283,11 @@ class Character extends MovableObject {
     resetTimerLongIdle() {
         clearTimeout(this.idleTimeout);
         this.idleTimeout = null;
+        if (this.isIdleTooLong) {
+            if (this.world && this.world.audioManager && typeof this.world.audioManager.stopSound === 'function') {
+                this.world.audioManager.stopSound('snoringSound');
+            }
+        }
         this.isIdleTooLong = false;
     }
 

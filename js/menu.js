@@ -55,17 +55,20 @@ setupDialog('.btn-options', 'optionsMenu', 'closeOptions');
 setupDialog('.btn-credits', 'creditsMenu', 'closeCreditsMenu');
 setupDialog('.btn-privacy', 'privacyMenu', 'closePrivacyMenu');
 
+
 const soundToggle = document.getElementById('soundToggle');
 const musicToggle = document.getElementById('musicToggle');
 const muteBtn = document.getElementById('mute-btn');
 const muteImg = muteBtn.querySelector('img');
 
 let previousAudioState = { soundInactive: false, musicInactive: false };
+let soundInactive = localStorage.getItem('soundInactive') === 'true';
+let musicInactive = localStorage.getItem('musicInactive') === 'true';
 
 
 function restoreAudioSettings() {
-  const soundInactive = localStorage.getItem('soundInactive') === 'true';
-  const musicInactive = localStorage.getItem('musicInactive') === 'true';
+   soundInactive = localStorage.getItem('soundInactive') === 'true';
+   musicInactive = localStorage.getItem('musicInactive') === 'true';
 
   soundToggle.classList.toggle('inactive', soundInactive);
   musicToggle.classList.toggle('inactive', musicInactive);
@@ -78,8 +81,8 @@ function restoreAudioSettings() {
 
 
 function updateMuteIconFromStorage() {
-  const soundInactive = localStorage.getItem('soundInactive') === 'true';
-  const musicInactive = localStorage.getItem('musicInactive') === 'true';
+   soundInactive = localStorage.getItem('soundInactive') === 'true';
+   musicInactive = localStorage.getItem('musicInactive') === 'true';
   muteImg.src = (soundInactive && musicInactive)
     ? 'img/Buttons/Key/sound_off.png'
     : 'img/Buttons/Key/sound_on.png';
@@ -98,6 +101,11 @@ function toggleSetting(button, storageKey, icons) {
   localStorage.setItem(storageKey, inactive);
   button.textContent = inactive ? icons.off : icons.on;
   updateMuteIconFromStorage();
+
+  if (storageKey === 'soundInactive' && world?.audioManager?.effects?.snoringSound) {
+    const snoring = world.audioManager.sounds.snoringSound;
+    snoring.volume = inactive ? 0.0000 : 0.8;
+  }
 }
 
 
@@ -110,8 +118,8 @@ musicToggle.addEventListener('click', () => {
 
 
 muteBtn.addEventListener('click', () => {
-  const soundInactive = localStorage.getItem('soundInactive') === 'true';
-  const musicInactive = localStorage.getItem('musicInactive') === 'true';
+   soundInactive = localStorage.getItem('soundInactive') === 'true';
+   musicInactive = localStorage.getItem('musicInactive') === 'true';
   const bothMuted = soundInactive && musicInactive;
 
   if (bothMuted) {

@@ -13,14 +13,16 @@ class AudioManager {
       poison: new Audio('sounds/bubble-pop-6.mp3'),
       gameOverVoice: new Audio('sounds/game-over-voice.mp3'),
       winSound: new Audio('sounds/success-fanfare.mp3'),
+      snoringSound: new Audio('sounds/snoring-sound.mp3'),
     };
+    this.sounds.snoringSound.volume = 0.8;
 
     this.loadSettings();
   }
 
   loadSettings() {
     this.soundInactive = localStorage.getItem('soundInactive') === 'true';
-    this.musicInactive = localStorage.getItem('musicInactive') === 'true';
+    this.musicInactive = localStorage.getItem('musicInactive') === 'true';    
   }
 
   saveSettings() {
@@ -92,5 +94,26 @@ class AudioManager {
     this.soundInactive = false;
     this.musicInactive = false;
     this.saveSettings();
+  }
+
+  playLoopingSound(name) {
+    this.loadSettings();
+    if (this.soundInactive) return;
+
+    const sound = this.sounds[name];
+    if (sound) {
+      sound.loop = true;
+      sound.currentTime = 0;
+      sound.play();
+    }
+  }
+
+  stopSound(name) {
+    const sound = this.sounds[name];
+    if (sound) {
+      sound.pause();
+      sound.currentTime = 0;
+      sound.loop = false;
+    }
   }
 }
