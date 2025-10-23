@@ -152,6 +152,8 @@ function showGameOverScreen() {
   if (typeof gamePaused !== 'undefined') gamePaused = true;
   if (world && world.audioManager) world.audioManager.stopAll();
   world.audioManager.playSound('gameOverVoice');
+  world.character.restart();
+  world.endboss.restart();
 }
 
 btnRestart.addEventListener('click', () => {
