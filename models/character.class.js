@@ -205,7 +205,6 @@ class Character extends MovableObject {
                     this.attack();
                     this.resetTimerLongIdle();
                 } else if (this.isBubbleAttacking()) {
-                    // this.setOffset(100, 45);
                     this.bubbleAttack();
                     this.resetTimerLongIdle();
                 } else if (this.isSwimming()) {
@@ -227,25 +226,39 @@ class Character extends MovableObject {
     }
 
 
-    attack() {    
-        this.sharkIsAttacking = true;
-        this.world.keyboard.SPACE = false;
-        this.playAttackAnimation(this.IMAGES_ATTACK_FIN_SLAP);
-        this.world.keyboard.SPACE = false;        
+    playActionAnimation(images, flag, speed = 100) {
+        if (this[flag]) return;
+        this[flag] = true;
+        this.currentImage = 0;
+
+        const interval = setInterval(() => {
+            this.playAnimationFrame(images, () => {
+                clearInterval(interval);
+                this[flag] = false;
+                this.currentImage = 0;
+            });
+        }, speed);
+    }
+
+
+    attack() {
+        this.playActionAnimation(this.IMAGES_ATTACK_FIN_SLAP, 'sharkIsAttacking');
     }
 
 
     bubbleAttack() {
-        if (!this.sharkIsBubbleAttacking) {
-            this.sharkIsBubbleAttacking = true;
-            this.playBubbleAttackAnimation(this.IMAGES_ATTACK_BUBBLE_TRAP_WITH);
+        this.playActionAnimation(this.IMAGES_ATTACK_BUBBLE_TRAP_WITH, 'sharkIsBubbleAttacking');
+    }
 
-            // const bubble = new Bubble(this.x + 100, this.y + 50);
-            // this.world.throwables.push(bubble);
 
-            setTimeout(() => {
-                this.sharkIsBubbleAttacking = false;
-            }, 100);
+    playAnimationFrame(images, onComplete) {
+        const i = this.currentImage;
+        const path = images[i];
+        this.img = this.imageCache[path];
+        this.currentImage++;
+
+        if (this.currentImage >= images.length) {
+            onComplete?.();
         }
     }
 
@@ -320,11 +333,10 @@ class Character extends MovableObject {
 
 
     playBubbleAttackAnimation(images) {
-    if (!this.sharkIsBubbleAttacking) return; // Nur aktiv, wenn Angriff aktiv ist
+    if (!this.sharkIsBubbleAttacking) return;
 
-    // Prüfe, ob Animation gerade läuft
     if (this.currentBubbleFrame === undefined) {
-        this.currentBubbleFrame = 0; // Start der Animation
+        this.currentBubbleFrame = 0;
     }
 
     const i = this.currentBubbleFrame;
@@ -333,7 +345,6 @@ class Character extends MovableObject {
 
     this.currentBubbleFrame++;
 
-    // Wenn alle Frames abgespielt wurden → zurücksetzen
     if (this.currentBubbleFrame >= images.length) {
         this.sharkIsBubbleAttacking = false;
         this.world.keyboard.D = false;
