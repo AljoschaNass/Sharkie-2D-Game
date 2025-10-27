@@ -10,6 +10,8 @@ class World {
     keyboard;
     camera_x = 0;
     collisionIntervalId;
+    throwables;
+
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -23,6 +25,7 @@ class World {
         this.healthStatusBar = new HealthStatusBar();
         this.healthStatusBar.setPercentage(100);
         this.coinStatusBar = new CoinStatusBar();
+        this.throwables = [];
         this.draw();
         this.setWorld();
         this.clearCollisionInterval();
@@ -80,6 +83,8 @@ class World {
         this.addToMap(this.poisonStatusBar);
         this.addToMap(this.healthStatusBar);
         this.addToMap(this.coinStatusBar);
+        this.throwables.forEach(bubble => bubble.draw(this.ctx));
+
 
         let self = this;
         requestAnimationFrame(function() {
@@ -128,9 +133,7 @@ class World {
                 this.character.hit(enemy);
                 this.healthStatusBar.setPercentage(this.character.energy);
                 this.character.hurtCharacter(enemy);
-                this.audioManager.playSound('hit');
-                console.log(enemy);
-                
+                this.audioManager.playSound('hit');                
             }
         });
     }

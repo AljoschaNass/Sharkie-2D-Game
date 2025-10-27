@@ -67,10 +67,6 @@ class Endboss extends MovableObject {
         this.characterReachedEndboss = false;
         this.currentImageSet = this.IMAGES_INTRODUCE;
         this.animationIsPlayed = false;
-        // if (this.moveLeftInterval) {
-        //     clearInterval(this.moveLeftInterval);
-        //     this.moveLeftInterval = null;
-        // }
     }
 
 
@@ -98,9 +94,12 @@ class Endboss extends MovableObject {
 
     
     startMovingLeft() {
-        this.moveLeftInterval = setInterval(() => {
-            if (!gamePaused) {
-                this.x -= 0.5;
+    if (this.moveLeftInterval) {
+        clearInterval(this.moveLeftInterval);
+    }
+    this.moveLeftInterval = setInterval(() => {
+        if (!gamePaused) {
+            this.x -= 0.5;
             }
         }, 40);
     }

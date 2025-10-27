@@ -11,6 +11,7 @@ class Character extends MovableObject {
     };
     currentImageSet = this.IMAGES_IDLE;
     sharkIsAttacking = false;
+    sharkIsBubbleAttacking = false;
     idleTimeout;
     isIdleTooLong = false;
     introLongIdleDone = false;
@@ -58,8 +59,34 @@ class Character extends MovableObject {
         'img/1.Sharkie/3.Swim/5.png',
         'img/1.Sharkie/3.Swim/6.png'
     ];
-    IMAGES_ATTACK_BUBBLE_TRAP = [
-        'img/1.Sharkie/2.Long_IDLE/I1.png',
+    IMAGES_ATTACK_BUBBLE_TRAP_WITH = [
+        'img/1.Sharkie/4.Attack/bubble-trap/with-bubble/1.png',
+        'img/1.Sharkie/4.Attack/bubble-trap/with-bubble/2.png',
+        'img/1.Sharkie/4.Attack/bubble-trap/with-bubble/3.png',
+        'img/1.Sharkie/4.Attack/bubble-trap/with-bubble/4.png',
+        'img/1.Sharkie/4.Attack/bubble-trap/with-bubble/5.png',
+        'img/1.Sharkie/4.Attack/bubble-trap/with-bubble/6.png',
+        'img/1.Sharkie/4.Attack/bubble-trap/with-bubble/7.png',
+        'img/1.Sharkie/4.Attack/bubble-trap/with-bubble/8.png'
+    ];
+    IMAGES_ATTACK_BUBBLE_TRAP_WITHOUT = [
+        'img/1.Sharkie/4.Attack/bubble-trap/without-bubble/1.png',
+        'img/1.Sharkie/4.Attack/bubble-trap/without-bubble/2.png',
+        'img/1.Sharkie/4.Attack/bubble-trap/without-bubble/3.png',
+        'img/1.Sharkie/4.Attack/bubble-trap/without-bubble/4.png',
+        'img/1.Sharkie/4.Attack/bubble-trap/without-bubble/5.png',
+        'img/1.Sharkie/4.Attack/bubble-trap/without-bubble/6.png',
+        'img/1.Sharkie/4.Attack/bubble-trap/without-bubble/7.png'
+    ];
+    IMAGES_ATTACK_BUBBLE_TRAP_POISONED = [
+        'img/1.Sharkie/4.Attack/bubble-trap/poisoned/1.png',
+        'img/1.Sharkie/4.Attack/bubble-trap/poisoned/2.png',
+        'img/1.Sharkie/4.Attack/bubble-trap/poisoned/3.png',
+        'img/1.Sharkie/4.Attack/bubble-trap/poisoned/4.png',
+        'img/1.Sharkie/4.Attack/bubble-trap/poisoned/5.png',
+        'img/1.Sharkie/4.Attack/bubble-trap/poisoned/6.png',
+        'img/1.Sharkie/4.Attack/bubble-trap/poisoned/7.png',
+        'img/1.Sharkie/4.Attack/bubble-trap/poisoned/8.png'
     ];
     IMAGES_ATTACK_FIN_SLAP = [
         'img/1.Sharkie/4.Attack/Fin slap/1.png',
@@ -138,6 +165,9 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_LONG_IDLE);
         this.loadImages(this.IMAGES_SWIM);
+        this.loadImages(this.IMAGES_ATTACK_BUBBLE_TRAP_WITH);
+        this.loadImages(this.IMAGES_ATTACK_BUBBLE_TRAP_WITHOUT);
+        this.loadImages(this.IMAGES_ATTACK_BUBBLE_TRAP_POISONED);
         this.loadImages(this.IMAGES_ATTACK_FIN_SLAP);
         this.loadImages(this.IMAGES_HURT_POISONED);
         this.loadImages(this.IMAGES_HURT_ELECTIC_SHOCKED);
@@ -174,6 +204,10 @@ class Character extends MovableObject {
                     this.setOffset(100, 45);
                     this.attack();
                     this.resetTimerLongIdle();
+                } else if (this.isBubbleAttacking()) {
+                    // this.setOffset(100, 45);
+                    this.bubbleAttack();
+                    this.resetTimerLongIdle();
                 } else if (this.isSwimming()) {
                     this.setOffset(100, 45);
                     this.playAnimation(this.IMAGES_SWIM);
@@ -198,6 +232,21 @@ class Character extends MovableObject {
         this.world.keyboard.SPACE = false;
         this.playAttackAnimation(this.IMAGES_ATTACK_FIN_SLAP);
         this.world.keyboard.SPACE = false;        
+    }
+
+
+    bubbleAttack() {
+        if (!this.sharkIsBubbleAttacking) {
+            this.sharkIsBubbleAttacking = true;
+            this.playBubbleAttackAnimation(this.IMAGES_ATTACK_BUBBLE_TRAP_WITH);
+
+            // const bubble = new Bubble(this.x + 100, this.y + 50);
+            // this.world.throwables.push(bubble);
+
+            setTimeout(() => {
+                this.sharkIsBubbleAttacking = false;
+            }, 100);
+        }
     }
 
 
@@ -270,6 +319,29 @@ class Character extends MovableObject {
     } 
 
 
+    playBubbleAttackAnimation(images) {
+    if (!this.sharkIsBubbleAttacking) return; // Nur aktiv, wenn Angriff aktiv ist
+
+    // Prüfe, ob Animation gerade läuft
+    if (this.currentBubbleFrame === undefined) {
+        this.currentBubbleFrame = 0; // Start der Animation
+    }
+
+    const i = this.currentBubbleFrame;
+    const path = images[i];
+    this.img = this.imageCache[path];
+
+    this.currentBubbleFrame++;
+
+    // Wenn alle Frames abgespielt wurden → zurücksetzen
+    if (this.currentBubbleFrame >= images.length) {
+        this.sharkIsBubbleAttacking = false;
+        this.world.keyboard.D = false;
+        this.currentBubbleFrame = 0;
+    }
+}
+
+
     setTimerLongIdle() {
         this.idleTimeout = setTimeout(() => {
             this.isIdleTooLong = true;            
@@ -304,6 +376,11 @@ class Character extends MovableObject {
 
     isAttacking() {
         return this.world.keyboard.SPACE || this.sharkIsAttacking;
+    }
+
+
+    isBubbleAttacking() {
+        return this.world.keyboard.D || this.sharkIsBubbleAttacking;
     }
 
 
