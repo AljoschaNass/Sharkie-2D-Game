@@ -133,7 +133,7 @@ class World {
                 this.character.hit(enemy);
                 this.healthStatusBar.setPercentage(this.character.energy);
                 this.character.hurtCharacter(enemy);
-                this.audioManager.playSound('hit');                
+                this.audioManager.play('hit');                
             }
         });
     }
@@ -146,7 +146,7 @@ class World {
                 this.character.collectedPoisonBottles = this.character.collectedPoisonBottles + 21;
                 this.poisonStatusBar.setPercentage(this.character.collectedPoisonBottles);
                 this.level.poisonWaterItems.splice(i, 1);
-                this.audioManager.playSound('poison');
+                this.audioManager.play('poison');
             }
         }
     }
@@ -159,7 +159,7 @@ class World {
                 this.character.collectedCoins = this.character.collectedCoins + 21;
                 this.coinStatusBar.setPercentage(this.character.collectedCoins);
                 this.level.coins.splice(i, 1);
-                this.audioManager.playSound('coin');
+                this.audioManager.play('coin');
             }
         }
     }

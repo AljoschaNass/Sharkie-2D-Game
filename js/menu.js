@@ -1,43 +1,58 @@
+/*** 🕹️ GAME CONTROL & PAUSE ***/
 const pauseBtnGlobal = document.getElementById('pause-btn');
 if (pauseBtnGlobal) {
   pauseBtnGlobal.addEventListener('click', () => {
     gamePaused = true;
+    const optionsDialog = document.getElementById('optionsMenu');
+    if (optionsDialog) {
+      optionsDialog.showModal();
+    }
   });
 }
 
+/*** 🦈 SHARK ANIMATION ***/
+const shark = document.getElementById("shark");
+const sharkWin = document.getElementById("shark-win");
 
-  const shark = document.getElementById("shark");
-  const sharkWin = document.getElementById("shark-win");
-  let currentFrame = 0;
-  const sharkFrames = [
-    "img/1.Sharkie/3.Swim/1.png",
-    "img/1.Sharkie/3.Swim/2.png",
-    "img/1.Sharkie/3.Swim/3.png",
-    "img/1.Sharkie/3.Swim/4.png",
-    "img/1.Sharkie/3.Swim/5.png",
-    "img/1.Sharkie/3.Swim/6.png"
-  ];
+function generateFrames(folder, count) {
+  return Array.from({ length: count }, (_, i) => `${folder}/${i + 1}.png`);
+}
 
-  setInterval(() => {
-    shark.style.backgroundImage = `url(${sharkFrames[currentFrame]})`;
-    sharkWin.style.backgroundImage = `url(${sharkFrames[currentFrame]})`;
-    currentFrame = (currentFrame + 1) % sharkFrames.length;
+const sharkFrames = generateFrames("img/1.Sharkie/3.Swim", 6);
+let currentFrame = 0;
+
+setInterval(() => {
+  const frame = `url(${sharkFrames[currentFrame]})`;
+  shark.style.backgroundImage = frame;
+  sharkWin.style.backgroundImage = frame;
+  currentFrame = (currentFrame + 1) % sharkFrames.length;
 }, 150);
 
+/*** 💬 DIALOG SETUP ***/
+document.addEventListener('DOMContentLoaded', () => {
+  setupDialog('.btn-options', 'optionsMenu', 'closeOptions');
+  setupDialog('.btn-credits', 'creditsMenu', 'closeCreditsMenu');
+  setupDialog('.btn-privacy', 'privacyMenu', 'closePrivacyMenu');
+});
 
 function setupDialog(openBtnSelector, dialogId, closeBtnId) {
   const dialog = document.getElementById(dialogId);
-  const openBtn = document.querySelector(openBtnSelector);
+  const openBtns = document.querySelectorAll(openBtnSelector); // <— mehrere Buttons möglich!
   const closeBtn = document.getElementById(closeBtnId);
-  const pauseBtn = dialogId === 'optionsMenu' ? document.getElementById('pause-btn') : null;
 
-  if (!dialog || !openBtn || !closeBtn) return;
+  if (!dialog || !openBtns.length || !closeBtn) return;
 
-  openBtn.addEventListener('click', () => dialog.showModal());
-  if (pauseBtn) {
-    pauseBtn.addEventListener('click', () => dialog.showModal());
-  }
-  closeBtn.addEventListener('click', () => dialog.close());
+  openBtns.forEach(openBtn => {
+    openBtn.addEventListener('click', () => {
+      dialog.showModal();
+      if (dialogId === 'optionsMenu') gamePaused = true;
+    });
+  });
+
+  closeBtn.addEventListener('click', () => {
+    dialog.close();
+    if (dialogId === 'optionsMenu') gamePaused = false;
+  });
 
   dialog.addEventListener('click', (e) => {
     const rect = dialog.getBoundingClientRect();
@@ -46,151 +61,120 @@ function setupDialog(openBtnSelector, dialogId, closeBtnId) {
       e.clientX <= rect.right &&
       e.clientY >= rect.top &&
       e.clientY <= rect.bottom;
-    if (!inside) dialog.close();
-    if (!inside) gamePaused = false;
+    if (!inside) {
+      dialog.close();
+      if (dialogId === 'optionsMenu') gamePaused = false;
+    }
   });
 }
 
-setupDialog('.btn-options', 'optionsMenu', 'closeOptions');
-setupDialog('.btn-credits', 'creditsMenu', 'closeCreditsMenu');
-setupDialog('.btn-privacy', 'privacyMenu', 'closePrivacyMenu');
-
-
-const soundToggle = document.getElementById('soundToggle');
-const musicToggle = document.getElementById('musicToggle');
+/*** 🔊 AUDIO SETTINGS (Ein Button für alles) ***/
 const muteBtn = document.getElementById('mute-btn');
 const muteImg = muteBtn.querySelector('img');
+const muteBtnOptions = document.getElementById('mute-btn-options');
+const muteImgOptions = muteBtnOptions?.querySelector('img');
 
-let previousAudioState = { soundInactive: false, musicInactive: false };
-let soundInactive = localStorage.getItem('soundInactive') === 'true';
-let musicInactive = localStorage.getItem('musicInactive') === 'true';
+// Nur noch eine Variable im localStorage:
+let audioMuted = localStorage.getItem('audioMuted') === 'true';
 
-
-function restoreAudioSettings() {
-   soundInactive = localStorage.getItem('soundInactive') === 'true';
-   musicInactive = localStorage.getItem('musicInactive') === 'true';
-
-  soundToggle.classList.toggle('inactive', soundInactive);
-  musicToggle.classList.toggle('inactive', musicInactive);
-
-  soundToggle.textContent = soundInactive ? '🔇 Off' : '🔊 On';
-  musicToggle.textContent = musicInactive ? '🚫 Off' : '🎶 On';
-
-  updateMuteIconFromStorage();
+/**
+ * Speichert den aktuellen Audiozustand.
+ */
+function saveAudioState(isMuted) {
+  localStorage.setItem('audioMuted', isMuted);
 }
 
+/**
+ * Wendet die Audioeinstellungen an (Lautstärke, Icons etc.).
+ */
+function applyAudioSettings() {
+  if (world && world.audioManager) {
+    const { sounds = {}, music = {} } = world.audioManager;
+    Object.values(sounds).forEach(sound => {
+      if (sound && typeof sound.volume === 'number') {
+        sound.volume = audioMuted ? 0.0 : 0.8;
+      }
+    });
+    Object.values(music).forEach(track => {
+      if (track && typeof track.volume === 'number') {
+        track.volume = audioMuted ? 0.0 : 0.6;
+      }
+    });
+  }
 
-function updateMuteIconFromStorage() {
-   soundInactive = localStorage.getItem('soundInactive') === 'true';
-   musicInactive = localStorage.getItem('musicInactive') === 'true';
-  muteImg.src = (soundInactive && musicInactive)
+  muteImg.src = audioMuted
+    ? 'img/Buttons/Key/sound_off.png'
+    : 'img/Buttons/Key/sound_on.png';
+  muteImgOptions.src = audioMuted
     ? 'img/Buttons/Key/sound_off.png'
     : 'img/Buttons/Key/sound_on.png';
 }
 
-
-function saveAudioState(soundInactive, musicInactive) {
-  localStorage.setItem('soundInactive', soundInactive);
-  localStorage.setItem('musicInactive', musicInactive);
+/**
+ * Wechselt den Audiozustand (an/aus).
+ */
+function toggleAudio() {
+  audioMuted = !audioMuted;
+  saveAudioState(audioMuted);
+  applyAudioSettings();
 }
 
-
-function toggleSetting(button, storageKey, icons) {
-  button.classList.toggle('inactive');
-  const inactive = button.classList.contains('inactive');
-  localStorage.setItem(storageKey, inactive);
-  button.textContent = inactive ? icons.off : icons.on;
-  updateMuteIconFromStorage();
-
-  if (storageKey === 'soundInactive' && world?.audioManager?.effects?.snoringSound) {
-    const snoring = world.audioManager.sounds.snoringSound;
-    snoring.volume = inactive ? 0.0000 : 0.8;
-  }
-}
+muteBtn.addEventListener('click', toggleAudio);
+muteBtnOptions.addEventListener('click', toggleAudio);
 
 
-soundToggle.addEventListener('click', () => {
-  toggleSetting(soundToggle, 'soundInactive', { off: '🔇 Off', on: '🔊 On' });
-});
-musicToggle.addEventListener('click', () => {
-  toggleSetting(musicToggle, 'musicInactive', { off: '🚫 Off', on: '🎶 On' });
-});
+// Zustand beim Laden wiederherstellen
+applyAudioSettings();
 
 
-muteBtn.addEventListener('click', () => {
-   soundInactive = localStorage.getItem('soundInactive') === 'true';
-   musicInactive = localStorage.getItem('musicInactive') === 'true';
-  const bothMuted = soundInactive && musicInactive;
-
-  if (bothMuted) {
-    saveAudioState(previousAudioState.soundInactive, previousAudioState.musicInactive);
-  } else {
-    previousAudioState = { soundInactive, musicInactive };
-    saveAudioState(true, true);
-  }
-  restoreAudioSettings();
-});
-restoreAudioSettings();
-
-
+/*** 🖼️ SCREEN MANAGEMENT ***/
 const canvasRef = document.getElementById('game-container');
-
 const startScreen = document.getElementById('startScreen');
-const startBtn = document.getElementById('start-btn');
-
 const winScreen = document.getElementById('winScreen');
-const btnRestart = document.getElementById('btnRestart');
-const btnMenu = document.getElementById('btnMenu');
-
 const gameOverScreen = document.getElementById('gameOverScreen');
-const btnRestartGameOver = document.getElementById('btnRestartGameOver');
-const btnMenuGameOver = document.getElementById('btnMenuGameOver');
 
+function showScreen(hide, show) {
+  hide.classList.add('d_none');
+  show.classList.remove('d_none');
+}
 
 function showWinScreen() {
-  canvasRef.classList.add('d_none');
-  winScreen.classList.remove('d_none');
-  if (typeof gamePaused !== 'undefined') gamePaused = true;
-  if (world && world.audioManager) world.audioManager.stopAll();
+  showScreen(canvasRef, winScreen);
+  gamePaused = true;
+  world?.audioManager?.stopAll?.();
+  world?.audioManager?.play?.('winSound');
 }
 
 function showGameOverScreen() {
-  canvasRef.classList.add('d_none');
-  gameOverScreen.classList.remove('d_none');
-  if (typeof gamePaused !== 'undefined') gamePaused = true;
-  if (world && world.audioManager) world.audioManager.stopAll();
-  world.audioManager.playSound('gameOverVoice');
-  world.character.restart();
+  showScreen(canvasRef, gameOverScreen);
+  gamePaused = true;
+  world?.audioManager?.stopAll?.();
+  world?.audioManager?.play?.('gameOverVoice');
+  world?.character?.restart?.();
 }
 
-btnRestart.addEventListener('click', () => {
-  winScreen.classList.add('d_none');
-  canvasRef.classList.remove('d_none');
+/*** 🔁 BUTTON ACTIONS ***/
+document.getElementById('btnRestart').addEventListener('click', () => {
+  showScreen(winScreen, canvasRef);
   init();
 });
 
-btnMenu.addEventListener('click', () => {
-  winScreen.classList.add('d_none');
-  startScreen.classList.remove('d_none');
-  world.audioManager.stopAll();
+document.getElementById('btnMenu').addEventListener('click', () => {
+  showScreen(winScreen, startScreen);
+  world?.audioManager?.stopAll?.();
 });
 
-btnRestartGameOver.addEventListener('click', () => {
-  gameOverScreen.classList.add('d_none');
-  canvasRef.classList.remove('d_none');
+document.getElementById('btnRestartGameOver').addEventListener('click', () => {
+  showScreen(gameOverScreen, canvasRef);
   init();
 });
 
-
-btnMenuGameOver.addEventListener('click', () => {
-  gameOverScreen.classList.add('d_none');
-  startScreen.classList.remove('d_none');
+document.getElementById('btnMenuGameOver').addEventListener('click', () => {
+  showScreen(gameOverScreen, startScreen);
   canvasRef.classList.add('d_none');
 });
 
-
-startBtn.addEventListener('click', () => {
-  startScreen.classList.add('d_none');  
-  canvasRef.classList.remove('d_none');
+document.getElementById('start-btn').addEventListener('click', () => {
+  showScreen(startScreen, canvasRef);
   init();
 });

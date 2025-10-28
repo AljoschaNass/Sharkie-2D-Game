@@ -1,119 +1,108 @@
 class AudioManager {
   constructor() {
-    this.musics = {
-      backgroundMusic: new Audio('sounds/underwater-ambience.mp3'),
-      winMusic: new Audio('sounds/you-win-sequence.mp3'),
-    };
-    this.musics.backgroundMusic.loop = true;
-    this.musics.backgroundMusic.volume = 0.4;
+    this.audioMuted = localStorage.getItem('audioMuted') === 'true';
 
-    this.sounds = {
-      coin: new Audio('sounds/drop-coin.mp3'),
-      hit: new Audio('sounds/grunt2.mp3'),
-      poison: new Audio('sounds/bubble-pop-6.mp3'),
-      gameOverVoice: new Audio('sounds/game-over-voice.mp3'),
-      winSound: new Audio('sounds/success-fanfare.mp3'),
-      snoringSound: new Audio('sounds/snoring-sound.mp3'),
-    };
-    this.sounds.snoringSound.volume = 0.8;
+    this.audio = {
+      background: this.createAudio('sounds/underwater-ambience.mp3', { loop: true, volume: 0.4 }),
+      winMusic: this.createAudio('sounds/you-win-sequence.mp3', { loop: true, volume: 0.5 }),
+      snoring: this.createAudio('sounds/snoring-sound.mp3', { loop: true, volume: 0.8 }),
 
-    this.loadSettings();
+      coin: this.createAudio('sounds/drop-coin.mp3'),
+      hit: this.createAudio('sounds/grunt2.mp3'),
+      poison: this.createAudio('sounds/bubble-pop-6.mp3'),
+      gameOverVoice: this.createAudio('sounds/game-over-voice.mp3'),
+      winSound: this.createAudio('sounds/success-fanfare.mp3'),
+    };
+    this.applyAudioSettings();
   }
 
-  loadSettings() {
-    this.soundInactive = localStorage.getItem('soundInactive') === 'true';
-    this.musicInactive = localStorage.getItem('musicInactive') === 'true';    
+  /** 🛠️ Erstellt ein Audioobjekt mit Optionen */
+  createAudio(src, { loop = false, volume = 1.0 } = {}) {
+    const audio = new Audio(src);
+    audio.loop = loop;
+    audio.volume = volume;
+    return audio;
   }
 
+  /** 💾 Zustand speichern */
   saveSettings() {
-    localStorage.setItem('soundInactive', this.soundInactive);
-    localStorage.setItem('musicInactive', this.musicInactive);
+    localStorage.setItem('audioMuted', this.audioMuted);
   }
 
-  playSound(name) {
-    this.loadSettings();
-    if (this.soundInactive) return;
+  /** 🔇 oder 🔊 anwenden */
+  applyAudioSettings() {
+    Object.values(this.audio).forEach(sound => {
+      sound.muted = this.audioMuted;
+    });
+  }
 
-    const sound = this.sounds[name];
+  /** ▶️ Einmaliges Abspielen */
+  play(name) {
+    if (this.audioMuted) return;
+
+    const sound = this.audio[name];
     if (sound) {
       sound.currentTime = 0;
       sound.play();
+    } else {
+      console.warn(`❌ Audio '${name}' nicht gefunden.`);
     }
   }
 
-  playMusic(name) {
-    this.loadSettings();
-    if (this.musicInactive) return;
+  /** 🔁 Loop starten */
+  playLoop(name) {
+    if (this.audioMuted) return;
 
-    const music = this.musics[name];
-    if (music) {
-      music.loop = true;
-      music.volume = 0.5;
-      music.play();
-    }
-  }
-
-  stopMusic() {
-    Object.values(this.musics).forEach(track => {
-      track.pause();
-      track.currentTime = 0;
-    });
-  }
-
-    stopSounds() {
-    Object.values(this.sounds).forEach(sound => {
-      sound.pause();
-      sound.currentTime = 0;
-    });
-  }
-
-  stopAll() {
-    this.stopMusic();
-    this.stopSounds();
-  }
-
-  toggleSound() {
-    this.soundInactive = !this.soundInactive;
-    this.saveSettings();
-  }
-
-  toggleMusic() {
-    this.musicInactive = !this.musicInactive;
-    if (this.musicInactive) this.stopMusic();
-    this.saveSettings();
-  }
-
-  muteAll() {
-    this.soundInactive = true;
-    this.musicInactive = true;
-    this.stopAll();
-    this.saveSettings();
-  }
-
-  unmuteAll() {
-    this.soundInactive = false;
-    this.musicInactive = false;
-    this.saveSettings();
-  }
-
-  playLoopingSound(name) {
-    this.loadSettings();
-    if (this.soundInactive) return;
-
-    const sound = this.sounds[name];
+    const sound = this.audio[name];
     if (sound) {
       sound.loop = true;
       sound.currentTime = 0;
       sound.play();
+    } else {
+      console.warn(`❌ Loop-Audio '${name}' nicht gefunden.`);
     }
   }
 
-  stopSound(name) {
-    const sound = this.sounds[name];
+  /** 🛑 Einzelnes Audio stoppen */
+  stop(name) {
+    const sound = this.audio[name];
     if (sound) {
       sound.pause();
       sound.currentTime = 0;
       sound.loop = false;
     }
+  }
+
+  /** 🛑 Alles stoppen */
+  stopAll() {
+    Object.values(this.audio).forEach(sound => {
+      sound.pause();
+      sound.currentTime = 0;
+      sound.loop = false;
+    });
+  }
+
+  /** 🔇 Audio deaktivieren */
+  muteAll() {
+    this.audioMuted = true;
+    this.saveSettings();
+    this.applyAudioSettings();
+    this.stopAll();
+  }
+
+  /** 🔊 Audio aktivieren */
+  unmuteAll() {
+    this.audioMuted = false;
+    this.saveSettings();
+    this.applyAudioSettings();
+  }
+
+  /** 🔁 Audio an/aus umschalten */
+  toggleAudio() {
+    this.audioMuted = !this.audioMuted;
+    this.saveSettings();
+    this.applyAudioSettings();
+
+    if (this.audioMuted) this.stopAll();
   }
 }

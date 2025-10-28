@@ -12,7 +12,7 @@ function init() {
     world = new World(canvas, keyboard);
     world.character.restart();
     document.getElementById("startScreen").classList.add("d_none");
-    world.audioManager.playMusic('backgroundMusic');
+    world.audioManager.playLoop('background');
 }
 
 
