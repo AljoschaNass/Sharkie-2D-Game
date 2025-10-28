@@ -36,27 +36,6 @@
   margin-bottom: 0.8rem;
 }
 
-.toggle-btn {
-  background: rgba(0, 51, 102, 0.7);
-  border: 2px solid #4fd1ff;
-  border-radius: 10px;
-  color: #fff;
-  padding: 0.4rem 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.toggle-btn:hover {
-  background: #4fd1ff;
-  color: #001a33;
-}
-
-.toggle-btn.inactive {
-  opacity: 0.5;
-  background: #003366;
-  border-color: #777;
-}
-
 .controls-grid {
   display: flex;
   flex-direction: column;

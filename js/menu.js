@@ -1,4 +1,3 @@
-/*** 🕹️ GAME CONTROL & PAUSE ***/
 const pauseBtnGlobal = document.getElementById('pause-btn');
 if (pauseBtnGlobal) {
   pauseBtnGlobal.addEventListener('click', () => {
@@ -10,7 +9,6 @@ if (pauseBtnGlobal) {
   });
 }
 
-/*** 🦈 SHARK ANIMATION ***/
 const shark = document.getElementById("shark");
 const sharkWin = document.getElementById("shark-win");
 
@@ -28,7 +26,6 @@ setInterval(() => {
   currentFrame = (currentFrame + 1) % sharkFrames.length;
 }, 150);
 
-/*** 💬 DIALOG SETUP ***/
 document.addEventListener('DOMContentLoaded', () => {
   setupDialog('.btn-options', 'optionsMenu', 'closeOptions');
   setupDialog('.btn-credits', 'creditsMenu', 'closeCreditsMenu');
@@ -68,66 +65,33 @@ function setupDialog(openBtnSelector, dialogId, closeBtnId) {
   });
 }
 
-/*** 🔊 AUDIO SETTINGS (Ein Button für alles) ***/
+
 const muteBtn = document.getElementById('mute-btn');
 const muteImg = muteBtn.querySelector('img');
 const muteBtnOptions = document.getElementById('mute-btn-options');
 const muteImgOptions = muteBtnOptions?.querySelector('img');
 
-// Nur noch eine Variable im localStorage:
-let audioMuted = localStorage.getItem('audioMuted') === 'true';
 
-/**
- * Speichert den aktuellen Audiozustand.
- */
-function saveAudioState(isMuted) {
-  localStorage.setItem('audioMuted', isMuted);
+function updateMuteIcons() {
+  const isMuted = world?.audioManager?.audioMuted;
+  const icon = isMuted ? 'img/Buttons/Key/sound_off.png' : 'img/Buttons/Key/sound_on.png';
+  if (muteImg) muteImg.src = icon;
+  if (muteImgOptions) muteImgOptions.src = icon;
 }
 
-/**
- * Wendet die Audioeinstellungen an (Lautstärke, Icons etc.).
- */
-function applyAudioSettings() {
-  if (world && world.audioManager) {
-    const { sounds = {}, music = {} } = world.audioManager;
-    Object.values(sounds).forEach(sound => {
-      if (sound && typeof sound.volume === 'number') {
-        sound.volume = audioMuted ? 0.0 : 0.8;
-      }
-    });
-    Object.values(music).forEach(track => {
-      if (track && typeof track.volume === 'number') {
-        track.volume = audioMuted ? 0.0 : 0.6;
-      }
-    });
-  }
+muteBtn.addEventListener('click', () => {
+  world?.audioManager?.toggleAudio();
+  updateMuteIcons();
+});
 
-  muteImg.src = audioMuted
-    ? 'img/Buttons/Key/sound_off.png'
-    : 'img/Buttons/Key/sound_on.png';
-  muteImgOptions.src = audioMuted
-    ? 'img/Buttons/Key/sound_off.png'
-    : 'img/Buttons/Key/sound_on.png';
-}
+muteBtnOptions.addEventListener('click', () => {
+  world?.audioManager?.toggleAudio();
+  updateMuteIcons();
+});
 
-/**
- * Wechselt den Audiozustand (an/aus).
- */
-function toggleAudio() {
-  audioMuted = !audioMuted;
-  saveAudioState(audioMuted);
-  applyAudioSettings();
-}
-
-muteBtn.addEventListener('click', toggleAudio);
-muteBtnOptions.addEventListener('click', toggleAudio);
+updateMuteIcons();
 
 
-// Zustand beim Laden wiederherstellen
-applyAudioSettings();
-
-
-/*** 🖼️ SCREEN MANAGEMENT ***/
 const canvasRef = document.getElementById('game-container');
 const startScreen = document.getElementById('startScreen');
 const winScreen = document.getElementById('winScreen');
@@ -153,7 +117,6 @@ function showGameOverScreen() {
   world?.character?.restart?.();
 }
 
-/*** 🔁 BUTTON ACTIONS ***/
 document.getElementById('btnRestart').addEventListener('click', () => {
   showScreen(winScreen, canvasRef);
   init();

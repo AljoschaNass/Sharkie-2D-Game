@@ -16,7 +16,7 @@ class AudioManager {
     this.applyAudioSettings();
   }
 
-  /** 🛠️ Erstellt ein Audioobjekt mit Optionen */
+
   createAudio(src, { loop = false, volume = 1.0 } = {}) {
     const audio = new Audio(src);
     audio.loop = loop;
@@ -24,19 +24,19 @@ class AudioManager {
     return audio;
   }
 
-  /** 💾 Zustand speichern */
+
   saveSettings() {
     localStorage.setItem('audioMuted', this.audioMuted);
   }
 
-  /** 🔇 oder 🔊 anwenden */
+
   applyAudioSettings() {
     Object.values(this.audio).forEach(sound => {
       sound.muted = this.audioMuted;
     });
   }
 
-  /** ▶️ Einmaliges Abspielen */
+
   play(name) {
     if (this.audioMuted) return;
 
@@ -49,7 +49,7 @@ class AudioManager {
     }
   }
 
-  /** 🔁 Loop starten */
+
   playLoop(name) {
     if (this.audioMuted) return;
 
@@ -63,7 +63,7 @@ class AudioManager {
     }
   }
 
-  /** 🛑 Einzelnes Audio stoppen */
+
   stop(name) {
     const sound = this.audio[name];
     if (sound) {
@@ -73,7 +73,7 @@ class AudioManager {
     }
   }
 
-  /** 🛑 Alles stoppen */
+
   stopAll() {
     Object.values(this.audio).forEach(sound => {
       sound.pause();
@@ -82,7 +82,7 @@ class AudioManager {
     });
   }
 
-  /** 🔇 Audio deaktivieren */
+
   muteAll() {
     this.audioMuted = true;
     this.saveSettings();
@@ -90,19 +90,28 @@ class AudioManager {
     this.stopAll();
   }
 
-  /** 🔊 Audio aktivieren */
+
   unmuteAll() {
     this.audioMuted = false;
     this.saveSettings();
     this.applyAudioSettings();
   }
 
-  /** 🔁 Audio an/aus umschalten */
+
   toggleAudio() {
     this.audioMuted = !this.audioMuted;
     this.saveSettings();
     this.applyAudioSettings();
 
-    if (this.audioMuted) this.stopAll();
+    if (this.audioMuted) {
+      this.stopAll();
+    } else {
+      this.playLoop('background');
+    }
+  }
+
+
+  isMuted() {
+    return this.audioMuted;
   }
 }
