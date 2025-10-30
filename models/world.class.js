@@ -10,7 +10,7 @@ class World {
     keyboard;
     camera_x = 0;
     collisionIntervalId;
-    throwables;
+    bubble;
 
 
     constructor(canvas, keyboard){
@@ -25,7 +25,7 @@ class World {
         this.healthStatusBar = new HealthStatusBar();
         this.healthStatusBar.setPercentage(100);
         this.coinStatusBar = new CoinStatusBar();
-        this.throwables = [];
+        this.bubble = [];
         this.draw();
         this.setWorld();
         this.clearCollisionInterval();
@@ -43,6 +43,7 @@ class World {
 
     setWorld() {        
         this.character.world = this;
+        this.bubble.world = this;
         this.level.enemies[3].world = this;
     }
 
@@ -79,17 +80,16 @@ class World {
         this.addObjectsToMap(this.level.poisonWaterItems);
         this.addObjectsToMap(this.level.coins);
         this.addToMap(this.character);
+        this.addObjectsToMap(this.bubble);
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.poisonStatusBar);
         this.addToMap(this.healthStatusBar);
         this.addToMap(this.coinStatusBar);
-        this.throwables.forEach(bubble => bubble.draw(this.ctx));
-
 
         let self = this;
         requestAnimationFrame(function() {
             self.draw();
-        });
+        });        
     }
 
 

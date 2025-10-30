@@ -205,7 +205,7 @@ class Character extends MovableObject {
                     this.attack();
                     this.resetTimerLongIdle();
                 } else if (this.isBubbleAttacking()) {
-                    this.bubbleAttack();
+                    this.bubbleAttack();                    
                     this.resetTimerLongIdle();
                 } else if (this.isSwimming()) {
                     this.setOffset(100, 45);
@@ -248,7 +248,26 @@ class Character extends MovableObject {
 
     bubbleAttack() {
         this.playActionAnimation(this.IMAGES_ATTACK_BUBBLE_TRAP_WITH, 'sharkIsBubbleAttacking');
+        if (this.currentImage === 7) {
+            this.spawnBubble();
+        }
     }
+
+ 
+    spawnBubble() {
+        if (!this.world) return;
+
+        const bubbleX = this.x + this.width - this.offset.right;
+        const bubbleY = this.y + this.height / 2;
+
+        const bubble = new Bubble();
+        bubble.x = bubbleX;
+        bubble.y = bubbleY;
+        bubble.normalDirection = !this.otherDirection;
+
+        this.world.bubble.push(bubble);
+    }
+
 
 
     playAnimationFrame(images, onComplete) {
