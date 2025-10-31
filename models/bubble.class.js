@@ -3,15 +3,14 @@ class Bubble extends MovableObject {
     x;
     y;
     speed = 3.5;
-    width = 50;
-    height = 50;
+    width = 35;
+    height = 35;
     otherDirection;
 
     constructor(world, x, y, otherDirection = false) {
-        super().loadImage('img/1.Sharkie/4.Attack/bubble-trap/bubble.png');
+        super().loadImage('img/1.Sharkie/4.Attack/bubble-trap/poisoned-bubble.png');
         this.world = world;
-        this.x = x + this.width;
-        this.y = y;
+        this.calculatePosition(x, y);
         this.otherDirection = otherDirection;
         this.moveBubble();
     }
@@ -27,5 +26,11 @@ class Bubble extends MovableObject {
                 }
             }
         }, 1000 / 60);
+    }
+
+
+    calculatePosition(x, y) {
+        this.x = x + (this.otherDirection ? 0 : this.width);
+        this.y = y;
     }
 }

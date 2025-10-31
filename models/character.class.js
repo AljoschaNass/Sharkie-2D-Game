@@ -247,24 +247,31 @@ class Character extends MovableObject {
 
 
     bubbleAttack() {
-        this.playActionAnimation(this.IMAGES_ATTACK_BUBBLE_TRAP_WITH, 'sharkIsBubbleAttacking');
-        if (this.currentImage === 7) {
-            this.spawnBubble();
-        }
+
+        if (this.collectedPoisonBottles > 0) {
+            this.playActionAnimation(this.IMAGES_ATTACK_BUBBLE_TRAP_POISONED, 'sharkIsBubbleAttacking');
+            if (this.currentImage === 7) {
+                this.spawnBubble();
+            }
+        } else {
+            this.playActionAnimation(this.IMAGES_ATTACK_BUBBLE_TRAP_WITHOUT, 'sharkIsBubbleAttacking');
+        }        
     }
 
  
-spawnBubble() {
-    if (!this.world) return;
+    spawnBubble() {
+        if (!this.world) return;
 
-    const bubbleX = this.width - this.offset.right;
-    const bubbleY = this.y + this.height / 2;
+        const bubbleX = this.otherDirection 
+            ? 0
+            : this.width - this.offset.right;
+        const bubbleY = this.y + (this.height / 2);
 
-    const bubble = new Bubble(this.world, bubbleX, bubbleY, this.otherDirection);
-    this.world.bubble.push(bubble);
-}
-
-
+        const bubble = new Bubble(this.world, bubbleX, bubbleY, this.otherDirection);
+        this.world.bubble.push(bubble);
+        this.collectedPoisonBottles = this.collectedPoisonBottles - 21;
+        this.world.poisonStatusBar.setPercentage(this.collectedPoisonBottles);
+    }
 
 
     playAnimationFrame(images, onComplete) {
