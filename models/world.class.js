@@ -51,9 +51,10 @@ class World {
         this.collisionIntervalId = setInterval(() => {
             if (typeof gamePaused !== 'undefined' && gamePaused) return;
             this.collisionWithEnemy();
+            this.bubbleHitsEnemy();
             this.collectPoisonWater();
             this.collectCoin();
-        }, 500);
+        }, 200);
     }
 
 
@@ -136,6 +137,24 @@ class World {
             }
         });
     }
+
+
+    bubbleHitsEnemy() {        
+        for (let i = this.bubble.length - 1; i >= 0; i--) {
+            const bubble = this.bubble[i];
+            for (let j = this.level.enemies.length - 1; j >= 0; j--) {
+                const enemy = this.level.enemies[j];
+                if (bubble.isCollding(enemy)) {
+                    console.log("💥 Bubble trifft Gegner!");
+                    this.level.enemies.splice(j, 1);
+                    this.bubble.splice(i, 1);
+                    this.audioManager.play('bubbleHit');
+                    break;
+                }
+            }
+        }
+    }
+
 
 
     collectPoisonWater() {

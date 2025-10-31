@@ -9,6 +9,7 @@ class AudioManager {
 
       coin: this.createAudio('sounds/drop-coin.mp3'),
       hit: this.createAudio('sounds/grunt2.mp3'),
+      bubbleHit: this.createAudio('sounds/bubble-pop.mp3'),
       poison: this.createAudio('sounds/bubble-pop-6.mp3'),
       gameOverVoice: this.createAudio('sounds/game-over-voice.mp3'),
       winSound: this.createAudio('sounds/success-fanfare.mp3'),
