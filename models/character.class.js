@@ -1,6 +1,7 @@
 class Character extends MovableObject {
     world;
     speed = 2;
+    energy = 1000;
     collectedPoisonBottles = 0;
     collectedCoins = 0;
     offset = {

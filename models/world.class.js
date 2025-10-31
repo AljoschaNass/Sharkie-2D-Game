@@ -146,7 +146,16 @@ class World {
                 const enemy = this.level.enemies[j];
                 if (bubble.isCollding(enemy)) {
                     console.log("💥 Bubble trifft Gegner!");
-                    this.level.enemies.splice(j, 1);
+                    if (enemy instanceof Endboss) {
+                        enemy.energy -= 20;
+                        console.log(`🔥 Endboss getroffen! Energie: ${enemy.energy}`);
+                        if (enemy.energy <= 0) {
+                            console.log("💀 Endboss besiegt!");
+                            this.level.enemies.splice(j, 1);
+                        }
+                    } else {
+                        this.level.enemies.splice(j, 1);
+                    }
                     this.bubble.splice(i, 1);
                     this.audioManager.play('bubbleHit');
                     break;
@@ -154,6 +163,7 @@ class World {
             }
         }
     }
+
 
 
 
