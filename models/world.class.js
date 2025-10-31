@@ -1,6 +1,7 @@
 class World {
     audioManager;
     character;
+    bubble;
     level;
     poisonStatusBar;
     healthStatusBar;
@@ -10,7 +11,6 @@ class World {
     keyboard;
     camera_x = 0;
     collisionIntervalId;
-    bubble;
 
 
     constructor(canvas, keyboard){
@@ -43,7 +43,6 @@ class World {
 
     setWorld() {        
         this.character.world = this;
-        this.bubble.world = this;
         this.level.enemies[3].world = this;
     }
 
@@ -80,8 +79,8 @@ class World {
         this.addObjectsToMap(this.level.poisonWaterItems);
         this.addObjectsToMap(this.level.coins);
         this.addToMap(this.character);
-        this.addObjectsToMap(this.bubble);
         this.ctx.translate(-this.camera_x, 0);
+        this.addObjectsToMap(this.bubble);
         this.addToMap(this.poisonStatusBar);
         this.addToMap(this.healthStatusBar);
         this.addToMap(this.coinStatusBar);

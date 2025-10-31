@@ -254,19 +254,16 @@ class Character extends MovableObject {
     }
 
  
-    spawnBubble() {
-        if (!this.world) return;
+spawnBubble() {
+    if (!this.world) return;
 
-        const bubbleX = this.x + this.width - this.offset.right;
-        const bubbleY = this.y + this.height / 2;
+    const bubbleX = this.width - this.offset.right;
+    const bubbleY = this.y + this.height / 2;
 
-        const bubble = new Bubble();
-        bubble.x = bubbleX;
-        bubble.y = bubbleY;
-        bubble.normalDirection = !this.otherDirection;
+    const bubble = new Bubble(this.world, bubbleX, bubbleY, this.otherDirection);
+    this.world.bubble.push(bubble);
+}
 
-        this.world.bubble.push(bubble);
-    }
 
 
 

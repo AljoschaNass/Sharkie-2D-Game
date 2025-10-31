@@ -1,42 +1,31 @@
 class Bubble extends MovableObject {
     world;
+    x;
+    y;
     speed = 3.5;
-    width = 20;
-    height = 20;
-    normalDirection;
+    width = 50;
+    height = 50;
+    otherDirection;
 
-    constructor(x, y) {
+    constructor(world, x, y, otherDirection = false) {
         super().loadImage('img/1.Sharkie/4.Attack/bubble-trap/bubble.png');
-        this.x = x;
+        this.world = world;
+        this.x = x + this.width;
         this.y = y;
-        this.width = 50;
-        this.height = 50;
-        // this.normalDirection = true;
-        this.move();
+        this.otherDirection = otherDirection;
+        this.moveBubble();
     }
 
-    move() { 
-        console.log(this.world.character.otherDirection);
-        
-        if (!this.world.character.otherDirection) {
-            console.log("normal");
-            
-            this.interval = setInterval(() => {
-                this.x += this.speed;
-                if (this.x > 3000) {
-                    clearInterval(this.interval);
-                }
-            }, 1000 / 60);
-        } else {
-            console.log("reverse");
 
-            this.interval = setInterval(() => {
-                this.x -= this.speed;
-                if (this.x < 0) {
-                    clearInterval(this.interval);
+    moveBubble() {
+        const interval = setInterval(() => {
+            if (!gamePaused) {
+                this.x += this.otherDirection ? -this.speed : this.speed;
+
+                if (this.x < -200 || this.x > this.world.level.levelEnd_x + 200) {
+                    clearInterval(interval);
                 }
-            }, 1000 / 60);
-        }
-        
+            }
+        }, 1000 / 60);
     }
 }
