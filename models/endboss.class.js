@@ -2,7 +2,7 @@ class Endboss extends MovableObject {
     world;
     height = 300;
     width = 300;
-    x = 1150;
+    x = 3000;
     y = 50;
     offset = {
         top: 95,
@@ -60,7 +60,7 @@ class Endboss extends MovableObject {
 
 
     restart() {
-        this.x = 1150;
+        this.x = 3000;
         this.y = 50;
         this.energy = 100;
         this.currentImage = 0;
@@ -73,7 +73,7 @@ class Endboss extends MovableObject {
     animate() {
         setInterval(() => {
             if (!gamePaused) {
-                if (this.world.character.x > 650) {
+                if (this.world.character.x > 2500) {
                     this.characterReachedEndboss = true;
                 }
                 if (this.characterReachedEndboss) {

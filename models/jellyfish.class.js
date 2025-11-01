@@ -102,7 +102,7 @@ class Jellyfish extends MovableObject {
 
 
     calculatePosition() {
-        this.x = 200 + Math.random() * 500 * 0.8;
+        this.x = 1500 + Math.random() * 3000 * 0.8;
         this.y = Math.random() * 480 * 0.75;
         this.speed = 0.25 + Math.random() * 0.25;
     }

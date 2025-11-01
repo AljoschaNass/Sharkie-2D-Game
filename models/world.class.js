@@ -139,32 +139,29 @@ class World {
     }
 
 
-    bubbleHitsEnemy() {        
-        for (let i = this.bubble.length - 1; i >= 0; i--) {
-            const bubble = this.bubble[i];
-            for (let j = this.level.enemies.length - 1; j >= 0; j--) {
-                const enemy = this.level.enemies[j];
+    bubbleHitsEnemy() {
+        this.bubble.forEach((bubble, bubbleIndex) => {
+            this.level.enemies.forEach((enemy, enemyIndex) => {
                 if (bubble.isCollding(enemy)) {
                     console.log("💥 Bubble trifft Gegner!");
+                    console.log("bubble:" + bubble.x + " " + bubble.y + " enemy:" + enemy.x + " " + enemy.y);
+                    
                     if (enemy instanceof Endboss) {
                         enemy.energy -= 20;
                         console.log(`🔥 Endboss getroffen! Energie: ${enemy.energy}`);
                         if (enemy.energy <= 0) {
                             console.log("💀 Endboss besiegt!");
-                            this.level.enemies.splice(j, 1);
+                            this.level.enemies.splice(enemyIndex, 1);
                         }
                     } else {
-                        this.level.enemies.splice(j, 1);
+                        this.level.enemies.splice(enemyIndex, 1);
                     }
-                    this.bubble.splice(i, 1);
+                    this.bubble.splice(bubbleIndex, 1);
                     this.audioManager.play('bubbleHit');
-                    break;
                 }
-            }
-        }
+            });
+        });
     }
-
-
 
 
     collectPoisonWater() {
