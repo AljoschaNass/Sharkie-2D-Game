@@ -6,29 +6,35 @@
 }
 
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
 html,
 body {
-    margin: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-image: url("img/3.Background/hintergrund-meer-hell.png");
-    background-size: cover;
-    font-family: 'Bubblegum Sans', sans-serif;
-}
-
-canvas {
-    background-color: black;
-    display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url("img/3.Background/hintergrund-meer-hell.png");
+  background-size: cover;
+  font-family: 'Bubblegum Sans', sans-serif;
 }
 
 .d_none {
@@ -38,7 +44,7 @@ canvas {
 h2 {
   text-align: center;
   color: #4fd1ff;
-  font-size: 2.2rem;
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
   letter-spacing: 1px;
   text-shadow: 0 0 20px #00bfff;
   margin-bottom: 1rem;
@@ -49,8 +55,10 @@ h2 {
   border-radius: 20px;
   background: rgba(0, 25, 50, 0.2); 
   color: #b3e5ff;
+  width: 90vw;
+  height: auto;
   max-width: 700px;
-  height: 460px;
+  max-height: 90vh;
   box-shadow: 0 0 30px #00bfff;
   font-family: 'Bubblegum Sans', sans-serif;
   overflow: hidden;
@@ -63,6 +71,7 @@ h2 {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  overflow-y: auto;
 }
 
 .allDialogs:not([open]) {
@@ -78,105 +87,9 @@ h2 {
     text-align: center;
 }
 
-.startScreen {
-  position: relative;
-  width: 720px;
-  height: 480px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  overflow: hidden;
-  font-family: 'Bubblegum Sans', sans-serif;
-  background-image: url("img/3.Background/Dark/1.png");
-  background-size: cover;
-  animation: fadeIn 1.5s ease-in forwards;
-  opacity: 0;
-}
-
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.98); }
   to { opacity: 1; transform: scale(1); }
-}
-
-.content {
-  position: relative;
-  z-index: 2;
-  width: 720px;
-  height: 480px;
-  padding: 2rem;
-}
-
-.title {
-  font-size: 5rem;
-  letter-spacing: 3px;
-  margin-bottom: 0.5rem;
-  color: #4fd1ff;
-  text-shadow: 0 0 25px #00bfff, 0 0 10px #0099ff;
-}
-
-.subtitle {
-  font-size: 1.3rem;
-  margin-bottom: 3rem;
-  color: #b3e5ff;
-}
-
-.menu {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.bottom-menu {
-  position: absolute;
-  bottom: 20px;
-  right: 25px;
-  display: flex;
-  gap: 1rem;
-}
-
-.shark {
-  position: absolute;
-  bottom: 5%;
-  left: -300px;
-  width: 300px;
-  height: 180px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  animation: swimAcross 20s linear infinite;
-  z-index: 1;
-  opacity: 0.95;
-}
-
-.shark-win {
-    bottom: unset;
-    top: 5%;
-}
-
-@keyframes swimAcross {
-  0% { transform: translateX(-300px) scaleX(1); }
-  50% { transform: translateX(calc(100vw + 300px)) scaleX(1); }
-  50.01% { transform: translateX(calc(100vw + 300px)) scaleX(-1); }
-  100% { transform: translateX(-300px) scaleX(-1); }
-}
-
-#game-container {
-  position: relative;
-  display: inline-block;
-}
-
-.status-bar {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  display: flex;
-  z-index: 10;
-}
-
-.status-bar-img {
-  width: 40px;
-  height: 40px;
 }
 
 .rotate-message {
@@ -196,16 +109,67 @@ h2 {
   padding: 2rem;
 }
 
+@media (max-width: 480px) {
+  body {
+    background-size: contain;
+  }
 
-/* 
-@media only screen and (max-width: 720px) {
-    canvas, #startScreen, #winScreen, #gameOverScreen {
-        width: 100%;
-    }
+  .menu {
+    gap: 1rem;
+  }
+
+  .bottom-menu {
+    bottom: 10px;
+    right: 10px;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .btn {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
 }
 
-@media only screen and (max-height: 480px) {
-    canvas, #startScreen, #winScreen, #gameOverScreen {
-        height: 100vh;
-    }
-} */
+@media (orientation: portrait) {
+  #game-container,
+  .startScreen,
+  .winScreen,
+  .gameOverScreen {
+    display: none;
+  }
+
+  #rotate-message {
+    display: flex !important;
+  }
+}
+
+@media (orientation: landscape) {
+  #rotate-message {
+    display: none !important;
+  }
+}
+
+@media (min-aspect-ratio: 3/2) {
+  #game-container {
+    height: 100vh;
+    width: calc(100vh * 3 / 2);
+  }
+}
+
+@media (max-aspect-ratio: 3/2) {
+  #game-container {
+    width: 100vw;
+    height: calc(100vw * 2 / 3);
+  }
+}
+
+#canvas,
+.startScreen,
+.winScreen,
+.gameOverScreen {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
