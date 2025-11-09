@@ -59,12 +59,11 @@ h2 {
   width: 90vw;
   height: auto;
   max-width: 700px;
-  max-height: 90vh;
+  max-height: 480px;
   box-shadow: 0 0 30px #00bfff;
   font-family: 'Bubblegum Sans', sans-serif;
   overflow: hidden;
-  margin-inline: auto;
-  margin-top: 10px;
+  margin: auto;
   padding: 1.5rem 2rem; 
   animation: fadeIn 0.5s ease-in forwards;
   opacity: 0;
