@@ -1,8 +1,11 @@
 .startScreen {
   position: relative;
-  width: 720px;
-  height: 480px;
+  width: 100vw;
+  height: calc(100vw * 2 / 3);
+  max-height: 100vh;
+  max-width: calc(100vh * 3 / 2);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -14,16 +17,8 @@
   opacity: 0;
 }
 
-.content {
-  position: relative;
-  z-index: 2;
-  width: 720px;
-  height: 480px;
-  padding: 2rem;
-}
-
 .title {
-  font-size: 5rem;
+  font-size: clamp(2.5rem, 7vw, 5rem);
   letter-spacing: 3px;
   margin-bottom: 0.5rem;
   color: #4fd1ff;
@@ -31,7 +26,7 @@
 }
 
 .subtitle {
-  font-size: 1.3rem;
+  font-size: clamp(1rem, 3vw, 1.3rem);
   margin-bottom: 3rem;
   color: #b3e5ff;
 }
