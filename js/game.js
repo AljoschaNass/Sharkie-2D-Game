@@ -13,6 +13,7 @@ function init() {
     world.character.restart();
     document.getElementById("startScreen").classList.add("d_none");
     world.audioManager.playLoop('background');
+    bindMobileButtons();
 }
 
 
@@ -74,3 +75,38 @@ window.addEventListener("keyup", (event) => {
             break;
     }
 });
+
+function bindMobileButtons() {
+    const mapping = [
+        { id: "btn-left", key: "LEFT" },
+        { id: "btn-right", key: "RIGHT" },
+        { id: "btn-up", key: "UP" },
+        { id: "btn-down", key: "DOWN" },
+        { id: "btn-space", key: "SPACE" },
+        { id: "btn-d", key: "D" }
+    ];
+
+    mapping.forEach(m => {
+        const btn = document.getElementById(m.id);
+        if (!btn) return;
+
+        const press = () => {
+            keyboard[m.key] = true;
+            btn.classList.add("pressed");
+        };
+
+        const release = () => {
+            keyboard[m.key] = false;
+            btn.classList.remove("pressed");
+        };
+
+        btn.addEventListener("touchstart", e => {
+            e.preventDefault();
+            press();
+        });
+        btn.addEventListener("touchend", e => {
+            e.preventDefault();
+            release();
+        });
+    });
+}

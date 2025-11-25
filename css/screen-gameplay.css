@@ -60,7 +60,7 @@ canvas {
   border: none;
   padding: 0;
   height: 50px;
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 .control-btn img {
@@ -70,7 +70,7 @@ canvas {
   pointer-events: none;
 }
 
-.control-btn:active {
+.control-btn.pressed {
   opacity: 1;
   transform: scale(0.95);
 }
