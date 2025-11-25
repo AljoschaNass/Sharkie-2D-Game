@@ -31,3 +31,58 @@ canvas {
   width: clamp(24px, 5vw, 40px);
   height: auto;
 }
+
+.mobile-controls {
+  position: fixed;
+  bottom: 2vh;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 2rem;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.controls-left,
+.controls-center,
+.controls-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  pointer-events: all;
+}
+
+.control-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  height: 50px;
+  opacity: 0.8;
+}
+
+.control-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.control-btn:active {
+  opacity: 1;
+  transform: scale(0.95);
+}
+
+/* @media (hover: none) and (pointer: coarse) {
+  .mobile-controls {
+    display: flex;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mobile-controls {
+    display: none;
+  }
+} */

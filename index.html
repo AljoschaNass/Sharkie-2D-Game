@@ -46,7 +46,7 @@
     <br> um zu spielen.</p>
 </div>
 
-    <div id="game-container" class="d_none">
+    <section id="game-container" class="d_none">
         <div class="status-bar">
             <button id="mute-btn" class="btn">
                 <img class="status-bar-img" src="img/Buttons/Key/sound_on.png" alt="">
@@ -55,8 +55,38 @@
                 <img class="status-bar-img" src="img/Buttons/Key/options.png" alt="">
             </button>
         </div>
+
         <canvas id="canvas" width="720" height="480"></canvas>
-    </div>
+
+        <div class="mobile-controls">
+        <div class="controls-left">
+            <button class="control-btn" id="btn-left">
+            <img src="img/Buttons/Key/key_left.png" alt="Left">
+            </button>
+            <button class="control-btn" id="btn-right">
+            <img src="img/Buttons/Key/key_right.png" alt="Right">
+            </button>
+        </div>
+
+        <div class="controls-center">
+            <button class="control-btn" id="btn-d">
+                <img src="img/Buttons/Key/Space Bar key.png" alt="Space">
+            </button>
+            <button class="control-btn" id="btn-space">
+                <img src="img/Buttons/Key/D key.png" alt="D">
+            </button>
+        </div>
+
+        <div class="controls-right">
+            <button class="control-btn" id="btn-up">
+            <img src="img/Buttons/Key/key_up.png" alt="Up">
+            </button>
+            <button class="control-btn" id="btn-down">
+            <img src="img/Buttons/Key/key_down.png" alt="Down">
+            </button>
+        </div>
+        </div>
+    </section>
 
     <section class="startScreen" id="startScreen">
             <h1 class="title">Sharkie</h1>
