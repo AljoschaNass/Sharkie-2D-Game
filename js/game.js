@@ -77,7 +77,13 @@ window.addEventListener("keyup", (event) => {
 });
 
 function bindMobileButtons() {
-    const mapping = [
+    const mapping = getMobileButtonMapping();
+    mapping.forEach(m => bindMobileButton(m));
+}
+
+
+function getMobileButtonMapping() {
+    return [
         { id: "btn-left", key: "LEFT" },
         { id: "btn-right", key: "RIGHT" },
         { id: "btn-up", key: "UP" },
@@ -85,28 +91,27 @@ function bindMobileButtons() {
         { id: "btn-space", key: "SPACE" },
         { id: "btn-d", key: "D" }
     ];
+}
 
-    mapping.forEach(m => {
-        const btn = document.getElementById(m.id);
-        if (!btn) return;
 
-        const press = () => {
-            keyboard[m.key] = true;
-            btn.classList.add("pressed");
-        };
+function bindMobileButton(mapping) {
+    const btn = document.getElementById(mapping.id);
+    if (!btn) return;
 
-        const release = () => {
-            keyboard[m.key] = false;
-            btn.classList.remove("pressed");
-        };
+    addTouchHandlers(btn, mapping.key);
+}
 
-        btn.addEventListener("touchstart", e => {
-            e.preventDefault();
-            press();
-        });
-        btn.addEventListener("touchend", e => {
-            e.preventDefault();
-            release();
-        });
+
+function addTouchHandlers(btn, key) {
+    btn.addEventListener("touchstart", e => {
+        e.preventDefault();
+        keyboard[key] = true;
+        btn.classList.add("pressed");
+    });
+
+    btn.addEventListener("touchend", e => {
+        e.preventDefault();
+        keyboard[key] = false;
+        btn.classList.remove("pressed");
     });
 }

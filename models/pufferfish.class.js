@@ -117,23 +117,45 @@ class Pufferfish extends MovableObject {
         let frameIndex = 0;
 
         setInterval(() => {
-            if (!gamePaused) {
-                const current = this.sequences[currentSequenceIndex];
-                const currentImages = current.images;
-                const path = currentImages[frameIndex];
-                this.img = this.imageCache[path];
-                frameIndex++;
-                this.setOffset(currentImages);
-                if (frameIndex >= currentImages.length) {
-                    frameIndex = 0;
-                    this.repeatCounter++;
-                    if (this.repeatCounter >= current.repeat) {
-                        this.repeatCounter = 0;
-                        currentSequenceIndex = (currentSequenceIndex + 1) % this.sequences.length;
-                    }
-                }
-            }
+            if (gamePaused) return;
+
+            const result = this.playSequenceFrame(currentSequenceIndex, frameIndex);
+            frameIndex = result.frameIndex;
+            currentSequenceIndex = result.sequenceIndex;
         }, 200);
+    }
+
+
+    playSequenceFrame(sequenceIndex, frameIndex) {
+        const current = this.sequences[sequenceIndex];
+        const currentImages = current.images;
+
+        this.updateFrameImage(currentImages, frameIndex);
+        frameIndex++;
+
+        return this.handleSequenceProgress(sequenceIndex, frameIndex, current);
+    }
+
+
+    updateFrameImage(images, frameIndex) {
+        const path = images[frameIndex];
+        this.img = this.imageCache[path];
+        this.setOffset(images);
+    }
+
+
+    handleSequenceProgress(sequenceIndex, frameIndex, current) {
+        if (frameIndex >= current.images.length) {
+            frameIndex = 0;
+            this.repeatCounter++;
+
+            if (this.repeatCounter >= current.repeat) {
+                this.repeatCounter = 0;
+                sequenceIndex = (sequenceIndex + 1) % this.sequences.length;
+            }
+        }
+
+        return { sequenceIndex, frameIndex };
     }
 
 
