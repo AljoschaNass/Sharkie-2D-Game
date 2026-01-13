@@ -270,7 +270,7 @@ class Character extends MovableObject {
 
         const bubble = new Bubble(this.world, bubbleX, bubbleY, this.otherDirection);
         this.world.bubble.push(bubble);
-        this.collectedPoisonBottles = this.collectedPoisonBottles - 21;
+        this.collectedPoisonBottles = this.collectedPoisonBottles - 20;
         this.world.poisonStatusBar.setPercentage(this.collectedPoisonBottles);
     }
 
@@ -316,27 +316,40 @@ class Character extends MovableObject {
         if (this.currentImage > 14) {
             this.currentImage = 0;
         }
-        if (!this.introLongIdleDone) {
-            const i = this.currentImage;
-            const path = images[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;
 
-            if (this.currentImage >= images.length) {
-                this.introLongIdleDone = true;
-                this.currentImage = 10;
-            }
+        if (!this.introLongIdleDone) {
+            this.playLongIdleIntro(images);
         } else {
-            const loopStart = 10;
-            const loopEnd = images.length - 1;
-            this.setOffset(125, 20);
-            const i = this.currentImage;
-            const path = images[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;
-            if (this.currentImage > loopEnd) {
-                this.currentImage = loopStart;
-            }
+            this.playLongIdleLoop(images);
+        }
+    }
+
+
+    playLongIdleIntro(images) {
+        const i = this.currentImage;
+        const path = images[i];
+        this.img = this.imageCache[path];
+        this.currentImage++;
+
+        if (this.currentImage >= images.length) {
+            this.introLongIdleDone = true;
+            this.currentImage = 10;
+        }
+    }
+
+
+    playLongIdleLoop(images) {
+        const loopStart = 10;
+        const loopEnd = images.length - 1;
+
+        this.setOffset(125, 20);
+        const i = this.currentImage;
+        const path = images[i];
+        this.img = this.imageCache[path];
+        this.currentImage++;
+
+        if (this.currentImage > loopEnd) {
+            this.currentImage = loopStart;
         }
     }
 
@@ -357,24 +370,36 @@ class Character extends MovableObject {
 
 
     playBubbleAttackAnimation(images) {
-    if (!this.sharkIsBubbleAttacking) return;
+        if (!this.sharkIsBubbleAttacking) return;
 
-    if (this.currentBubbleFrame === undefined) {
-        this.currentBubbleFrame = 0;
+        this.initializeBubbleFrame();
+        this.updateBubbleFrame(images);
+        this.checkBubbleAttackComplete(images);
     }
 
-    const i = this.currentBubbleFrame;
-    const path = images[i];
-    this.img = this.imageCache[path];
 
-    this.currentBubbleFrame++;
-
-    if (this.currentBubbleFrame >= images.length) {
-        this.sharkIsBubbleAttacking = false;
-        this.world.keyboard.D = false;
-        this.currentBubbleFrame = 0;
+    initializeBubbleFrame() {
+        if (this.currentBubbleFrame === undefined) {
+            this.currentBubbleFrame = 0;
+        }
     }
-}
+
+
+    updateBubbleFrame(images) {
+        const i = this.currentBubbleFrame;
+        const path = images[i];
+        this.img = this.imageCache[path];
+        this.currentBubbleFrame++;
+    }
+
+
+    checkBubbleAttackComplete(images) {
+        if (this.currentBubbleFrame >= images.length) {
+            this.sharkIsBubbleAttacking = false;
+            this.world.keyboard.D = false;
+            this.currentBubbleFrame = 0;
+        }
+    }
 
 
     setTimerLongIdle() {
