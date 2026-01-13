@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/dialog-options.css">
     <link rel="stylesheet" href="css/dialog-credits.css">
     <link rel="stylesheet" href="css/dialog-privacy-police.css">
+    <link rel="stylesheet" href="css/dialog-impressum.css">
     <link rel="stylesheet" href="css/screen-win.css">
     <link rel="stylesheet" href="css/screen-game-over.css">
     <link rel="icon" type="image/x-icon" href="./img/1.Sharkie/1.IDLE/1.png"/>
@@ -100,6 +101,7 @@
             <div class="bottom-menu">
                 <button class="btn btn-small btn-credits">Credits</button>
                 <button class="btn btn-small btn-privacy">Privacy Policy</button>
+                <button class="btn btn-small btn-impressum">Impressum</button>
             </div>
 
             <div class="shark" id="shark"></div>
@@ -223,6 +225,48 @@
 
     <footer class="dialogFooters">
         <button id="closePrivacyMenu" class="btn btn-small">X Close</button>
+    </footer>
+    </dialog>
+
+    <dialog class="allDialogs dialogImpressum" id="impressumMenu">
+    <header class="dialogHeaders">
+        <h2>IMPRESSUM</h2>
+    </header>
+
+    <section class="impressum-content">
+        <div class="impressum-left">
+        <h3>Angaben gemäß § 5 TMG</h3>
+        <p>
+            <strong>Aljoscha Naß</strong><br>
+            [Deine Straße + Hausnummer]<br>
+            [PLZ + Stadt]<br>
+            Deutschland
+        </p>
+        <br>
+        <h3>Kontakt</h3>
+        <p>
+            E-Mail: <a href="mailto:nassaljoscha@gmail.com">nassaljoscha@gmail.com</a>
+        </p>
+        </div>
+
+        <div class="impressum-right">
+        <h3>Haftungsausschluss</h3>
+        <p>
+            Dieses Projekt wurde zu Lernzwecken im Rahmen einer
+            Webentwicklungs-Ausbildung bei der Developer Academy erstellt.
+        </p>
+        <br>
+        <h3>Urheberrecht</h3>
+        <p>
+            Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen
+            Seiten unterliegen dem deutschen Urheberrecht. Grafiken und Sounds
+            stammen aus lizenzfreien Quellen (Pixabay, Mixkit).
+        </p>
+        </div>
+    </section>
+
+    <footer class="dialogFooters">
+        <button id="closeImpressumMenu" class="btn btn-small">X Close</button>
     </footer>
     </dialog>
 

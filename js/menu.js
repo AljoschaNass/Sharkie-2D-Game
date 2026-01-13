@@ -30,39 +30,64 @@ document.addEventListener('DOMContentLoaded', () => {
   setupDialog('.btn-options', 'optionsMenu', 'closeOptions');
   setupDialog('.btn-credits', 'creditsMenu', 'closeCreditsMenu');
   setupDialog('.btn-privacy', 'privacyMenu', 'closePrivacyMenu');
+  setupDialog('.btn-impressum', 'impressumMenu', 'closeImpressumMenu');
 });
 
 function setupDialog(openBtnSelector, dialogId, closeBtnId) {
+  const elements = getDialogElements(openBtnSelector, dialogId, closeBtnId);
+  if (!elements) return;
+
+  bindDialogOpenHandlers(elements.openBtns, elements.dialog, dialogId);
+  bindDialogCloseHandler(elements.closeBtn, elements.dialog, dialogId);
+  bindOutsideClickHandler(elements.dialog, dialogId);
+}
+
+
+function getDialogElements(openBtnSelector, dialogId, closeBtnId) {
   const dialog = document.getElementById(dialogId);
-  const openBtns = document.querySelectorAll(openBtnSelector); // <— mehrere Buttons möglich!
+  const openBtns = document.querySelectorAll(openBtnSelector);
   const closeBtn = document.getElementById(closeBtnId);
 
-  if (!dialog || !openBtns.length || !closeBtn) return;
+  if (!dialog || !openBtns.length || !closeBtn) return null;
 
+  return { dialog, openBtns, closeBtn };
+}
+
+
+function bindDialogOpenHandlers(openBtns, dialog, dialogId) {
   openBtns.forEach(openBtn => {
     openBtn.addEventListener('click', () => {
       dialog.showModal();
       if (dialogId === 'optionsMenu') gamePaused = true;
     });
   });
+}
 
+
+function bindDialogCloseHandler(closeBtn, dialog, dialogId) {
   closeBtn.addEventListener('click', () => {
     dialog.close();
     if (dialogId === 'optionsMenu') gamePaused = false;
   });
+}
 
+
+function bindOutsideClickHandler(dialog, dialogId) {
   dialog.addEventListener('click', (e) => {
-    const rect = dialog.getBoundingClientRect();
-    const inside =
-      e.clientX >= rect.left &&
-      e.clientX <= rect.right &&
-      e.clientY >= rect.top &&
-      e.clientY <= rect.bottom;
-    if (!inside) {
+    if (!isClickInsideDialog(e, dialog)) {
       dialog.close();
       if (dialogId === 'optionsMenu') gamePaused = false;
     }
   });
+}
+
+
+function isClickInsideDialog(event, dialog) {
+  const rect = dialog.getBoundingClientRect();
+  return event.clientX >= rect.left &&
+         event.clientX <= rect.right &&
+         event.clientY >= rect.top &&
+         event.clientY <= rect.bottom;
 }
 
 
