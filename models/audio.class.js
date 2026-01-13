@@ -1,12 +1,21 @@
 class AudioManager {
   constructor() {
-    this.audioMuted = localStorage.getItem('audioMuted') === 'true';
+    this.loadMuteSettings();
+    this.initializeAudioLibrary();
+    this.applyAudioSettings();
+  }
 
+
+  loadMuteSettings() {
+    this.audioMuted = localStorage.getItem('audioMuted') === 'true';
+  }
+
+
+  initializeAudioLibrary() {
     this.audio = {
       background: this.createAudio('sounds/underwater-ambience.mp3', { loop: true, volume: 0.4 }),
       winMusic: this.createAudio('sounds/you-win-sequence.mp3', { loop: true, volume: 0.5 }),
       snoring: this.createAudio('sounds/snoring-sound.mp3', { loop: true, volume: 0.8 }),
-
       coin: this.createAudio('sounds/drop-coin.mp3'),
       hit: this.createAudio('sounds/grunt2.mp3'),
       bubbleHit: this.createAudio('sounds/bubble-pop.mp3'),
@@ -14,7 +23,6 @@ class AudioManager {
       gameOverVoice: this.createAudio('sounds/game-over-voice.mp3'),
       winSound: this.createAudio('sounds/success-fanfare.mp3'),
     };
-    this.applyAudioSettings();
   }
 
 
@@ -45,8 +53,6 @@ class AudioManager {
     if (sound) {
       sound.currentTime = 0;
       sound.play();
-    } else {
-      console.warn(`❌ Audio '${name}' nicht gefunden.`);
     }
   }
 
@@ -59,8 +65,6 @@ class AudioManager {
       sound.loop = true;
       sound.currentTime = 0;
       sound.play();
-    } else {
-      console.warn(`❌ Loop-Audio '${name}' nicht gefunden.`);
     }
   }
 

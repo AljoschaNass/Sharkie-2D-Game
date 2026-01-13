@@ -14,18 +14,58 @@ class World {
 
 
     constructor(canvas, keyboard){
+        this.initializeCanvas(canvas);
+        this.initializeKeyboard(keyboard);
+        this.initializeManagers();
+        this.initializeLevel();
+        this.initializeCharacter();
+        this.initializeStatusBars();
+        this.initializeBubbles();
+        this.startWorld();
+    }
+
+
+    initializeCanvas(canvas) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
+    }
+
+
+    initializeKeyboard(keyboard) {
         this.keyboard = keyboard;
+    }
+
+
+    initializeManagers() {
         this.audioManager = new AudioManager();
+    }
+
+
+    initializeLevel() {
         this.level = createLevel1();
+    }
+
+
+    initializeCharacter() {
         this.character = new Character();
         this.character.energy = 100;
+    }
+
+
+    initializeStatusBars() {
         this.poisonStatusBar = new PoisonStatusBar();
         this.healthStatusBar = new HealthStatusBar();
         this.healthStatusBar.setPercentage(100);
         this.coinStatusBar = new CoinStatusBar();
+    }
+
+
+    initializeBubbles() {
         this.bubble = [];
+    }
+
+
+    startWorld() {
         this.draw();
         this.setWorld();
         this.clearCollisionInterval();
@@ -143,24 +183,39 @@ class World {
         this.bubble.forEach((bubble, bubbleIndex) => {
             this.level.enemies.forEach((enemy, enemyIndex) => {
                 if (bubble.isCollding(enemy)) {
-                    console.log("💥 Bubble trifft Gegner!");
-                    console.log("bubble:" + bubble.x + " " + bubble.y + " enemy:" + enemy.x + " " + enemy.y);
-                    
-                    if (enemy instanceof Endboss) {
-                        enemy.energy -= 20;
-                        console.log(`🔥 Endboss getroffen! Energie: ${enemy.energy}`);
-                        if (enemy.energy <= 0) {
-                            console.log("💀 Endboss besiegt!");
-                            this.level.enemies.splice(enemyIndex, 1);
-                        }
-                    } else {
-                        this.level.enemies.splice(enemyIndex, 1);
-                    }
-                    this.bubble.splice(bubbleIndex, 1);
-                    this.audioManager.play('bubbleHit');
+                    this.handleBubbleEnemyCollision(enemy, enemyIndex, bubbleIndex);
                 }
             });
         });
+    }
+
+
+    handleBubbleEnemyCollision(enemy, enemyIndex, bubbleIndex) {
+        this.damageEnemy(enemy, enemyIndex);
+        this.removeBubble(bubbleIndex);
+        this.audioManager.play('bubbleHit');
+    }
+
+
+    damageEnemy(enemy, enemyIndex) {
+        if (enemy instanceof Endboss) {
+            enemy.energy -= 20;
+            if (enemy.energy <= 0) {
+                this.removeEnemy(enemyIndex);
+            }
+        } else {
+            this.removeEnemy(enemyIndex);
+        }
+    }
+
+
+    removeEnemy(enemyIndex) {
+        this.level.enemies.splice(enemyIndex, 1);
+    }
+
+
+    removeBubble(bubbleIndex) {
+        this.bubble.splice(bubbleIndex, 1);
     }
 
 

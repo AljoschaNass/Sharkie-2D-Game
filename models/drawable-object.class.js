@@ -34,30 +34,35 @@ class DrawableObjekt {
     }
 
 
-    drawFrame(ctx) {
-        if (this instanceof Character || this instanceof Pufferfish || this instanceof Endboss || this instanceof PoisonWater || this instanceof Coin || this instanceof Jellyfish || this instanceof Bubble) {
-            ctx.beginPath();
-            ctx.lineWidth = '5';
-            ctx.strokeStyle = 'blue';
-            ctx.rect(this.x, this.y, this.width, this.height);
-            ctx.stroke();
-        }
-    }
+    // Debug: Draw blue frame around object bounds
+    // drawFrame(ctx) {
+    //     if (this instanceof Character || this instanceof Pufferfish || this instanceof Endboss || this instanceof PoisonWater || this instanceof Coin || this instanceof Jellyfish || this instanceof Bubble) {
+    //         ctx.beginPath();
+    //         ctx.lineWidth = '5';
+    //         ctx.strokeStyle = 'blue';
+    //         ctx.rect(this.x, this.y, this.width, this.height);
+    //         ctx.stroke();
+    //     }
+    // }
 
 
-    drawHitbox(ctx) {
-        if (this instanceof Character || this instanceof Pufferfish || this instanceof Endboss || this instanceof PoisonWater || this instanceof Coin || this instanceof Jellyfish || this instanceof Bubble) {
-            ctx.beginPath();
-            ctx.lineWidth = '3';
-            ctx.strokeStyle = 'red';
+    // Debug: Draw red hitbox with offsets
+    // drawHitbox(ctx) {
+    //     if (this instanceof Character || this instanceof Pufferfish || this instanceof Endboss || this instanceof PoisonWater || this instanceof Coin || this instanceof Jellyfish || this instanceof Bubble) {
+    //         ctx.beginPath();
+    //         ctx.lineWidth = '3';
+    //         ctx.strokeStyle = 'red';
 
-            const hitboxX = this.x + this.offset.left;
-            const hitboxY = this.y + this.offset.top;
-            const hitboxWidth = this.width - this.offset.left - this.offset.right;
-            const hitboxHeight = this.height - this.offset.top - this.offset.bottom;
+    //         const hitboxX = this.x + this.offset.left;
+    //         const hitboxY = this.y + this.offset.top;
+    //         const hitboxWidth = this.width - this.offset.left - this.offset.right;
+    //         const hitboxHeight = this.height - this.offset.top - this.offset.bottom;
 
-            ctx.rect(hitboxX, hitboxY, hitboxWidth, hitboxHeight);
-            ctx.stroke();
-        }
-    }
+    //         ctx.rect(hitboxX, hitboxY, hitboxWidth, hitboxHeight);
+    //         ctx.stroke();
+    //     }
+    // }
+
+    drawFrame(ctx) {}
+    drawHitbox(ctx) {}
 }
