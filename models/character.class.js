@@ -209,15 +209,15 @@ class Character extends MovableObject {
             if (!gamePaused) {
                 if (this.isDead()) {
                     this.dieCharacter();
-                } else if (this.isHurt()) {
-                    this.playHurtAnimation();
-                    this.resetTimerLongIdle();
                 } else if (this.isAttacking()) {
                     this.setOffset(100, 45);
                     this.attack();
                     this.resetTimerLongIdle();
                 } else if (this.isBubbleAttacking()) {
                     this.bubbleAttack();
+                    this.resetTimerLongIdle();
+                } else if (this.isHurt()) {
+                    this.playHurtAnimation();
                     this.resetTimerLongIdle();
                 } else if (this.isSwimming()) {
                     this.setOffset(100, 45);

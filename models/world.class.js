@@ -100,6 +100,7 @@ class World {
         this.collisionIntervalId = setInterval(() => {
             if (typeof gamePaused !== 'undefined' && gamePaused) return;
             this.collisionWithEnemy();
+            this.finSlapHitsEnemy();
             this.bubbleHitsEnemy();
             this.collectPoisonWater();
             this.collectCoin();
@@ -176,13 +177,25 @@ class World {
 
     collisionWithEnemy() {
         this.level.enemies.forEach( (enemy) => {
-            if (this.character.isCollding(enemy) && !this.character.isHurt()) {
+            if (this.character.isCollding(enemy) && !this.character.isHurt() && !this.character.sharkIsAttacking) {
                 this.character.hit(enemy);
                 this.healthStatusBar.setPercentage(this.character.energy);
                 this.character.hurtCharacter(enemy);
                 this.audioManager.play('hit');
             }
         });
+    }
+
+
+    finSlapHitsEnemy() {
+        if (this.character.sharkIsAttacking) {
+            this.level.enemies.forEach((enemy, enemyIndex) => {
+                if (this.character.isCollding(enemy)) {
+                    this.damageEnemy(enemy, enemyIndex);
+                    this.audioManager.play('bubbleHit');
+                }
+            });
+        }
     }
 
 
