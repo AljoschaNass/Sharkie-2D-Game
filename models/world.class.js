@@ -1,3 +1,6 @@
+/**
+ * Main game world that handles rendering, collisions, and game state.
+ */
 class World {
     audioManager;
     character;
@@ -12,7 +15,10 @@ class World {
     camera_x = 0;
     collisionIntervalId;
 
-
+    /**
+     * @param {HTMLCanvasElement} canvas - The game canvas
+     * @param {Keyboard} keyboard - Keyboard input handler
+     */
     constructor(canvas, keyboard){
         this.initializeCanvas(canvas);
         this.initializeKeyboard(keyboard);
@@ -148,8 +154,6 @@ class World {
             this.flipImage(mo);
         }
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
-        mo.drawHitbox(this.ctx)
         if (mo.otherDirection) {
             this.flipImageBack(mo);
         }
