@@ -29,6 +29,14 @@ class AudioManager {
   }
 
 
+  /**
+   * Creates a new audio element with specified options.
+   * @param {string} src - Path to audio file
+   * @param {Object} options - Audio options
+   * @param {boolean} options.loop - Whether audio should loop
+   * @param {number} options.volume - Volume level (0.0 to 1.0)
+   * @returns {HTMLAudioElement} Configured audio element
+   */
   createAudio(src, { loop = false, volume = 1.0 } = {}) {
     const audio = new Audio(src);
     audio.loop = loop;
@@ -36,19 +44,26 @@ class AudioManager {
     return audio;
   }
 
-
+  /**
+   * Saves current mute settings to localStorage.
+   */
   saveSettings() {
     localStorage.setItem('audioMuted', this.audioMuted);
   }
 
-
+  /**
+   * Applies mute settings to all audio elements.
+   */
   applyAudioSettings() {
     Object.values(this.audio).forEach(sound => {
       sound.muted = this.audioMuted;
     });
   }
 
-
+  /**
+   * Plays a sound effect once.
+   * @param {string} name - Name of the sound to play
+   */
   play(name) {
     if (this.audioMuted) return;
 
@@ -59,7 +74,10 @@ class AudioManager {
     }
   }
 
-
+  /**
+   * Plays a sound in loop mode.
+   * @param {string} name - Name of the sound to loop
+   */
   playLoop(name) {
     if (this.audioMuted) return;
 
@@ -71,7 +89,10 @@ class AudioManager {
     }
   }
 
-
+  /**
+   * Stops a playing sound.
+   * @param {string} name - Name of the sound to stop
+   */
   stop(name) {
     const sound = this.audio[name];
     if (sound) {

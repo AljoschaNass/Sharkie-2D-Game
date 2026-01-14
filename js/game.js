@@ -4,7 +4,10 @@ let world;
 let keyboard = new Keyboard();
 let gamePaused = false;
 
-
+/**
+ * Initializes the game world and starts the game.
+ * Creates a new world instance, resets character and endboss, and starts background music.
+ */
 function init() {
     gamePaused = false;
     canvas = document.getElementById("canvas");
@@ -80,12 +83,18 @@ window.addEventListener("keyup", (event) => {
     }
 });
 
+/**
+ * Binds touch event handlers to all mobile control buttons.
+ */
 function bindMobileButtons() {
     const mapping = getMobileButtonMapping();
     mapping.forEach(m => bindMobileButton(m));
 }
 
-
+/**
+ * Returns the mapping configuration for mobile buttons.
+ * @returns {Array<{id: string, key: string}>} Array of button mappings
+ */
 function getMobileButtonMapping() {
     return [
         { id: "btn-left", key: "LEFT" },
@@ -97,7 +106,10 @@ function getMobileButtonMapping() {
     ];
 }
 
-
+/**
+ * Binds touch handlers to a single mobile button.
+ * @param {{id: string, key: string}} mapping - Button mapping configuration
+ */
 function bindMobileButton(mapping) {
     const btn = document.getElementById(mapping.id);
     if (!btn) return;
@@ -105,7 +117,11 @@ function bindMobileButton(mapping) {
     addTouchHandlers(btn, mapping.key);
 }
 
-
+/**
+ * Adds touchstart and touchend event handlers to a button.
+ * @param {HTMLElement} btn - The button element
+ * @param {string} key - The keyboard key to simulate
+ */
 function addTouchHandlers(btn, key) {
     btn.addEventListener("touchstart", e => {
         e.preventDefault();

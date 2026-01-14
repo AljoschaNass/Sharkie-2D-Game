@@ -12,6 +12,12 @@ if (pauseBtnGlobal) {
 const shark = document.getElementById("shark");
 const sharkWin = document.getElementById("shark-win");
 
+/**
+ * Generates an array of frame paths for animation.
+ * @param {string} folder - Path to the folder containing frames
+ * @param {number} count - Number of frames
+ * @returns {string[]} Array of frame paths
+ */
 function generateFrames(folder, count) {
   return Array.from({ length: count }, (_, i) => `${folder}/${i + 1}.png`);
 }
@@ -33,6 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
   setupDialog('.btn-impressum', 'impressumMenu', 'closeImpressumMenu');
 });
 
+/**
+ * Sets up event handlers for a dialog (open, close, outside click).
+ * @param {string} openBtnSelector - CSS selector for open buttons
+ * @param {string} dialogId - ID of the dialog element
+ * @param {string} closeBtnId - ID of the close button
+ */
 function setupDialog(openBtnSelector, dialogId, closeBtnId) {
   const elements = getDialogElements(openBtnSelector, dialogId, closeBtnId);
   if (!elements) return;
@@ -42,7 +54,13 @@ function setupDialog(openBtnSelector, dialogId, closeBtnId) {
   bindOutsideClickHandler(elements.dialog, dialogId);
 }
 
-
+/**
+ * Gets all DOM elements needed for dialog setup.
+ * @param {string} openBtnSelector - CSS selector for open buttons
+ * @param {string} dialogId - ID of the dialog element
+ * @param {string} closeBtnId - ID of the close button
+ * @returns {Object|null} Object containing dialog elements or null if not found
+ */
 function getDialogElements(openBtnSelector, dialogId, closeBtnId) {
   const dialog = document.getElementById(dialogId);
   const openBtns = document.querySelectorAll(openBtnSelector);
@@ -82,6 +100,12 @@ function bindOutsideClickHandler(dialog, dialogId) {
 }
 
 
+/**
+ * Checks if a click event occurred inside a dialog element.
+ * @param {MouseEvent} event - The click event
+ * @param {HTMLDialogElement} dialog - The dialog element
+ * @returns {boolean} True if click was inside dialog
+ */
 function isClickInsideDialog(event, dialog) {
   const rect = dialog.getBoundingClientRect();
   return event.clientX >= rect.left &&
@@ -96,7 +120,10 @@ const muteImg = muteBtn.querySelector('img');
 const muteBtnOptions = document.getElementById('mute-btn-options');
 const muteImgOptions = muteBtnOptions?.querySelector('img');
 
-
+/**
+ * Gets the current audio muted state from world or localStorage.
+ * @returns {boolean} True if audio is muted
+ */
 function getAudioMutedState() {
   if (world?.audioManager) {
     return world.audioManager.audioMuted;
@@ -104,7 +131,9 @@ function getAudioMutedState() {
   return localStorage.getItem('audioMuted') === 'true';
 }
 
-
+/**
+ * Toggles the audio mute state in world or localStorage.
+ */
 function toggleAudioMute() {
   if (world?.audioManager) {
     world.audioManager.toggleAudio();
@@ -114,7 +143,9 @@ function toggleAudioMute() {
   }
 }
 
-
+/**
+ * Updates the mute button icons based on current mute state.
+ */
 function updateMuteIcons() {
   const isMuted = getAudioMutedState();
   const icon = isMuted ? 'img/Buttons/Key/sound_off.png' : 'img/Buttons/Key/sound_on.png';
@@ -140,11 +171,19 @@ const startScreen = document.getElementById('startScreen');
 const winScreen = document.getElementById('winScreen');
 const gameOverScreen = document.getElementById('gameOverScreen');
 
+/**
+ * Hides one screen and shows another.
+ * @param {HTMLElement} hide - Element to hide
+ * @param {HTMLElement} show - Element to show
+ */
 function showScreen(hide, show) {
   hide.classList.add('d_none');
   show.classList.remove('d_none');
 }
 
+/**
+ * Displays the winning screen and plays win sound.
+ */
 function showWinScreen() {
   showScreen(canvasRef, winScreen);
   gamePaused = true;
@@ -152,6 +191,9 @@ function showWinScreen() {
   world?.audioManager?.play?.('winSound');
 }
 
+/**
+ * Displays the game over screen and plays game over sound.
+ */
 function showGameOverScreen() {
   showScreen(canvasRef, gameOverScreen);
   gamePaused = true;
