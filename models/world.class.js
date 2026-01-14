@@ -120,8 +120,8 @@ class World {
         this.addObjectsToMap(this.level.poisonWaterItems);
         this.addObjectsToMap(this.level.coins);
         this.addToMap(this.character);
-        this.ctx.translate(-this.camera_x, 0);
         this.addObjectsToMap(this.bubble);
+        this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.poisonStatusBar);
         this.addToMap(this.healthStatusBar);
         this.addToMap(this.coinStatusBar);
@@ -200,8 +200,9 @@ class World {
     damageEnemy(enemy, enemyIndex) {
         if (enemy instanceof Endboss) {
             enemy.energy -= 20;
+            enemy.playHurtAnimation();
             if (enemy.energy <= 0) {
-                this.removeEnemy(enemyIndex);
+                enemy.energy = 0;
             }
         } else {
             this.removeEnemy(enemyIndex);
