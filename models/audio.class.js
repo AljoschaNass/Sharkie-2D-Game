@@ -1,3 +1,6 @@
+/**
+ * Manages all game audio and sound effects.
+ */
 class AudioManager {
   constructor() {
     this.loadMuteSettings();

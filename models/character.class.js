@@ -1,3 +1,6 @@
+/**
+ * Main player character (Sharkie the shark).
+ */
 class Character extends MovableObject {
     world;
     speed = 2;

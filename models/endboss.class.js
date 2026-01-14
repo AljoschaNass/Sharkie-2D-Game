@@ -1,3 +1,6 @@
+/**
+ * Final boss enemy.
+ */
 class Endboss extends MovableObject {
     world;
     height = 300;
