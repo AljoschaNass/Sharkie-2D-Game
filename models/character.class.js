@@ -160,6 +160,9 @@ class Character extends MovableObject {
         this.introLongIdleDone = false;
         this.lastDamageFrom = 'poison';
         this.otherDirection = false;
+        this.currentHurtImages = null;
+        this.hurtAnimationFrame = 0;
+        this.lastHit = 0;
         this.resetTimerLongIdle();
     }
 
