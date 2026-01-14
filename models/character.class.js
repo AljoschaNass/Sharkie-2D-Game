@@ -16,6 +16,8 @@ class Character extends MovableObject {
     idleTimeout;
     isIdleTooLong = false;
     introLongIdleDone = false;
+    currentHurtImages = null;
+    hurtAnimationFrame = 0;
     IMAGES_IDLE = [
         '/img/1.Sharkie/1.IDLE/1.png',
         '/img/1.Sharkie/1.IDLE/2.png',
@@ -197,22 +199,25 @@ class Character extends MovableObject {
             }          
         }, 1000 / 60);
         
-        setInterval(() => {     
+        setInterval(() => {
             if (!gamePaused) {
-                if (this.isDead()) {                                
-                    this.dieCharacter();  
+                if (this.isDead()) {
+                    this.dieCharacter();
+                } else if (this.isHurt()) {
+                    this.playHurtAnimation();
+                    this.resetTimerLongIdle();
                 } else if (this.isAttacking()) {
                     this.setOffset(100, 45);
                     this.attack();
                     this.resetTimerLongIdle();
                 } else if (this.isBubbleAttacking()) {
-                    this.bubbleAttack();                    
+                    this.bubbleAttack();
                     this.resetTimerLongIdle();
                 } else if (this.isSwimming()) {
                     this.setOffset(100, 45);
                     this.playAnimation(this.IMAGES_SWIM);
                     this.resetTimerLongIdle();
-                } else if (this.isIdle() && !this.isHurt()) {
+                } else if (this.isIdle()) {
                     if (this.isIdleTooLong) {
                         this.playLongIdleAnimation(this.IMAGES_LONG_IDLE);
                     } else {
@@ -263,9 +268,9 @@ class Character extends MovableObject {
     spawnBubble() {
         if (!this.world) return;
 
-        const bubbleX = this.otherDirection 
-            ? 0
-            : this.width - this.offset.right;
+        const bubbleX = this.otherDirection
+            ? this.x
+            : this.x + this.width - this.offset.right;
         const bubbleY = this.y + (this.height / 2);
 
         const bubble = new Bubble(this.world, bubbleX, bubbleY, this.otherDirection);
@@ -289,13 +294,34 @@ class Character extends MovableObject {
 
     hurtCharacter(enemy) {
         if (!gamePaused) {
-            let hurtImages = this.IMAGES_HURT_POISONED;
+            this.currentHurtImages = this.IMAGES_HURT_POISONED;
             if (enemy instanceof Jellyfish) {
-                hurtImages = this.IMAGES_HURT_ELECTIC_SHOCKED;
-            } 
-            if (!this.isDead()) {
-                this.playAnimationOnce(hurtImages);
-                this.resetTimerLongIdle();
+                this.currentHurtImages = this.IMAGES_HURT_ELECTIC_SHOCKED;
+            }
+            this.hurtAnimationFrame = 0;
+        }
+    }
+
+
+    playHurtAnimation() {
+        if (!this.currentHurtImages) return;
+
+        if (!this.isHurt()) {
+            this.currentHurtImages = null;
+            this.hurtAnimationFrame = 0;
+            return;
+        }
+
+        const images = this.currentHurtImages;
+        let i = this.hurtAnimationFrame % images.length;
+        let path = images[i];
+        this.img = this.imageCache[path];
+        this.hurtAnimationFrame++;
+
+        if (this.hurtAnimationFrame >= images.length) {
+            this.hurtAnimationFrame = 0;
+            if (this.world && this.world.audioManager) {
+                this.world.audioManager.play('hit');
             }
         }
     }
@@ -404,9 +430,9 @@ class Character extends MovableObject {
 
     setTimerLongIdle() {
         this.idleTimeout = setTimeout(() => {
-            this.isIdleTooLong = true;            
-            if (this.world && this.world.audioManager && typeof this.world.audioManager.playLoopingSound === 'function') {
-                this.world.audioManager.playLoopingSound('snoringSound');                
+            this.isIdleTooLong = true;
+            if (this.world && this.world.audioManager) {
+                this.world.audioManager.playLoop('snoring');
             }
         }, 8000);
     }
@@ -416,8 +442,8 @@ class Character extends MovableObject {
         clearTimeout(this.idleTimeout);
         this.idleTimeout = null;
         if (this.isIdleTooLong) {
-            if (this.world && this.world.audioManager && typeof this.world.audioManager.stopSound === 'function') {
-                this.world.audioManager.stopSound('snoringSound');
+            if (this.world && this.world.audioManager) {
+                this.world.audioManager.stop('snoring');
             }
         }
         this.isIdleTooLong = false;

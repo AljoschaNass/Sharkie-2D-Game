@@ -38,7 +38,7 @@ class MovableObject extends DrawableObjekt{
 
 
     hit(enemy) {
-        if (!gamePaused) {
+        if (!gamePaused && !this.isHurt()) {
             let damage = 5;
             this.lastDamageFrom = 'poison';
             switch (true) {

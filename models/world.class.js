@@ -169,11 +169,11 @@ class World {
 
     collisionWithEnemy() {
         this.level.enemies.forEach( (enemy) => {
-            if (this.character.isCollding(enemy)) {                
+            if (this.character.isCollding(enemy) && !this.character.isHurt()) {
                 this.character.hit(enemy);
                 this.healthStatusBar.setPercentage(this.character.energy);
                 this.character.hurtCharacter(enemy);
-                this.audioManager.play('hit');                
+                this.audioManager.play('hit');
             }
         });
     }

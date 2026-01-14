@@ -30,7 +30,7 @@ class Bubble extends MovableObject {
 
 
     calculatePosition(x, y) {
-        this.x = x + (this.otherDirection ? 0 : this.width);
+        this.x = x;
         this.y = y;
     }
 }

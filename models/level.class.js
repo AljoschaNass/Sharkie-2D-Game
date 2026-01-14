@@ -3,7 +3,7 @@ class Level {
     poisonWaterItems;
     coins;
     backgroundObjects;
-    levelEnd_x = 2200;
+    levelEnd_x = 3000;
 
 
     constructor(enemies, poisonWaterItems, coins, backgroundObjects) {
