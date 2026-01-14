@@ -11,6 +11,10 @@ function init() {
     canvas.classList.remove("d_none");
     world = new World(canvas, keyboard);
     world.character.restart();
+    const endboss = world.level.enemies.find(enemy => enemy instanceof Endboss);
+    if (endboss) {
+        endboss.restart();
+    }
     document.getElementById("startScreen").classList.add("d_none");
     world.audioManager.playLoop('background');
     bindMobileButtons();
