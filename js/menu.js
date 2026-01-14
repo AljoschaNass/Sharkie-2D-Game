@@ -97,20 +97,38 @@ const muteBtnOptions = document.getElementById('mute-btn-options');
 const muteImgOptions = muteBtnOptions?.querySelector('img');
 
 
+function getAudioMutedState() {
+  if (world?.audioManager) {
+    return world.audioManager.audioMuted;
+  }
+  return localStorage.getItem('audioMuted') === 'true';
+}
+
+
+function toggleAudioMute() {
+  if (world?.audioManager) {
+    world.audioManager.toggleAudio();
+  } else {
+    const currentState = localStorage.getItem('audioMuted') === 'true';
+    localStorage.setItem('audioMuted', !currentState);
+  }
+}
+
+
 function updateMuteIcons() {
-  const isMuted = world?.audioManager?.audioMuted;
+  const isMuted = getAudioMutedState();
   const icon = isMuted ? 'img/Buttons/Key/sound_off.png' : 'img/Buttons/Key/sound_on.png';
   if (muteImg) muteImg.src = icon;
   if (muteImgOptions) muteImgOptions.src = icon;
 }
 
 muteBtn.addEventListener('click', () => {
-  world?.audioManager?.toggleAudio();
+  toggleAudioMute();
   updateMuteIcons();
 });
 
 muteBtnOptions.addEventListener('click', () => {
-  world?.audioManager?.toggleAudio();
+  toggleAudioMute();
   updateMuteIcons();
 });
 
