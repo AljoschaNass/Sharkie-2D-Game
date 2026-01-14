@@ -160,9 +160,9 @@ class Pufferfish extends MovableObject {
 
 
     calculatePosition() {
-        this.x = 1000 + Math.random() * 2000 * 0.8;
+        this.x = 400 + Math.random() * 2200;
         this.y = Math.random() * 480 * 0.75;
-        this.speed = 0.25 + Math.random() * 0.25;
+        this.speed = 0.4 + Math.random() * 0.35;
     }
 
 

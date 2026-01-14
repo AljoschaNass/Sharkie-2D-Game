@@ -10,7 +10,7 @@ class CollectableObject extends BackgroundObject {
 
 
     calculateXPosition() {
-        this.x = 500 + Math.random() * 2000 * 0.8;
+        this.x = 300 + Math.random() * 2500;
     }
 
 

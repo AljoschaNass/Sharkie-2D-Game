@@ -5,18 +5,32 @@ function createLevel1() {
             new Pufferfish('green'),
             new Pufferfish('orange'),
             new Pufferfish('red'),
+            new Pufferfish('green'),
+            new Pufferfish('orange'),
             new Endboss(),
             new Jellyfish('lila'),
             new Jellyfish('yellow'),
             new Jellyfish('green'),
-            new Jellyfish('pink')
+            new Jellyfish('pink'),
+            new Jellyfish('lila'),
+            new Jellyfish('yellow')
         ],
         [
+            new PoisonWater(),
+            new PoisonWater(),
+            new PoisonWater(),
+            new PoisonWater(),
+            new PoisonWater(),
             new PoisonWater(),
             new PoisonWater(),
             new PoisonWater()
         ],
         [
+            new Coin(),
+            new Coin(),
+            new Coin(),
+            new Coin(),
+            new Coin(),
             new Coin(),
             new Coin(),
             new Coin()
