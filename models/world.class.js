@@ -81,9 +81,12 @@ class World {
     }
 
 
-    setWorld() {        
+    setWorld() {
         this.character.world = this;
-        this.level.enemies[3].world = this;
+        const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
+        if (endboss) {
+            endboss.world = this;
+        }
     }
 
 
@@ -224,7 +227,7 @@ class World {
         for (let i = this.level.poisonWaterItems.length - 1; i >= 0; i--) {
             const poisonWater = this.level.poisonWaterItems[i];
             if (this.character.isCollding(poisonWater)) {
-                this.character.collectedPoisonBottles = this.character.collectedPoisonBottles + 21;
+                this.character.collectedPoisonBottles = this.character.collectedPoisonBottles + 12.5;
                 this.poisonStatusBar.setPercentage(this.character.collectedPoisonBottles);
                 this.level.poisonWaterItems.splice(i, 1);
                 this.audioManager.play('poison');
@@ -237,7 +240,7 @@ class World {
         for (let i = this.level.coins.length - 1; i >= 0; i--) {
             const coin = this.level.coins[i];
             if (this.character.isCollding(coin)) {
-                this.character.collectedCoins = this.character.collectedCoins + 21;
+                this.character.collectedCoins = this.character.collectedCoins + 12.5;
                 this.coinStatusBar.setPercentage(this.character.collectedCoins);
                 this.level.coins.splice(i, 1);
                 this.audioManager.play('coin');
