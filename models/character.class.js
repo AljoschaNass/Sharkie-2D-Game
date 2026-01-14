@@ -278,7 +278,7 @@ class Character extends MovableObject {
 
         const bubble = new Bubble(this.world, bubbleX, bubbleY, this.otherDirection);
         this.world.bubble.push(bubble);
-        this.collectedPoisonBottles = this.collectedPoisonBottles - 20;
+        this.collectedPoisonBottles = this.collectedPoisonBottles - 12.5;
         this.world.poisonStatusBar.setPercentage(this.collectedPoisonBottles);
     }
 
@@ -323,9 +323,6 @@ class Character extends MovableObject {
 
         if (this.hurtAnimationFrame >= images.length) {
             this.hurtAnimationFrame = 0;
-            if (this.world && this.world.audioManager) {
-                this.world.audioManager.play('hit');
-            }
         }
     }
 
