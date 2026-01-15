@@ -12,75 +12,40 @@ function init() {
     gamePaused = false;
     canvas = document.getElementById("canvas");
     canvas.classList.remove("d_none");
-    world = new World(canvas, keyboard);
-    world.character.restart();
-    const endboss = world.level.enemies.find(enemy => enemy instanceof Endboss);
-    if (endboss) {
-        endboss.restart();
+
+    const gameContainer = document.getElementById("game-container");
+    gameContainer.classList.remove("d_none");
+
+    if (world) {
+        world.clearCollisionInterval();
     }
+
+    world = new World(canvas, keyboard);
     document.getElementById("startScreen").classList.add("d_none");
     world.audioManager.playLoop('background');
     bindMobileButtons();
 }
 
 
+const KEY_MAP = {
+    "ArrowLeft": "LEFT",
+    "ArrowRight": "RIGHT",
+    "ArrowUp": "UP",
+    "ArrowDown": "DOWN",
+    "Space": "SPACE",
+    "Enter": "ENTER",
+    "Escape": "ESCAPE",
+    "KeyD": "D"
+};
+
 window.addEventListener("keydown", (event) => {
-    switch (event.code) {
-        case "ArrowLeft":
-            keyboard.LEFT = true;
-            break;
-        case "ArrowRight":
-            keyboard.RIGHT = true;
-            break;
-        case "ArrowUp":
-            keyboard.UP = true;
-            break;
-        case "ArrowDown":
-            keyboard.DOWN = true;
-            break;
-        case "Space":
-            keyboard.SPACE = true;
-            break;
-        case "Enter":
-            keyboard.ENTER = true;
-            break;
-        case "Escape":
-            keyboard.ESCAPE = true;
-            break;
-        case "KeyD":
-            keyboard.D = true;
-            break;
-    }
+    const key = KEY_MAP[event.code];
+    if (key) keyboard[key] = true;
 });
 
-
 window.addEventListener("keyup", (event) => {
-    switch (event.code) {
-        case "ArrowLeft":
-            keyboard.LEFT = false;
-            break;
-        case "ArrowRight":
-            keyboard.RIGHT = false;
-            break;
-        case "ArrowUp":
-            keyboard.UP = false;
-            break;
-        case "ArrowDown":
-            keyboard.DOWN = false;
-            break;
-        case "Space":
-            keyboard.SPACE = false;
-            break;
-        case "Enter":
-            keyboard.ENTER = false;
-            break;
-        case "Escape":
-            keyboard.ESCAPE = false;
-            break;
-        case "KeyD":
-            keyboard.D = false;
-            break;
-    }
+    const key = KEY_MAP[event.code];
+    if (key) keyboard[key] = false;
 });
 
 /**
