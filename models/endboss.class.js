@@ -5,7 +5,7 @@ class Endboss extends MovableObject {
     world;
     height = 300;
     width = 300;
-    x = 3000;
+    x = 3500;
     y = 50;
     offset = {
         top: 95,
@@ -69,8 +69,15 @@ class Endboss extends MovableObject {
     isAttacking = false;
     isHurtAnimating = false;
     isDying = false;
+    phase = 'idle';
+    phaseStartTime = 0;
+    attackSpeed = 2.7;
+    normalSpeed = 0.5;
 
 
+    /**
+     * Erstellt einen neuen Endboss.
+     */
     constructor(){
         super().loadImages(this.IMAGES_INTRODUCE);
         this.loadImages(this.IMAGES_FLOATING);
@@ -81,6 +88,9 @@ class Endboss extends MovableObject {
     }
 
 
+    /**
+     * Setzt den Endboss auf Anfangswerte zurück.
+     */
     restart() {
         this.x = 3000;
         this.y = 50;
@@ -92,45 +102,106 @@ class Endboss extends MovableObject {
         this.isAttacking = false;
         this.isHurtAnimating = false;
         this.isDying = false;
+        this.phase = 'idle';
+        this.phaseStartTime = 0;
     }
 
 
+    /**
+     * Startet die Animationen und Bewegung des Endbosses.
+     */
     animate() {
         setInterval(() => {
             if (!gamePaused) {
                 if (this.energy <= 0 && !this.isDying) {
                     this.die();
-                } else if (this.world.character.x > 2500) {
+                } else if (this.world.character.x > 2800) {
                     this.characterReachedEndboss = true;
                 }
 
                 if (this.characterReachedEndboss && !this.isDying) {
                     this.showEndboss();
-                    this.checkAttackDistance();
+                    this.updatePhaseSystem();
                 }
 
                 if (this.animationIsPlayed && !this.isAttacking && !this.isHurtAnimating && !this.isDying) {
                     this.playAnimation(this.IMAGES_FLOATING);
-                    this.startMovingLeft();
                 }
             }
         }, 200);
+
+        setInterval(() => {
+            if (!gamePaused && this.characterReachedEndboss && !this.isDying && this.animationIsPlayed) {
+                this.executePhaseMovement();
+            }
+        }, 1000 / 60);
     }
 
 
+    /**
+     * Zeigt die Einführungsanimation des Endbosses.
+     */
     showEndboss() {
         this.playAnimationOnce(this.IMAGES_INTRODUCE);
     }
 
 
-    checkAttackDistance() {
-        const distance = Math.abs(this.x - this.world.character.x);
-        if (distance < 200 && !this.isAttacking && !this.isHurtAnimating) {
-            this.attack();
+    /**
+     * Aktualisiert das Phasensystem zwischen Angriff und Ruhe.
+     */
+    updatePhaseSystem() {
+        const now = Date.now();
+        const elapsed = (now - this.phaseStartTime) / 1000;
+
+        if (this.phase === 'idle' && this.animationIsPlayed) {
+            this.phase = 'attack';
+            this.phaseStartTime = now;
+        } else if (this.phase === 'attack' && elapsed > 3) {
+            this.phase = 'rest';
+            this.phaseStartTime = now;
+        } else if (this.phase === 'rest' && elapsed > 2) {
+            this.phase = 'attack';
+            this.phaseStartTime = now;
+        }
+    }
+
+    /**
+     * Führt die Bewegung entsprechend der aktuellen Phase aus.
+     */
+    executePhaseMovement() {
+        if (this.phase === 'attack') {
+            this.moveTowardsCharacter();
+            this.matchCharacterHeight();
+        } else if (this.phase === 'rest') {
+            this.x -= this.normalSpeed;
+        }
+    }
+
+    /**
+     * Bewegt den Endboss auf den Charakter zu.
+     */
+    moveTowardsCharacter() {
+        const distance = this.world.character.x - this.x;
+        if (Math.abs(distance) > 50) {
+            this.x += distance > 0 ? this.attackSpeed : -this.attackSpeed;
+        }
+    }
+
+    /**
+     * Passt die Höhe des Endbosses an die Charakterhöhe an.
+     */
+    matchCharacterHeight() {
+        const targetY = this.world.character.y - 50;
+        const diff = targetY - this.y;
+        if (Math.abs(diff) > 5) {
+            this.y += diff > 0 ? 2 : -2;
         }
     }
 
 
+    /**
+     * Führt eine Angriffsanimation aus.
+     */
     attack() {
         if (this.isAttacking) return;
         this.isAttacking = true;
@@ -148,6 +219,11 @@ class Endboss extends MovableObject {
     }
 
 
+    /**
+     * Spielt ein einzelnes Animationsbild ab und ruft Callback bei Fertigstellung auf.
+     * @param {string[]} images - Array mit Bildpfaden
+     * @param {Function} onComplete - Callback nach Abschluss der Animation
+     */
     playAnimationFrame(images, onComplete) {
         const i = this.currentImage;
         const path = images[i];
@@ -160,6 +236,9 @@ class Endboss extends MovableObject {
     }
 
 
+    /**
+     * Spielt die Verletzungsanimation ab.
+     */
     playHurtAnimation() {
         if (this.isHurtAnimating || this.isDying) return;
         this.isHurtAnimating = true;
@@ -177,39 +256,33 @@ class Endboss extends MovableObject {
     }
 
 
+    /**
+     * Startet die Todesanimation und zeigt anschließend den Gewinnbildschirm.
+     */
     die() {
         this.isDying = true;
         this.currentImage = 0;
-        if (this.moveLeftInterval) {
-            clearInterval(this.moveLeftInterval);
-        }
 
         const interval = setInterval(() => {
             if (!gamePaused) {
                 this.playAnimationFrame(this.IMAGES_DEAD, () => {
                     clearInterval(interval);
-                    this.showWinningScreen();
+                    gamePaused = true;
+                    setTimeout(() => {
+                        this.showWinningScreen();
+                    }, 500);
                 });
             }
         }, 200);
     }
 
 
+    /**
+     * Zeigt den Gewinnbildschirm an.
+     */
     showWinningScreen() {
         if (typeof showWinScreen === 'function') {
             showWinScreen();
         }
-    }
-
-
-    startMovingLeft() {
-        if (this.moveLeftInterval) {
-            clearInterval(this.moveLeftInterval);
-        }
-        this.moveLeftInterval = setInterval(() => {
-            if (!gamePaused && !this.isAttacking && !this.isHurtAnimating) {
-                this.x -= 0.5;
-            }
-        }, 40);
     }
 }
