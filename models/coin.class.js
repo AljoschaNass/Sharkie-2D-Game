@@ -9,6 +9,9 @@ class Coin extends CollectableObject {
     height = 40;
 
 
+    /**
+     * Erstellt eine neue Münze.
+     */
     constructor(){
         super().loadImage("img/4.Marcadores/1. Coins/1.png");
         this.loadImages(this.IMAGES_ANIMATE);
@@ -17,10 +20,13 @@ class Coin extends CollectableObject {
         this.animate();
     }
 
+    /**
+     * Startet die Münz-Animation.
+     */
     animate() {
         setInterval(() => {
             if (!gamePaused) {
-                this.playAnimation(this.IMAGES_ANIMATE);   
+                this.playAnimation(this.IMAGES_ANIMATE);
             }
         }, 300);
     }

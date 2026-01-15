@@ -7,6 +7,13 @@ class Bubble extends MovableObject {
     height = 35;
     otherDirection;
 
+    /**
+     * Creates a new bubble as a projectile.
+     * @param {World} world - Reference to the game world
+     * @param {number} x - Starting X position
+     * @param {number} y - Starting Y position
+     * @param {boolean} otherDirection - True if the bubble flies to the left
+     */
     constructor(world, x, y, otherDirection = false) {
         super().loadImage('img/1.Sharkie/4.Attack/bubble-trap/poisoned-bubble.png');
         this.world = world;
@@ -16,6 +23,9 @@ class Bubble extends MovableObject {
     }
 
 
+    /**
+     * Bewegt die Blase horizontal und entfernt sie bei Levelende.
+     */
     moveBubble() {
         const interval = setInterval(() => {
             if (!gamePaused) {
@@ -29,6 +39,11 @@ class Bubble extends MovableObject {
     }
 
 
+    /**
+     * Setzt die Startposition der Blase.
+     * @param {number} x - X-Position
+     * @param {number} y - Y-Position
+     */
     calculatePosition(x, y) {
         this.x = x;
         this.y = y;

@@ -59,10 +59,9 @@ class World {
 
 
     initializeStatusBars() {
-        this.poisonStatusBar = new PoisonStatusBar();
-        this.healthStatusBar = new HealthStatusBar();
-        this.healthStatusBar.setPercentage(100);
-        this.coinStatusBar = new CoinStatusBar();
+        this.poisonStatusBar = new StatusBar(0, POISON_IMAGES, 0);
+        this.healthStatusBar = new StatusBar(80, HEALTH_IMAGES, 100);
+        this.coinStatusBar = new StatusBar(40, COIN_IMAGES, 0);
     }
 
 

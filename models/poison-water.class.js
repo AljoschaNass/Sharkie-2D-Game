@@ -19,6 +19,9 @@ class PoisonWater extends CollectableObject {
     };
 
 
+    /**
+     * Erstellt eine neue Giftflasche im Wasser.
+     */
     constructor(){
         super().loadImage("img/4.Marcadores/Posion/Animada/1.png");
         this.loadImages(this.IMAGES_WATER);
@@ -27,11 +30,14 @@ class PoisonWater extends CollectableObject {
         this.animate();
     }
 
+    /**
+     * Startet die Animation der Giftflasche.
+     */
     animate() {
         setInterval(() => {
             if (!gamePaused) {
-                this.playAnimation(this.IMAGES_WATER);  
-            } 
+                this.playAnimation(this.IMAGES_WATER);
+            }
         }, 200);
     }
 }

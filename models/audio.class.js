@@ -2,6 +2,9 @@
  * Manages all game audio and sound effects.
  */
 class AudioManager {
+  /**
+   * Creates a new audio manager.
+   */
   constructor() {
     this.loadMuteSettings();
     this.initializeAudioLibrary();
@@ -9,11 +12,17 @@ class AudioManager {
   }
 
 
+  /**
+   * Loads the mute setting from localStorage.
+   */
   loadMuteSettings() {
     this.audioMuted = localStorage.getItem('audioMuted') === 'true';
   }
 
 
+  /**
+   * Initializes all audio elements of the game.
+   */
   initializeAudioLibrary() {
     this.audio = {
       background: this.createAudio('sounds/underwater-ambience.mp3', { loop: true, volume: 0.4 }),
@@ -103,6 +112,9 @@ class AudioManager {
   }
 
 
+  /**
+   * Stops all currently playing sounds.
+   */
   stopAll() {
     Object.values(this.audio).forEach(sound => {
       sound.pause();
@@ -112,6 +124,9 @@ class AudioManager {
   }
 
 
+  /**
+   * Mutes all sounds and stops them.
+   */
   muteAll() {
     this.audioMuted = true;
     this.saveSettings();
@@ -120,6 +135,9 @@ class AudioManager {
   }
 
 
+  /**
+   * Unmutes all sounds.
+   */
   unmuteAll() {
     this.audioMuted = false;
     this.saveSettings();
@@ -127,6 +145,9 @@ class AudioManager {
   }
 
 
+  /**
+   * Toggles between mute and unmute.
+   */
   toggleAudio() {
     this.audioMuted = !this.audioMuted;
     this.saveSettings();
@@ -140,6 +161,10 @@ class AudioManager {
   }
 
 
+  /**
+   * Checks if audio is muted.
+   * @returns {boolean} True if muted
+   */
   isMuted() {
     return this.audioMuted;
   }

@@ -7,16 +7,22 @@ class PoisonGround extends CollectableObject {
     y = 100;
 
 
+    /**
+     * Erstellt eine neue Giftflasche am Boden.
+     */
     constructor(){
         super().loadImage("img/4.Marcadores/Posion/Dark - Left.png");
         this.loadImages(this.IMAGES_GROUND);
         this.animate();
     }
 
+    /**
+     * Startet die Animation der Giftflasche.
+     */
     animate() {
         setInterval(() => {
             if (!gamePaused) {
-                this.playAnimation(this.IMAGES_WATER);   
+                this.playAnimation(this.IMAGES_WATER);
             }
         }, 200);
     }

@@ -14,12 +14,20 @@ class DrawableObjekt {
     };
 
 
+    /**
+     * Lädt ein einzelnes Bild.
+     * @param {string} path - Pfad zur Bilddatei
+     */
     loadImage(path){
         this.img = new Image();
         this.img.src = path;
     }
 
 
+    /**
+     * Lädt mehrere Bilder und speichert sie im Cache.
+     * @param {string[]} arr - Array mit Bildpfaden
+     */
     loadImages(arr) {
         arr.forEach(path => {
             this.img = new Image();
@@ -29,40 +37,23 @@ class DrawableObjekt {
     }
 
 
+    /**
+     * Zeichnet das Objekt auf das Canvas.
+     * @param {CanvasRenderingContext2D} ctx - Canvas-Kontext
+     */
     draw(ctx) {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 
-
-    // Debug: Draw blue frame around object bounds
-    // drawFrame(ctx) {
-    //     if (this instanceof Character || this instanceof Pufferfish || this instanceof Endboss || this instanceof PoisonWater || this instanceof Coin || this instanceof Jellyfish || this instanceof Bubble) {
-    //         ctx.beginPath();
-    //         ctx.lineWidth = '5';
-    //         ctx.strokeStyle = 'blue';
-    //         ctx.rect(this.x, this.y, this.width, this.height);
-    //         ctx.stroke();
-    //     }
-    // }
-
-
-    // Debug: Draw red hitbox with offsets
-    // drawHitbox(ctx) {
-    //     if (this instanceof Character || this instanceof Pufferfish || this instanceof Endboss || this instanceof PoisonWater || this instanceof Coin || this instanceof Jellyfish || this instanceof Bubble) {
-    //         ctx.beginPath();
-    //         ctx.lineWidth = '3';
-    //         ctx.strokeStyle = 'red';
-
-    //         const hitboxX = this.x + this.offset.left;
-    //         const hitboxY = this.y + this.offset.top;
-    //         const hitboxWidth = this.width - this.offset.left - this.offset.right;
-    //         const hitboxHeight = this.height - this.offset.top - this.offset.bottom;
-
-    //         ctx.rect(hitboxX, hitboxY, hitboxWidth, hitboxHeight);
-    //         ctx.stroke();
-    //     }
-    // }
-
+    /**
+     * Zeichnet einen Rahmen um das Objekt (Debug).
+     * @param {CanvasRenderingContext2D} ctx - Canvas-Kontext
+     */
     drawFrame(ctx) {}
+
+    /**
+     * Zeichnet die Hitbox des Objekts (Debug).
+     * @param {CanvasRenderingContext2D} ctx - Canvas-Kontext
+     */
     drawHitbox(ctx) {}
 }

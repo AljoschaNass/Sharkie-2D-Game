@@ -7,6 +7,11 @@ class MovableObject extends DrawableObjekt{
     lastDamageFrom = 'poison';
 
 
+    /**
+     * Prüft ob dieses Objekt mit einem anderen kollidiert.
+     * @param {MovableObject} mo - Objekt mit dem die Kollision geprüft wird
+     * @returns {boolean} True wenn Kollision vorliegt
+     */
     isCollding(mo) {
         return (
             this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
@@ -17,26 +22,42 @@ class MovableObject extends DrawableObjekt{
     }
 
 
+    /**
+     * Bewegt das Objekt nach oben.
+     */
     moveUp() {
         this.y -= this.speed;
     }
 
 
+    /**
+     * Bewegt das Objekt nach unten.
+     */
     moveDown(){
         this.y += this.speed;
     }
 
 
+    /**
+     * Bewegt das Objekt nach rechts.
+     */
     moveRight() {
         this.x += this.speed;
     }
 
 
+    /**
+     * Bewegt das Objekt nach links.
+     */
     moveLeft(){
         this.x -= this.speed;
     }
 
 
+    /**
+     * Verarbeitet einen Treffer durch einen Gegner und reduziert Energie.
+     * @param {MovableObject} enemy - Gegner der den Treffer verursacht
+     */
     hit(enemy) {
         if (!gamePaused && !this.isHurt()) {
             let damage = 5;
@@ -61,31 +82,47 @@ class MovableObject extends DrawableObjekt{
     }
 
 
+    /**
+     * Prüft ob das Objekt gerade verletzt ist.
+     * @returns {boolean} True wenn verletzt
+     */
     isHurt() {
         let timePassed = new Date().getTime() - this.lastHit;
         return timePassed < 1000;
     }
 
 
+    /**
+     * Prüft ob das Objekt tot ist.
+     * @returns {boolean} True wenn Energie 0 ist
+     */
     isDead() {
         return this.energy == 0;
     }
 
 
+    /**
+     * Spielt eine Animation in Dauerschleife ab.
+     * @param {string[]} images - Array mit Bildpfaden der Animation
+     */
     playAnimation(images) {
         let i = this.currentImage % images.length;
         let path = images[i];
         this.img = this.imageCache[path];
-        this.currentImage++;  
+        this.currentImage++;
     }
 
 
+    /**
+     * Spielt eine Animation einmalig ab.
+     * @param {string[]} images - Array mit Bildpfaden der Animation
+     */
     playAnimationOnce(images) {
         if (!this.animationIsPlayed) {
             let i = this.currentImage % images.length;
             let path = images[i];
             this.img = this.imageCache[path];
-            this.currentImage++;  
+            this.currentImage++;
             if (this.currentImage == images.length) {
                 this.animationIsPlayed = true;
             }
