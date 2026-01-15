@@ -3,15 +3,15 @@
  */
 class Character extends MovableObject {
     world;
-    speed = 2;
+    speed = 3;
     energy = 100000;
     collectedPoisonBottles = 0;
     collectedCoins = 0;
     offset = {
-        top: 100,
-        left: 40,
-        bottom: 45,
-        right: 35
+        top: 110,
+        left: 50,
+        bottom: 55,
+        right: 45
     };
     currentImageSet = this.IMAGES_IDLE;
     sharkIsAttacking = false;
@@ -151,22 +151,37 @@ class Character extends MovableObject {
     }
 
         restart() {
+        this.resetPosition();
+        this.resetStats();
+        this.resetAnimation();
+        this.resetTimerLongIdle();
+    }
+
+    resetPosition() {
         this.x = 0;
         this.y = 100;
+        this.otherDirection = false;
+    }
+
+    resetStats() {
         this.energy = 100;
         this.collectedPoisonBottles = 0;
         this.collectedCoins = 0;
+        this.lastDamageFrom = 'poison';
+        this.lastHit = 0;
+    }
+
+    resetAnimation() {
         this.currentImage = 0;
         this.currentImageSet = this.IMAGES_IDLE;
         this.sharkIsAttacking = false;
+        this.sharkIsBubbleAttacking = false;
         this.isIdleTooLong = false;
         this.introLongIdleDone = false;
-        this.lastDamageFrom = 'poison';
-        this.otherDirection = false;
         this.currentHurtImages = null;
         this.hurtAnimationFrame = 0;
-        this.lastHit = 0;
-        this.resetTimerLongIdle();
+        this.loadImage(this.IMAGES_IDLE[0]);
+        this.img = this.imageCache[this.IMAGES_IDLE[0]];
     }
 
 
@@ -193,7 +208,7 @@ class Character extends MovableObject {
                 if (this.world.keyboard.DOWN && this.y < 300) {
                     this.moveDown();
                 }
-                if (this.world.keyboard.LEFT && this.x > -100) {
+                if (this.world.keyboard.LEFT && this.x > -600) {
                     this.moveLeft();
                     this.otherDirection = true;
                 }
