@@ -2,9 +2,9 @@ const pauseBtnGlobal = document.getElementById('pause-btn');
 if (pauseBtnGlobal) {
   pauseBtnGlobal.addEventListener('click', () => {
     gamePaused = true;
-    const optionsDialog = document.getElementById('optionsMenu');
-    if (optionsDialog) {
-      optionsDialog.showModal();
+    const controlsDialog = document.getElementById('controlsMenu');
+    if (controlsDialog) {
+      controlsDialog.showModal();
     }
   });
 }
@@ -33,7 +33,7 @@ setInterval(() => {
 }, 150);
 
 document.addEventListener('DOMContentLoaded', () => {
-  setupDialog('.btn-options', 'optionsMenu', 'closeOptions');
+  setupDialog('.btn-controls', 'controlsMenu', 'closeControls');
   setupDialog('.btn-credits', 'creditsMenu', 'closeCreditsMenu');
   setupDialog('.btn-privacy', 'privacyMenu', 'closePrivacyMenu');
   setupDialog('.btn-impressum', 'impressumMenu', 'closeImpressumMenu');
@@ -72,29 +72,46 @@ function getDialogElements(openBtnSelector, dialogId, closeBtnId) {
 }
 
 
+/**
+ * Bindet Click-Handler an alle Öffnen-Buttons eines Dialogs.
+ * @param {NodeList} openBtns - Liste der Öffnen-Buttons
+ * @param {HTMLDialogElement} dialog - Dialog-Element
+ * @param {string} dialogId - ID des Dialogs
+ */
 function bindDialogOpenHandlers(openBtns, dialog, dialogId) {
   openBtns.forEach(openBtn => {
     openBtn.addEventListener('click', () => {
       dialog.showModal();
-      if (dialogId === 'optionsMenu') gamePaused = true;
+      if (dialogId === 'optionsMenu' || dialogId === 'controlsMenu') gamePaused = true;
     });
   });
 }
 
 
+/**
+ * Bindet Click-Handler an den Schließen-Button eines Dialogs.
+ * @param {HTMLElement} closeBtn - Schließen-Button
+ * @param {HTMLDialogElement} dialog - Dialog-Element
+ * @param {string} dialogId - ID des Dialogs
+ */
 function bindDialogCloseHandler(closeBtn, dialog, dialogId) {
   closeBtn.addEventListener('click', () => {
     dialog.close();
-    if (dialogId === 'optionsMenu') gamePaused = false;
+    if (dialogId === 'optionsMenu' || dialogId === 'controlsMenu') gamePaused = false;
   });
 }
 
 
+/**
+ * Bindet Handler für Klicks außerhalb des Dialogs.
+ * @param {HTMLDialogElement} dialog - Dialog-Element
+ * @param {string} dialogId - ID des Dialogs
+ */
 function bindOutsideClickHandler(dialog, dialogId) {
   dialog.addEventListener('click', (e) => {
     if (!isClickInsideDialog(e, dialog)) {
       dialog.close();
-      if (dialogId === 'optionsMenu') gamePaused = false;
+      if (dialogId === 'optionsMenu' || dialogId === 'controlsMenu') gamePaused = false;
     }
   });
 }
@@ -117,8 +134,8 @@ function isClickInsideDialog(event, dialog) {
 
 const muteBtn = document.getElementById('mute-btn');
 const muteImg = muteBtn.querySelector('img');
-const muteBtnOptions = document.getElementById('mute-btn-options');
-const muteImgOptions = muteBtnOptions?.querySelector('img');
+const muteBtnStart = document.getElementById('mute-btn-start');
+const muteImgStart = muteBtnStart?.querySelector('img');
 
 /**
  * Gets the current audio muted state from world or localStorage.
@@ -150,7 +167,7 @@ function updateMuteIcons() {
   const isMuted = getAudioMutedState();
   const icon = isMuted ? 'img/Buttons/Key/sound_off.png' : 'img/Buttons/Key/sound_on.png';
   if (muteImg) muteImg.src = icon;
-  if (muteImgOptions) muteImgOptions.src = icon;
+  if (muteImgStart) muteImgStart.src = icon;
 }
 
 muteBtn.addEventListener('click', () => {
@@ -158,10 +175,12 @@ muteBtn.addEventListener('click', () => {
   updateMuteIcons();
 });
 
-muteBtnOptions.addEventListener('click', () => {
-  toggleAudioMute();
-  updateMuteIcons();
-});
+if (muteBtnStart) {
+  muteBtnStart.addEventListener('click', () => {
+    toggleAudioMute();
+    updateMuteIcons();
+  });
+}
 
 updateMuteIcons();
 
@@ -185,9 +204,9 @@ function showScreen(hide, show) {
  * Displays the winning screen and plays win sound.
  */
 function showWinScreen() {
-  showScreen(canvasRef, winScreen);
   gamePaused = true;
   world?.audioManager?.stopAll?.();
+  showScreen(canvasRef, winScreen);
   world?.audioManager?.play?.('winSound');
 }
 
@@ -203,7 +222,9 @@ function showGameOverScreen() {
 }
 
 document.getElementById('btnRestart').addEventListener('click', () => {
-  showScreen(winScreen, canvasRef);
+  winScreen.classList.add('d_none');
+  canvasRef.classList.remove('d_none');
+  gamePaused = false;
   init();
 });
 
