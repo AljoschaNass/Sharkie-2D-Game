@@ -2,10 +2,10 @@ class Pufferfish extends MovableObject {
     height = 60;
     width = 70;
     offset = {
-        top: 0,
-        left: 0,
+        top: 5,
+        left: 10,
         bottom: 15,
-        right: 0
+        right: 10
     };
     IMAGES_SWIM = [];
     IMAGES_TRANSITION = [];
@@ -78,6 +78,10 @@ class Pufferfish extends MovableObject {
     repeatCounter = 0;
 
 
+    /**
+     * Erstellt einen neuen Kugelfisch.
+     * @param {string} color - Farbe des Kugelfischs (green, orange oder red)
+     */
     constructor(color){
         super().loadImage("img/2.Enemy/1.Pufferfish/1.Swim/1.swim1.png");
         this.loadAllImages();
@@ -85,10 +89,13 @@ class Pufferfish extends MovableObject {
         this.selectColor();
         this.setSequences();
         this.calculatePosition();
-        this.animate();        
+        this.animate();
     }
 
 
+    /**
+     * Startet die Bewegung und Animation des Kugelfischs.
+     */
     animate() {
         setInterval(() => {
             if (!gamePaused) {
@@ -99,6 +106,9 @@ class Pufferfish extends MovableObject {
     }
 
 
+    /**
+     * Lädt alle Bilder für alle Farben und Animationstypen.
+     */
     loadAllImages() {
         const colors = ['GREEN', 'ORANGE', 'RED'];
         const types = ['SWIM', 'TRANSITION', 'BUBBLESWIM'];
@@ -112,6 +122,9 @@ class Pufferfish extends MovableObject {
     }
 
 
+    /**
+     * Spielt die Animationssequenz in einer Dauerschleife ab.
+     */
     loopAnimationSequence() {
         let currentSequenceIndex = 0;
         let frameIndex = 0;
@@ -126,6 +139,12 @@ class Pufferfish extends MovableObject {
     }
 
 
+    /**
+     * Spielt ein einzelnes Bild der aktuellen Sequenz ab.
+     * @param {number} sequenceIndex - Index der aktuellen Sequenz
+     * @param {number} frameIndex - Index des aktuellen Bildes
+     * @returns {Object} Neuer Sequenz- und Bildindex
+     */
     playSequenceFrame(sequenceIndex, frameIndex) {
         const current = this.sequences[sequenceIndex];
         const currentImages = current.images;
@@ -137,6 +156,11 @@ class Pufferfish extends MovableObject {
     }
 
 
+    /**
+     * Aktualisiert das aktuell angezeigte Bild.
+     * @param {string[]} images - Array mit Bildpfaden
+     * @param {number} frameIndex - Index des anzuzeigenden Bildes
+     */
     updateFrameImage(images, frameIndex) {
         const path = images[frameIndex];
         this.img = this.imageCache[path];
@@ -144,6 +168,13 @@ class Pufferfish extends MovableObject {
     }
 
 
+    /**
+     * Verwaltet den Fortschritt der Animationssequenz.
+     * @param {number} sequenceIndex - Aktueller Sequenzindex
+     * @param {number} frameIndex - Aktueller Bildindex
+     * @param {Object} current - Aktuelle Sequenzdaten
+     * @returns {Object} Neue Indizes für Sequenz und Bild
+     */
     handleSequenceProgress(sequenceIndex, frameIndex, current) {
         if (frameIndex >= current.images.length) {
             frameIndex = 0;
@@ -159,22 +190,31 @@ class Pufferfish extends MovableObject {
     }
 
 
+    /**
+     * Berechnet zufällige Position und Geschwindigkeit.
+     */
     calculatePosition() {
-        this.x = 400 + Math.random() * 2200;
+        this.x = 400 + Math.random() * 3600;
         this.y = Math.random() * 480 * 0.75;
-        this.speed = 0.4 + Math.random() * 0.35;
+        this.speed = 0.6 + Math.random() * 0.5;
     }
 
 
+    /**
+     * Wählt die Bilder basierend auf der Farbe aus.
+     */
     selectColor() {
         const suffix = this.color.toUpperCase();
 
         this.IMAGES_SWIM = this[`IMAGES_SWIM_${suffix}`] || [];
         this.IMAGES_TRANSITION = this[`IMAGES_TRANSITION_${suffix}`] || [];
-        this.IMAGES_BUBBLESWIM = this[`IMAGES_BUBBLESWIM_${suffix}`] || [];       
+        this.IMAGES_BUBBLESWIM = this[`IMAGES_BUBBLESWIM_${suffix}`] || [];
     }
 
 
+    /**
+     * Definiert die Animationssequenzen mit Wiederholungen.
+     */
     setSequences() {
         this.sequences = [
             { images: this.IMAGES_SWIM, repeat: 2 },
@@ -185,6 +225,10 @@ class Pufferfish extends MovableObject {
     }
 
 
+    /**
+     * Passt den Offset je nach Animationstyp an.
+     * @param {string[]} currentImages - Aktuell verwendete Bildarray
+     */
     setOffset(currentImages) {
         if (currentImages != this.IMAGES_BUBBLESWIM) {
             this.offset.bottom = 15;

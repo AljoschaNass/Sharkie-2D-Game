@@ -9,11 +9,17 @@ class CollectableObject extends BackgroundObject {
     };
 
 
+    /**
+     * Berechnet eine zufällige X-Position.
+     */
     calculateXPosition() {
-        this.x = 300 + Math.random() * 2500;
+        this.x = 300 + Math.random() * 3800;
     }
 
 
+    /**
+     * Berechnet eine zufällige Y-Position.
+     */
     calculateYPosition() {
         this.y = Math.random() * 480 * 0.75;
     }

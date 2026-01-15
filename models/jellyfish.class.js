@@ -2,10 +2,10 @@ class Jellyfish extends MovableObject {
     height = 80;
     width = 60;
     offset = {
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0
+        top: 10,
+        left: 10,
+        bottom: 10,
+        right: 10
     };
     IMAGES_SWIM = [];
     IMAGES_DEAD = [];
@@ -61,6 +61,10 @@ class Jellyfish extends MovableObject {
     repeatCounter = 0;
 
 
+    /**
+     * Erstellt eine neue Qualle.
+     * @param {string} color - Farbe der Qualle (lila, yellow, green oder pink)
+     */
     constructor(color){
         super().loadImage("img/2.Enemy/2.Jellyfish/Regular damage/Lila 1.png");
         this.loadAllImages();
@@ -73,6 +77,9 @@ class Jellyfish extends MovableObject {
     }
 
 
+    /**
+     * Startet die Bewegung und Animation der Qualle.
+     */
     animate() {
         setInterval(() => {
             if (!gamePaused) {
@@ -88,6 +95,9 @@ class Jellyfish extends MovableObject {
     }
 
 
+    /**
+     * Lädt alle Bilder für alle Farben und Animationstypen.
+     */
     loadAllImages() {
         const colors = ['LILA', 'YELLOW', 'GREEN', 'PINK'];
         const types = ['SWIM', 'DEAD'];
@@ -101,13 +111,19 @@ class Jellyfish extends MovableObject {
     }
 
 
+    /**
+     * Berechnet zufällige Position und Geschwindigkeit.
+     */
     calculatePosition() {
-        this.x = 600 + Math.random() * 2000;
+        this.x = 600 + Math.random() * 3400;
         this.y = Math.random() * 480 * 0.75;
-        this.speed = 0.4 + Math.random() * 0.35;
+        this.speed = 0.6 + Math.random() * 0.5;
     }
 
 
+    /**
+     * Wählt die Bilder basierend auf der Farbe aus.
+     */
     selectColor() {
         const suffix = this.color.toUpperCase();
 
@@ -116,8 +132,11 @@ class Jellyfish extends MovableObject {
     }
 
 
+    /**
+     * Bewegt die Qualle nach links mit wellenförmiger Auf- und Ab-Bewegung.
+     */
     moveLeftWithWave() {
         this.x -= this.speed;
-        this.y = this.baseY + Math.sin((Date.now() + this.waveOffset) / 300) * 20;
+        this.y = this.baseY + Math.sin((Date.now() + this.waveOffset) / 300) * 40;
     }
 }
