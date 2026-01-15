@@ -35,10 +35,10 @@
   color: #fff;
 }
 
-.btn-options {
-  width: 160px;
+.btn-controls {
+  width: 180px;
   font-size: 1.2rem;
-  padding: 0.6rem;
+  padding: 0.7rem 1rem;
   background: rgba(0, 51, 102, 0.6);
   border: 2px solid #4fd1ff;
   color: #fff;
@@ -46,7 +46,7 @@
   transition: all 0.3s ease;
 }
 
-.btn-options:hover {
+.btn-controls:hover {
   background: #4fd1ff;
   color: #001a33;
   transform: scale(1.07);

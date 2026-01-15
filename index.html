@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/buttons.css">
     <link rel="stylesheet" href="css/screen-start.css">
     <link rel="stylesheet" href="css/screen-gameplay.css">
-    <link rel="stylesheet" href="css/dialog-options.css">
+    <link rel="stylesheet" href="css/dialog-controls.css">
     <link rel="stylesheet" href="css/dialog-credits.css">
     <link rel="stylesheet" href="css/dialog-privacy-police.css">
     <link rel="stylesheet" href="css/dialog-impressum.css">
@@ -16,13 +16,11 @@
     <link rel="stylesheet" href="css/screen-game-over.css">
     <link rel="icon" type="image/x-icon" href="./img/1.Sharkie/1.IDLE/1.png"/>
 
+    <script src="js/constants.js"></script>
     <script src="models/world.class.js"></script>
     <script src="models/audio.class.js"></script>
     <script src="models/drawable-object.class.js"></script>
     <script src="models/statusBar.class.js"></script>
-    <script src="models/poison-statusBar.class.js"></script>
-    <script src="models/health-statusBar.class.js"></script>
-    <script src="models/coin-statusBar.class.js"></script>
     <script src="models/movable-object.class.js"></script>
     <script src="models/background-object.class.js"></script>
     <script src="models/collectable-objekt.class.js"></script>
@@ -39,7 +37,6 @@
     <script src="levels/level1.js"></script>
     <script src="js/menu.js" defer></script>
     <script src="js/game.js"></script>
-    <script src="js/responsive.js" defer></script>
 </head>
 <body>
 <div id="rotate-message" class="rotate-message d_none">
@@ -90,12 +87,16 @@
     </section>
 
     <section class="startScreen" id="startScreen">
+            <button id="mute-btn-start" class="btn mute-btn-corner">
+                <img class="status-bar-img" src="img/Buttons/Key/sound_on.png" alt="">
+            </button>
+
             <h1 class="title">Sharkie</h1>
             <p class="subtitle">Join Sharkie on an adventure through the depths of the ocean!</p>
 
             <div class="menu">
                 <button class="btn btn-start" id="start-btn">Start Game</button>
-                <button class="btn btn-options">Options</button>
+                <button class="btn btn-controls">Controls</button>
             </div>
 
             <div class="bottom-menu">
@@ -105,47 +106,40 @@
             </div>
 
             <div class="shark" id="shark"></div>
-        
+
     </section>
 
-    <dialog class="allDialogs dialogOptions" id="optionsMenu">
+    <dialog class="allDialogs dialogControls" id="controlsMenu">
         <header class="dialogHeaders">
-        <h2>OPTIONS</h2>
+        <h2>CONTROLS</h2>
         </header>
 
-        <section class="options-content">
-        <div class="audio-settings">
-            <h3>Audio Settings</h3>
-            <div class="setting">
-                <label for="mute-btn-options">Mute/Unmute</label>
-                <button id="mute-btn-options" class="btn">
-                    <img class="status-bar-img" src="img/Buttons/Key/sound_on.png" alt="">
-                </button>            
-            </div>
-        </div>
-
-        <div class="controls">
-            <h3>Controls</h3>
-            <div class="controls-grid">
-                <div class="control-item">
-                    <img src="img/Buttons/Key/arrow keys.png" alt="Arrow keys" class="key-img">
-                    <span>Move Sharkie</span>
+        <section class="controls-content">
+            <div class="controls-layout">
+                <div class="controls-section">
+                    <h3>Movement</h3>
+                    <div class="control-item">
+                        <img src="img/Buttons/Key/arrow keys.png" alt="Arrow keys" class="key-img key-img-arrows">
+                        <span>Move Sharkie</span>
+                    </div>
                 </div>
-                <div class="control-item">
-                    <img src="img/Buttons/Key/D key.png" alt="Key D" class="key-img">
-                    <span>Bubble Attack</span>
-                </div>
-                <div class="control-item">
-                    <img src="img/Buttons/Key/Space Bar key.png" alt="Space key" class="key-img">
-                    <span>Fin Slap</span>
+                <div class="controls-section">
+                    <h3>Attacks</h3>
+                    <div class="control-item">
+                        <img src="img/Buttons/Key/D key.png" alt="Key D" class="key-img key-img-single">
+                        <span>Bubble Attack</span>
+                    </div>
+                    <div class="control-item">
+                        <img src="img/Buttons/Key/Space Bar key.png" alt="Space key" class="key-img key-img-single">
+                        <span>Fin Slap</span>
+                    </div>
                 </div>
             </div>
         </section>
 
         <footer class="dialogFooters">
-        <button id="closeOptions" class="btn btn-small">X Close</button>
+        <button id="closeControls" class="btn btn-small">X Close</button>
         </footer>
-    </div>
     </dialog>
 
     <dialog class="allDialogs dialogCredits" id="creditsMenu">
