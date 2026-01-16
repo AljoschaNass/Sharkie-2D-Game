@@ -92,7 +92,7 @@ class Endboss extends MovableObject {
      * Setzt den Endboss auf Anfangswerte zurück.
      */
     restart() {
-        this.x = 3000;
+        this.x = 3500;
         this.y = 50;
         this.energy = 100;
         this.currentImage = 0;
@@ -115,7 +115,7 @@ class Endboss extends MovableObject {
             if (!gamePaused) {
                 if (this.energy <= 0 && !this.isDying) {
                     this.die();
-                } else if (this.world.character.x > 2800) {
+                } else if (this.world.character.x > 3100) {
                     this.characterReachedEndboss = true;
                 }
 
@@ -126,6 +126,8 @@ class Endboss extends MovableObject {
 
                 if (this.animationIsPlayed && !this.isAttacking && !this.isHurtAnimating && !this.isDying) {
                     this.playAnimation(this.IMAGES_FLOATING);
+                } else if (this.isDying) {
+                    this.playAnimation(this.IMAGES_DEAD);
                 }
             }
         }, 200);
@@ -262,10 +264,12 @@ class Endboss extends MovableObject {
     die() {
         this.isDying = true;
         this.currentImage = 0;
+        let deathAnimationPlayed = false;
 
         const interval = setInterval(() => {
-            if (!gamePaused) {
+            if (!gamePaused && !deathAnimationPlayed) {
                 this.playAnimationFrame(this.IMAGES_DEAD, () => {
+                    deathAnimationPlayed = true;
                     clearInterval(interval);
                     gamePaused = true;
                     setTimeout(() => {
@@ -273,7 +277,7 @@ class Endboss extends MovableObject {
                     }, 500);
                 });
             }
-        }, 200);
+        }, 350);
     }
 
 
