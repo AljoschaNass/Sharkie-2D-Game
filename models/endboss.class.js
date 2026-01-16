@@ -111,32 +111,69 @@ class Endboss extends MovableObject {
      * Startet die Animationen und Bewegung des Endbosses.
      */
     animate() {
+        this.startAnimationLoop();
+        this.startMovementLoop();
+    }
+
+
+    /**
+     * Startet die Hauptanimationsschleife.
+     */
+    startAnimationLoop() {
         setInterval(() => {
             if (!gamePaused) {
-                if (this.energy <= 0 && !this.isDying) {
-                    this.die();
-                } else if (this.world.character.x > 3100) {
-                    this.characterReachedEndboss = true;
-                }
-
-                if (this.characterReachedEndboss && !this.isDying) {
-                    this.showEndboss();
-                    this.updatePhaseSystem();
-                }
-
-                if (this.animationIsPlayed && !this.isAttacking && !this.isHurtAnimating && !this.isDying) {
-                    this.playAnimation(this.IMAGES_FLOATING);
-                } else if (this.isDying) {
-                    this.playAnimation(this.IMAGES_DEAD);
-                }
+                this.checkBossState();
+                this.handleBossActivation();
+                this.playCurrentAnimation();
             }
         }, 200);
+    }
 
+
+    /**
+     * Startet die Bewegungsschleife.
+     */
+    startMovementLoop() {
         setInterval(() => {
             if (!gamePaused && this.characterReachedEndboss && !this.isDying && this.animationIsPlayed) {
                 this.executePhaseMovement();
             }
         }, 1000 / 60);
+    }
+
+
+    /**
+     * Überprüft den Zustand des Bosses (Tod/Aktivierung).
+     */
+    checkBossState() {
+        if (this.energy <= 0 && !this.isDying) {
+            this.die();
+        } else if (this.world.character.x > 3100) {
+            this.characterReachedEndboss = true;
+        }
+    }
+
+
+    /**
+     * Behandelt die Aktivierung des Bosses.
+     */
+    handleBossActivation() {
+        if (this.characterReachedEndboss && !this.isDying) {
+            this.showEndboss();
+            this.updatePhaseSystem();
+        }
+    }
+
+
+    /**
+     * Spielt die aktuelle Animation basierend auf dem Zustand ab.
+     */
+    playCurrentAnimation() {
+        if (this.animationIsPlayed && !this.isAttacking && !this.isHurtAnimating && !this.isDying) {
+            this.playAnimation(this.IMAGES_FLOATING);
+        } else if (this.isDying) {
+            this.playAnimation(this.IMAGES_DEAD);
+        }
     }
 
 
