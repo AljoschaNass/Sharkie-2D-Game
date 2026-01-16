@@ -34,13 +34,13 @@ canvas {
 
 .mobile-controls {
   position: fixed;
-  bottom: 2vh;
+  bottom: 1vh;
   left: 0;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  padding: 0 2rem;
+  padding: 0 1rem;
   z-index: 20;
   pointer-events: none;
 }
@@ -51,32 +51,66 @@ canvas {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
   pointer-events: all;
+}
+
+.controls-center {
+  flex-direction: column;
+  gap: 0.2rem;
 }
 
 .control-btn {
   background: none;
   border: none;
-  padding: 15px;
-  height: 70px;
-  width: 70px;
-  opacity: 0.85;
+  padding: 8px;
+  height: clamp(50px, 8vh, 60px);
+  width: clamp(50px, 8vh, 60px);
+  opacity: 0.7;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .control-btn img {
-  width: 40px;
-  height: 40px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   pointer-events: none;
+}
+
+#btn-space img {
+  height: 100%;
+  width: auto;
+}
+
+#btn-d img {
+  height: 100%;
+  width: auto;
 }
 
 .control-btn.pressed {
   opacity: 1;
   transform: scale(0.95);
+}
+
+@media (max-height: 600px) {
+  .mobile-controls {
+    bottom: 0.5vh;
+    padding: 0 0.5rem;
+  }
+
+  .controls-left,
+  .controls-center,
+  .controls-right {
+    gap: 0.3rem;
+  }
+
+  .control-btn {
+    padding: 5px;
+    height: clamp(45px, 7vh, 55px);
+    width: clamp(45px, 7vh, 55px);
+  }
 }
 
 @media (hover: none) and (pointer: coarse) {
