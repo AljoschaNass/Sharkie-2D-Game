@@ -223,7 +223,10 @@ function showGameOverScreen() {
 
 document.getElementById('btnRestart').addEventListener('click', () => {
   winScreen.classList.add('d_none');
+  const gameContainer = document.getElementById("game-container");
+  gameContainer.classList.remove("d_none");
   canvasRef.classList.remove('d_none');
+  document.getElementById("startScreen").classList.add("d_none");
   gamePaused = false;
   init();
 });
