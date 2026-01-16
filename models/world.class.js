@@ -181,6 +181,9 @@ class World {
                 this.healthStatusBar.setPercentage(this.character.energy);
                 this.character.hurtCharacter(enemy);
                 this.audioManager.play('hit');
+                if (enemy instanceof Endboss) {
+                    enemy.attack();
+                }
             }
         });
     }
