@@ -1,5 +1,5 @@
 /**
- * Main player character (Sharkie the shark).
+ * Main character.
  */
 class Character extends MovableObject {
     world;
@@ -90,56 +90,144 @@ class Character extends MovableObject {
     }
 
 
-    animate() {       
+    animate() {
+        this.startMovementLoop();
+        this.startAnimationLoop();
+    }
+
+
+    /**
+     * Startet die Bewegungsschleife für Tastatureingaben.
+     */
+    startMovementLoop() {
         setInterval(() => {
             if (!gamePaused) {
-                if (this.world.keyboard.UP && this.y > -90) {
-                    this.moveUp();            }
-                if (this.world.keyboard.DOWN && this.y < 300) {
-                    this.moveDown();
-                }
-                if (this.world.keyboard.LEFT && this.x > -600) {
-                    this.moveLeft();
-                    this.otherDirection = true;
-                }
-                if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEnd_x) {
-                    this.moveRight();
-                    this.otherDirection = false;
-                }
-                this.world.camera_x = -this.x + 50;  
-            }          
+                this.handleMovementInput();
+                this.updateCamera();
+            }
         }, 1000 / 60);
-        
+    }
+
+
+    /**
+     * Verarbeitet Bewegungseingaben von der Tastatur.
+     */
+    handleMovementInput() {
+        if (this.world.keyboard.UP && this.y > -90) {
+            this.moveUp();
+        }
+        if (this.world.keyboard.DOWN && this.y < 300) {
+            this.moveDown();
+        }
+        this.handleHorizontalMovement();
+    }
+
+
+    /**
+     * Verarbeitet horizontale Bewegung (links/rechts).
+     */
+    handleHorizontalMovement() {
+        if (this.world.keyboard.LEFT && this.x > -600) {
+            this.moveLeft();
+            this.otherDirection = true;
+        }
+        if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEnd_x) {
+            this.moveRight();
+            this.otherDirection = false;
+        }
+    }
+
+
+    /**
+     * Aktualisiert die Kameraposition.
+     */
+    updateCamera() {
+        this.world.camera_x = -this.x + 50;
+    }
+
+
+    /**
+     * Startet die Animationsschleife für Charakteraktionen.
+     */
+    startAnimationLoop() {
         setInterval(() => {
             if (!gamePaused) {
-                if (this.isDead()) {
-                    this.dieCharacter();
-                } else if (this.isAttacking()) {
-                    this.setOffset(100, 45);
-                    this.attack();
-                    this.resetTimerLongIdle();
-                } else if (this.isBubbleAttacking()) {
-                    this.bubbleAttack();
-                    this.resetTimerLongIdle();
-                } else if (this.isHurt()) {
-                    this.playHurtAnimation();
-                    this.resetTimerLongIdle();
-                } else if (this.isSwimming()) {
-                    this.setOffset(100, 45);
-                    this.playAnimation(this.IMAGES_SWIM);
-                    this.resetTimerLongIdle();
-                } else if (this.isIdle()) {
-                    if (this.isIdleTooLong) {
-                        this.playLongIdleAnimation(this.IMAGES_LONG_IDLE);
-                    } else {
-                        this.playAnimation(this.IMAGES_IDLE);
-                    }
-                    if (!this.idleTimeout) {
-                        this.setTimerLongIdle();
-                    }
-                }
+                this.handleCharacterState();
             }
         }, 150);
+    }
+
+
+    /**
+     * Verarbeitet den aktuellen Zustand des Charakters.
+     */
+    handleCharacterState() {
+        if (this.isDead()) {
+            this.dieCharacter();
+        } else if (this.isAttacking()) {
+            this.handleAttackState();
+        } else if (this.isBubbleAttacking()) {
+            this.handleBubbleAttackState();
+        } else if (this.isHurt()) {
+            this.handleHurtState();
+        } else if (this.isSwimming()) {
+            this.handleSwimmingState();
+        } else if (this.isIdle()) {
+            this.handleIdleState();
+        }
+    }
+
+
+    /**
+     * Verarbeitet den Angriffszustand.
+     */
+    handleAttackState() {
+        this.setOffset(100, 45);
+        this.attack();
+        this.resetTimerLongIdle();
+    }
+
+
+    /**
+     * Verarbeitet den Blasen-Angriffszustand.
+     */
+    handleBubbleAttackState() {
+        this.bubbleAttack();
+        this.resetTimerLongIdle();
+    }
+
+
+    /**
+     * Verarbeitet den Verletztenzustand.
+     */
+    handleHurtState() {
+        this.playHurtAnimation();
+        this.resetTimerLongIdle();
+    }
+
+
+    /**
+     * Verarbeitet den Schwimmzustand.
+     */
+    handleSwimmingState() {
+        this.setOffset(100, 45);
+        this.playAnimation(this.IMAGES_SWIM);
+        this.resetTimerLongIdle();
+    }
+
+
+    /**
+     * Verarbeitet den Idle-Zustand.
+     */
+    handleIdleState() {
+        if (this.isIdleTooLong) {
+            this.playLongIdleAnimation(this.IMAGES_LONG_IDLE);
+        } else {
+            this.playAnimation(this.IMAGES_IDLE);
+        }
+        if (!this.idleTimeout) {
+            this.setTimerLongIdle();
+        }
     }
 
 
