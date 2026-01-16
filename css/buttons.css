@@ -113,3 +113,23 @@
   25% { transform: rotate(-0.8deg); }
   75% { transform: rotate(0.8deg); }
 }
+
+@media (max-height: 600px) and (orientation: landscape) {
+  .btn-start {
+    width: clamp(180px, 30vw, 220px);
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    padding: 0.7rem 1rem;
+  }
+
+  .btn-controls {
+    width: clamp(140px, 25vw, 160px);
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    padding: 0.5rem 0.8rem;
+  }
+
+  .btn-small {
+    width: clamp(90px, 18vw, 110px);
+    font-size: clamp(0.75rem, 1.8vw, 0.85rem);
+    padding: 0.4rem 0.5rem;
+  }
+}
