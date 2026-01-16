@@ -73,10 +73,10 @@ function getDialogElements(openBtnSelector, dialogId, closeBtnId) {
 
 
 /**
- * Bindet Click-Handler an alle Öffnen-Buttons eines Dialogs.
- * @param {NodeList} openBtns - Liste der Öffnen-Buttons
- * @param {HTMLDialogElement} dialog - Dialog-Element
- * @param {string} dialogId - ID des Dialogs
+ * Binds click handlers to all open buttons of a dialog.
+ * @param {NodeList} openBtns - List of open buttons
+ * @param {HTMLDialogElement} dialog - Dialog element
+ * @param {string} dialogId - ID of the dialog
  */
 function bindDialogOpenHandlers(openBtns, dialog, dialogId) {
   openBtns.forEach(openBtn => {
@@ -89,10 +89,10 @@ function bindDialogOpenHandlers(openBtns, dialog, dialogId) {
 
 
 /**
- * Bindet Click-Handler an den Schließen-Button eines Dialogs.
- * @param {HTMLElement} closeBtn - Schließen-Button
- * @param {HTMLDialogElement} dialog - Dialog-Element
- * @param {string} dialogId - ID des Dialogs
+ * Binds click handler to the close button of a dialog.
+ * @param {HTMLElement} closeBtn - Close button
+ * @param {HTMLDialogElement} dialog - Dialog element
+ * @param {string} dialogId - ID of the dialog
  */
 function bindDialogCloseHandler(closeBtn, dialog, dialogId) {
   closeBtn.addEventListener('click', () => {
@@ -103,9 +103,9 @@ function bindDialogCloseHandler(closeBtn, dialog, dialogId) {
 
 
 /**
- * Bindet Handler für Klicks außerhalb des Dialogs.
- * @param {HTMLDialogElement} dialog - Dialog-Element
- * @param {string} dialogId - ID des Dialogs
+ * Binds handler for clicks outside of the dialog.
+ * @param {HTMLDialogElement} dialog - Dialog element
+ * @param {string} dialogId - ID of the dialog
  */
 function bindOutsideClickHandler(dialog, dialogId) {
   dialog.addEventListener('click', (e) => {
