@@ -274,15 +274,29 @@ class Character extends MovableObject {
 
 
     bubbleAttack() {
+        if (this.sharkIsBubbleAttacking) return;
 
-        if (this.collectedPoisonBottles > 0) {
-            this.playActionAnimation(this.IMAGES_ATTACK_BUBBLE_TRAP_POISONED, 'sharkIsBubbleAttacking');
-            if (this.currentImage === 7) {
-                this.spawnBubble();
+        this.sharkIsBubbleAttacking = true;
+        this.currentImage = 0;
+        let bubbleSpawned = false;
+
+        const hasPoisonBottles = this.collectedPoisonBottles > 0;
+        const images = hasPoisonBottles ? this.IMAGES_ATTACK_BUBBLE_TRAP_POISONED : this.IMAGES_ATTACK_BUBBLE_TRAP_WITHOUT;
+
+        const interval = setInterval(() => {
+            if (!gamePaused) {
+                if (this.currentImage === 7 && hasPoisonBottles && !bubbleSpawned) {
+                    this.spawnBubble();
+                    bubbleSpawned = true;
+                }
+
+                this.playAnimationFrame(images, () => {
+                    clearInterval(interval);
+                    this.sharkIsBubbleAttacking = false;
+                    this.currentImage = 0;
+                });
             }
-        } else {
-            this.playActionAnimation(this.IMAGES_ATTACK_BUBBLE_TRAP_WITHOUT, 'sharkIsBubbleAttacking');
-        }        
+        }, 70);
     }
 
  
