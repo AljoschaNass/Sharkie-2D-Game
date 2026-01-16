@@ -357,18 +357,41 @@ class Character extends MovableObject {
         if (!this.currentHurtImages) return;
 
         if (!this.isHurt()) {
-            this.currentHurtImages = null;
-            this.hurtAnimationFrame = 0;
+            this.resetHurtAnimation();
             return;
         }
 
-        const images = this.currentHurtImages;
-        let i = this.hurtAnimationFrame % images.length;
-        let path = images[i];
-        this.img = this.imageCache[path];
-        this.hurtAnimationFrame++;
+        this.displayHurtFrame();
+        this.advanceHurtFrame();
+    }
 
-        if (this.hurtAnimationFrame >= images.length) {
+
+    /**
+     * Setzt die Verletzungsanimation zurück.
+     */
+    resetHurtAnimation() {
+        this.currentHurtImages = null;
+        this.hurtAnimationFrame = 0;
+    }
+
+
+    /**
+     * Zeigt das aktuelle Frame der Verletzungsanimation an.
+     */
+    displayHurtFrame() {
+        const images = this.currentHurtImages;
+        const i = this.hurtAnimationFrame % images.length;
+        const path = images[i];
+        this.img = this.imageCache[path];
+    }
+
+
+    /**
+     * Geht zum nächsten Frame der Verletzungsanimation.
+     */
+    advanceHurtFrame() {
+        this.hurtAnimationFrame++;
+        if (this.hurtAnimationFrame >= this.currentHurtImages.length) {
             this.hurtAnimationFrame = 0;
         }
     }
