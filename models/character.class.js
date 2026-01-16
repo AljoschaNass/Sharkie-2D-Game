@@ -252,7 +252,14 @@ class Character extends MovableObject {
         }
     }
 
-
+    /**
+     * Plays an action animation once.
+     * Prevents the animation from starting again while it is already running.
+     *
+     * @param {string[]} images - Array of image paths for the animation
+     * @param {string} flag - Name of the flag used to check if the animation is active
+     * @param {number} [speed=100] - Time in milliseconds between frames
+     */
     playActionAnimation(images, flag, speed = 100) {
         if (this[flag]) return;
         this[flag] = true;
@@ -360,7 +367,13 @@ class Character extends MovableObject {
         this.world.poisonStatusBar.setPercentage(this.collectedPoisonBottles);
     }
 
-
+    /**
+     * Plays a single frame of an animation.
+     * Moves to the next frame and calls a callback when the animation finishes.
+     *
+     * @param {string[]} images - Array of image paths for the animation
+     * @param {Function} [onComplete] - Optional callback to run when the animation ends
+     */
     playAnimationFrame(images, onComplete) {
         const i = this.currentImage;
         const path = images[i];
@@ -372,7 +385,12 @@ class Character extends MovableObject {
         }
     }
 
-
+    /**
+     * Triggers the hurt animation for the character.
+     * Selects the correct hurt images based on the enemy type and resets the animation frame.
+     *
+     * @param {Object} enemy - The enemy causing damage to the character
+     */
     hurtCharacter(enemy) {
         if (!gamePaused) {
             this.currentHurtImages = this.IMAGES_HURT_POISONED;
@@ -444,7 +462,12 @@ class Character extends MovableObject {
         showGameOverScreen();
     }
 
-
+    /**
+     * Plays the long idle animation.
+     * Plays the intro first, then continues with the looping idle sequence.
+     *
+     * @param {string[]} images - Array of image paths for the long idle animation
+     */
     playLongIdleAnimation(images) {
         if (this.currentImage > 14) {
             this.currentImage = 0;
@@ -457,7 +480,12 @@ class Character extends MovableObject {
         }
     }
 
-
+    /**
+     * Plays the intro part of the long idle animation.
+     * Marks the intro as finished and switches to the looping part.
+     *
+     * @param {string[]} images - Array of image paths for the long idle animation
+     */
     playLongIdleIntro(images) {
         const i = this.currentImage;
         const path = images[i];
@@ -470,7 +498,12 @@ class Character extends MovableObject {
         }
     }
 
-
+    /**
+     * Plays the long idle animation in a loop.
+     * Starts looping from a specific frame and repeats the idle sequence.
+     *
+     * @param {string[]} images - Array of image paths for the long idle animation
+     */
     playLongIdleLoop(images) {
         const loopStart = 10;
         const loopEnd = images.length - 1;
@@ -486,7 +519,12 @@ class Character extends MovableObject {
         }
     }
 
-
+    /**
+     * Plays the normal attack animation.
+     * Cycles through all attack images and stops when finished.
+     *
+     * @param {string[]} images - Array of image paths for the attack animation
+     */
     playAttackAnimation(images) {        
         if (this.sharkIsAttacking) {
             let i = this.currentImage % images.length;
@@ -501,7 +539,12 @@ class Character extends MovableObject {
         }
     } 
 
-
+    /**
+     * Plays the bubble attack animation.
+     * Updates frames only while the bubble attack is active.
+     *
+     * @param {string[]} images - Array of image paths for the bubble attack animation
+     */
     playBubbleAttackAnimation(images) {
         if (!this.sharkIsBubbleAttacking) return;
 
@@ -510,14 +553,22 @@ class Character extends MovableObject {
         this.checkBubbleAttackComplete(images);
     }
 
-
+    /**
+     * Initializes the bubble animation frame counter.
+     * Sets the frame to 0 if it is not defined yet.
+     */
     initializeBubbleFrame() {
         if (this.currentBubbleFrame === undefined) {
             this.currentBubbleFrame = 0;
         }
     }
 
-
+    /**
+     * Updates the current frame of the bubble animation.
+     * Sets the next image and moves to the next frame.
+     *
+     * @param {string[]} images - Array of image paths for the bubble animation
+     */
     updateBubbleFrame(images) {
         const i = this.currentBubbleFrame;
         const path = images[i];
@@ -525,7 +576,12 @@ class Character extends MovableObject {
         this.currentBubbleFrame++;
     }
 
-
+    /**
+     * Checks if the bubble attack animation is finished.
+     * Resets the attack state and related values when the animation ends.
+     *
+     * @param {string[]} images - Array of image paths for the bubble attack animation
+     */
     checkBubbleAttackComplete(images) {
         if (this.currentBubbleFrame >= images.length) {
             this.sharkIsBubbleAttacking = false;

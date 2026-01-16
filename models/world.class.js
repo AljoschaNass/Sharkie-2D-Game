@@ -143,40 +143,76 @@ class World {
 
 
     /**
-     * Draws all game objects on the canvas.
+     * Main draw function called every frame.
+     * Skips drawing if the game is paused and calls all helper functions.
      */
     draw() {
         if (typeof gamePaused !== 'undefined' && gamePaused) {
-            let self = this;
-            requestAnimationFrame(function() { self.draw(); });
+            this.scheduleNextFrame();
             return;
         }
+        this.clearAndTranslate();
+        this.drawBackgroundAndEnemies();
+        this.drawObjectsAndCharacter();
+        this.drawStatusBars();
+        this.scheduleNextFrame();
+    }
 
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+
+    /**
+     * Clears the canvas and applies the camera translation.
+     */
+    clearAndTranslate() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.translate(this.camera_x, 0);
+    }
+
+
+    /**
+     * Draws background objects and enemies.
+     * Only draws the endboss if the character reached it.
+     */
+    drawBackgroundAndEnemies() {
         this.addObjectsToMap(this.level.backgroundObjects);
         this.level.enemies.forEach(enemy => {
             if (enemy instanceof Endboss) {
-                if (enemy.characterReachedEndboss) {
-                    this.addToMap(enemy);
-                }
+                if (enemy.characterReachedEndboss) this.addToMap(enemy);
             } else {
                 this.addToMap(enemy);
             }
         });
+    }
+
+
+    /**
+     * Draws game items, the player character, and bubbles.
+     * Resets the canvas translation after drawing.
+     */
+    drawObjectsAndCharacter() {
         this.addObjectsToMap(this.level.poisonWaterItems);
         this.addObjectsToMap(this.level.coins);
         this.addToMap(this.character);
         this.addObjectsToMap(this.bubble);
         this.ctx.translate(-this.camera_x, 0);
+    }
+
+
+    /**
+     * Draws all status bars: poison, health, and coins.
+     */
+    drawStatusBars() {
         this.addToMap(this.poisonStatusBar);
         this.addToMap(this.healthStatusBar);
         this.addToMap(this.coinStatusBar);
+    }
 
+
+    /**
+     * Schedules the next animation frame using requestAnimationFrame.
+     */
+    scheduleNextFrame() {
         let self = this;
-        requestAnimationFrame(function() {
-            self.draw();
-        });
+        requestAnimationFrame(function() { self.draw(); });
     }
 
 
