@@ -1,4 +1,5 @@
 const pauseBtnGlobal = document.getElementById('pause-btn');
+
 if (pauseBtnGlobal) {
   pauseBtnGlobal.addEventListener('click', () => {
     gamePaused = true;

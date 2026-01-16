@@ -12,14 +12,11 @@ function init() {
     gamePaused = false;
     canvas = document.getElementById("canvas");
     canvas.classList.remove("d_none");
-
     const gameContainer = document.getElementById("game-container");
     gameContainer.classList.remove("d_none");
-
     if (world) {
         world.clearCollisionInterval();
     }
-
     world = new World(canvas, keyboard);
     document.getElementById("startScreen").classList.add("d_none");
     world.audioManager.playLoop('background');

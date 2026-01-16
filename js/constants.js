@@ -1,5 +1,5 @@
 /**
- * Bildpfade für die Gift-Statusleiste.
+ * Image paths for the poison status bar.
  */
 const POISON_IMAGES = [
     'img/4.Marcadores/green/poisoned bubbles/poison_0.png',
@@ -11,7 +11,7 @@ const POISON_IMAGES = [
 ];
 
 /**
- * Bildpfade für die Gesundheits-Statusleiste.
+ * Image paths for the health status bar.
  */
 const HEALTH_IMAGES = [
     'img/4.Marcadores/green/Life/life_0.png',
@@ -23,7 +23,7 @@ const HEALTH_IMAGES = [
 ];
 
 /**
- * Bildpfade für die Münzen-Statusleiste.
+ * Image paths for the coin status bar.
  */
 const COIN_IMAGES = [
     'img/4.Marcadores/green/Coin/coin_0.png',
