@@ -10,7 +10,7 @@ class CollectableObject extends MovableObject {
 
 
     /**
-     * Berechnet eine zufällige X-Position.
+     * Calculates a random X position.
      */
     calculateXPosition() {
         this.x = 300 + Math.random() * 3800;
@@ -18,7 +18,7 @@ class CollectableObject extends MovableObject {
 
 
     /**
-     * Berechnet eine zufällige Y-Position.
+     * Calculates a random Y position.
      */
     calculateYPosition() {
         this.y = Math.random() * 480 * 0.75;

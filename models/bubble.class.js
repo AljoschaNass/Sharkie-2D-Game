@@ -24,7 +24,7 @@ class Bubble extends MovableObject {
 
 
     /**
-     * Bewegt die Blase horizontal und entfernt sie bei Levelende.
+     * Moves the bubble horizontally and removes it at the level end.
      */
     moveBubble() {
         const interval = setInterval(() => {
@@ -40,9 +40,9 @@ class Bubble extends MovableObject {
 
 
     /**
-     * Setzt die Startposition der Blase.
-     * @param {number} x - X-Position
-     * @param {number} y - Y-Position
+     * Sets the starting position of the bubble.
+     * @param {number} x - X position
+     * @param {number} y - Y position
      */
     calculatePosition(x, y) {
         this.x = x;

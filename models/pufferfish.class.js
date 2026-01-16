@@ -79,8 +79,8 @@ class Pufferfish extends MovableObject {
 
 
     /**
-     * Erstellt einen neuen Kugelfisch.
-     * @param {string} color - Farbe des Kugelfischs (green, orange oder red)
+     * Creates a new pufferfish.
+     * @param {string} color - Color of the pufferfish (green, orange or red)
      */
     constructor(color){
         super().loadImage("img/2.Enemy/1.Pufferfish/1.Swim/1.swim1.png");
@@ -94,7 +94,7 @@ class Pufferfish extends MovableObject {
 
 
     /**
-     * Startet die Bewegung und Animation des Kugelfischs.
+     * Starts the movement and animation of the pufferfish.
      */
     animate() {
         setInterval(() => {
@@ -107,7 +107,7 @@ class Pufferfish extends MovableObject {
 
 
     /**
-     * Lädt alle Bilder für alle Farben und Animationstypen.
+     * Loads all images for all colors and animation types.
      */
     loadAllImages() {
         const colors = ['GREEN', 'ORANGE', 'RED'];
@@ -123,7 +123,7 @@ class Pufferfish extends MovableObject {
 
 
     /**
-     * Spielt die Animationssequenz in einer Dauerschleife ab.
+     * Plays the animation sequence in a continuous loop.
      */
     loopAnimationSequence() {
         let currentSequenceIndex = 0;
@@ -140,10 +140,10 @@ class Pufferfish extends MovableObject {
 
 
     /**
-     * Spielt ein einzelnes Bild der aktuellen Sequenz ab.
-     * @param {number} sequenceIndex - Index der aktuellen Sequenz
-     * @param {number} frameIndex - Index des aktuellen Bildes
-     * @returns {Object} Neuer Sequenz- und Bildindex
+     * Plays a single frame of the current sequence.
+     * @param {number} sequenceIndex - Index of the current sequence
+     * @param {number} frameIndex - Index of the current frame
+     * @returns {Object} New sequence and frame index
      */
     playSequenceFrame(sequenceIndex, frameIndex) {
         const current = this.sequences[sequenceIndex];
@@ -157,9 +157,9 @@ class Pufferfish extends MovableObject {
 
 
     /**
-     * Aktualisiert das aktuell angezeigte Bild.
-     * @param {string[]} images - Array mit Bildpfaden
-     * @param {number} frameIndex - Index des anzuzeigenden Bildes
+     * Updates the currently displayed image.
+     * @param {string[]} images - Array with image paths
+     * @param {number} frameIndex - Index of the image to display
      */
     updateFrameImage(images, frameIndex) {
         const path = images[frameIndex];
@@ -169,11 +169,11 @@ class Pufferfish extends MovableObject {
 
 
     /**
-     * Verwaltet den Fortschritt der Animationssequenz.
-     * @param {number} sequenceIndex - Aktueller Sequenzindex
-     * @param {number} frameIndex - Aktueller Bildindex
-     * @param {Object} current - Aktuelle Sequenzdaten
-     * @returns {Object} Neue Indizes für Sequenz und Bild
+     * Manages the progress of the animation sequence.
+     * @param {number} sequenceIndex - Current sequence index
+     * @param {number} frameIndex - Current frame index
+     * @param {Object} current - Current sequence data
+     * @returns {Object} New indices for sequence and frame
      */
     handleSequenceProgress(sequenceIndex, frameIndex, current) {
         if (frameIndex >= current.images.length) {
@@ -191,7 +191,7 @@ class Pufferfish extends MovableObject {
 
 
     /**
-     * Berechnet zufällige Position und Geschwindigkeit.
+     * Calculates random position and speed.
      */
     calculatePosition() {
         this.x = 400 + Math.random() * 3600;
@@ -201,7 +201,7 @@ class Pufferfish extends MovableObject {
 
 
     /**
-     * Wählt die Bilder basierend auf der Farbe aus.
+     * Selects the images based on the color.
      */
     selectColor() {
         const suffix = this.color.toUpperCase();
@@ -213,7 +213,7 @@ class Pufferfish extends MovableObject {
 
 
     /**
-     * Definiert die Animationssequenzen mit Wiederholungen.
+     * Defines the animation sequences with repetitions.
      */
     setSequences() {
         this.sequences = [
@@ -226,8 +226,8 @@ class Pufferfish extends MovableObject {
 
 
     /**
-     * Passt den Offset je nach Animationstyp an.
-     * @param {string[]} currentImages - Aktuell verwendete Bildarray
+     * Adjusts the offset based on animation type.
+     * @param {string[]} currentImages - Currently used image array
      */
     setOffset(currentImages) {
         if (currentImages != this.IMAGES_BUBBLESWIM) {

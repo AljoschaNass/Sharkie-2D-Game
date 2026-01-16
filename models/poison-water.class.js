@@ -20,7 +20,7 @@ class PoisonWater extends CollectableObject {
 
 
     /**
-     * Erstellt eine neue Giftflasche im Wasser.
+     * Creates a new poison bottle in the water.
      */
     constructor(){
         super().loadImage("img/4.Marcadores/Posion/Animada/1.png");
@@ -31,7 +31,7 @@ class PoisonWater extends CollectableObject {
     }
 
     /**
-     * Startet die Animation der Giftflasche.
+     * Starts the poison bottle animation.
      */
     animate() {
         setInterval(() => {

@@ -8,7 +8,7 @@ class PoisonGround extends CollectableObject {
 
 
     /**
-     * Erstellt eine neue Giftflasche am Boden.
+     * Creates a new poison bottle on the ground.
      */
     constructor(){
         super().loadImage("img/4.Marcadores/Posion/Dark - Left.png");
@@ -17,7 +17,7 @@ class PoisonGround extends CollectableObject {
     }
 
     /**
-     * Startet die Animation der Giftflasche.
+     * Starts the poison bottle animation.
      */
     animate() {
         setInterval(() => {

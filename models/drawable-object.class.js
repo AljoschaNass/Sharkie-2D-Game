@@ -15,8 +15,8 @@ class DrawableObjekt {
 
 
     /**
-     * Lädt ein einzelnes Bild.
-     * @param {string} path - Pfad zur Bilddatei
+     * Loads a single image.
+     * @param {string} path - Path to the image file
      */
     loadImage(path){
         this.img = new Image();
@@ -25,8 +25,8 @@ class DrawableObjekt {
 
 
     /**
-     * Lädt mehrere Bilder und speichert sie im Cache.
-     * @param {string[]} arr - Array mit Bildpfaden
+     * Loads multiple images and saves them in the cache.
+     * @param {string[]} arr - Array with image paths
      */
     loadImages(arr) {
         arr.forEach(path => {
@@ -38,8 +38,8 @@ class DrawableObjekt {
 
 
     /**
-     * Zeichnet das Objekt auf das Canvas.
-     * @param {CanvasRenderingContext2D} ctx - Canvas-Kontext
+     * Draws the object on the canvas.
+     * @param {CanvasRenderingContext2D} ctx - Canvas context
      */
     draw(ctx) {
         if (this.img && this.img instanceof HTMLImageElement) {
@@ -48,14 +48,14 @@ class DrawableObjekt {
     }
 
     /**
-     * Zeichnet einen Rahmen um das Objekt (Debug).
-     * @param {CanvasRenderingContext2D} ctx - Canvas-Kontext
+     * Draws a frame around the object (Debug).
+     * @param {CanvasRenderingContext2D} ctx - Canvas context
      */
     drawFrame(ctx) {}
 
     /**
-     * Zeichnet die Hitbox des Objekts (Debug).
-     * @param {CanvasRenderingContext2D} ctx - Canvas-Kontext
+     * Draws the hitbox of the object (Debug).
+     * @param {CanvasRenderingContext2D} ctx - Canvas context
      */
     drawHitbox(ctx) {}
 }

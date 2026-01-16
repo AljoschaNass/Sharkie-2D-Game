@@ -62,8 +62,8 @@ class Jellyfish extends MovableObject {
 
 
     /**
-     * Erstellt eine neue Qualle.
-     * @param {string} color - Farbe der Qualle (lila, yellow, green oder pink)
+     * Creates a new jellyfish.
+     * @param {string} color - Color of the jellyfish (lila, yellow, green or pink)
      */
     constructor(color){
         super().loadImage("img/2.Enemy/2.Jellyfish/Regular damage/Lila 1.png");
@@ -78,7 +78,7 @@ class Jellyfish extends MovableObject {
 
 
     /**
-     * Startet die Bewegung und Animation der Qualle.
+     * Starts the movement and animation of the jellyfish.
      */
     animate() {
         setInterval(() => {
@@ -96,7 +96,7 @@ class Jellyfish extends MovableObject {
 
 
     /**
-     * Lädt alle Bilder für alle Farben und Animationstypen.
+     * Loads all images for all colors and animation types.
      */
     loadAllImages() {
         const colors = ['LILA', 'YELLOW', 'GREEN', 'PINK'];
@@ -112,7 +112,7 @@ class Jellyfish extends MovableObject {
 
 
     /**
-     * Berechnet zufällige Position und Geschwindigkeit.
+     * Calculates random position and speed.
      */
     calculatePosition() {
         this.x = 600 + Math.random() * 3400;
@@ -122,7 +122,7 @@ class Jellyfish extends MovableObject {
 
 
     /**
-     * Wählt die Bilder basierend auf der Farbe aus.
+     * Selects the images based on the color.
      */
     selectColor() {
         const suffix = this.color.toUpperCase();
@@ -133,7 +133,7 @@ class Jellyfish extends MovableObject {
 
 
     /**
-     * Bewegt die Qualle nach links mit wellenförmiger Auf- und Ab-Bewegung.
+     * Moves the jellyfish left with wave-like up and down movement.
      */
     moveLeftWithWave() {
         this.x -= this.speed;

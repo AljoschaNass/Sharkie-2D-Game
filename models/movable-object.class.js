@@ -8,9 +8,9 @@ class MovableObject extends DrawableObjekt{
 
 
     /**
-     * Prüft ob dieses Objekt mit einem anderen kollidiert.
-     * @param {MovableObject} mo - Objekt mit dem die Kollision geprüft wird
-     * @returns {boolean} True wenn Kollision vorliegt
+     * Checks if this object collides with another object.
+     * @param {MovableObject} mo - Object to check collision with
+     * @returns {boolean} True if collision exists
      */
     isCollding(mo) {
         return (
@@ -23,7 +23,7 @@ class MovableObject extends DrawableObjekt{
 
 
     /**
-     * Bewegt das Objekt nach oben.
+     * Moves the object up.
      */
     moveUp() {
         this.y -= this.speed;
@@ -31,7 +31,7 @@ class MovableObject extends DrawableObjekt{
 
 
     /**
-     * Bewegt das Objekt nach unten.
+     * Moves the object down.
      */
     moveDown(){
         this.y += this.speed;
@@ -39,7 +39,7 @@ class MovableObject extends DrawableObjekt{
 
 
     /**
-     * Bewegt das Objekt nach rechts.
+     * Moves the object right.
      */
     moveRight() {
         this.x += this.speed;
@@ -47,7 +47,7 @@ class MovableObject extends DrawableObjekt{
 
 
     /**
-     * Bewegt das Objekt nach links.
+     * Moves the object left.
      */
     moveLeft(){
         this.x -= this.speed;
@@ -55,8 +55,8 @@ class MovableObject extends DrawableObjekt{
 
 
     /**
-     * Verarbeitet einen Treffer durch einen Gegner und reduziert Energie.
-     * @param {MovableObject} enemy - Gegner der den Treffer verursacht
+     * Processes a hit from an enemy and reduces energy.
+     * @param {MovableObject} enemy - Enemy that caused the hit
      */
     hit(enemy) {
         if (!gamePaused && !this.isHurt()) {
@@ -83,8 +83,8 @@ class MovableObject extends DrawableObjekt{
 
 
     /**
-     * Prüft ob das Objekt gerade verletzt ist.
-     * @returns {boolean} True wenn verletzt
+     * Checks if the object is currently hurt.
+     * @returns {boolean} True if hurt
      */
     isHurt() {
         let timePassed = new Date().getTime() - this.lastHit;
@@ -93,8 +93,8 @@ class MovableObject extends DrawableObjekt{
 
 
     /**
-     * Prüft ob das Objekt tot ist.
-     * @returns {boolean} True wenn Energie 0 ist
+     * Checks if the object is dead.
+     * @returns {boolean} True if energy is 0
      */
     isDead() {
         return this.energy == 0;
@@ -102,8 +102,8 @@ class MovableObject extends DrawableObjekt{
 
 
     /**
-     * Spielt eine Animation in Dauerschleife ab.
-     * @param {string[]} images - Array mit Bildpfaden der Animation
+     * Plays an animation in a continuous loop.
+     * @param {string[]} images - Array with image paths for the animation
      */
     playAnimation(images) {
         let i = this.currentImage % images.length;
@@ -114,8 +114,8 @@ class MovableObject extends DrawableObjekt{
 
 
     /**
-     * Spielt eine Animation einmalig ab.
-     * @param {string[]} images - Array mit Bildpfaden der Animation
+     * Plays an animation once.
+     * @param {string[]} images - Array with image paths for the animation
      */
     playAnimationOnce(images) {
         if (!this.animationIsPlayed) {

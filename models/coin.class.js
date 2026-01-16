@@ -10,7 +10,7 @@ class Coin extends CollectableObject {
 
 
     /**
-     * Erstellt eine neue Münze.
+     * Creates a new coin.
      */
     constructor(){
         super().loadImage("img/4.Marcadores/1. Coins/1.png");
@@ -21,7 +21,7 @@ class Coin extends CollectableObject {
     }
 
     /**
-     * Startet die Münz-Animation.
+     * Starts the coin animation.
      */
     animate() {
         setInterval(() => {

@@ -8,10 +8,10 @@ class StatusBar extends DrawableObjekt {
 
 
     /**
-     * Erstellt eine neue Statusleiste.
-     * @param {number} y - Y-Position der Statusleiste
-     * @param {string[]} images - Array mit Bildpfaden für verschiedene Prozentsätze
-     * @param {number} initialPercentage - Anfangswert in Prozent
+     * Creates a new status bar.
+     * @param {number} y - Y position of the status bar
+     * @param {string[]} images - Array with image paths for different percentages
+     * @param {number} initialPercentage - Initial value in percent
      */
     constructor(y, images, initialPercentage) {
         super();
@@ -23,8 +23,8 @@ class StatusBar extends DrawableObjekt {
 
 
     /**
-     * Setzt den Prozentsatz und aktualisiert das angezeigte Bild.
-     * @param {number} percentage - Neuer Prozentwert
+     * Sets the percentage and updates the displayed image.
+     * @param {number} percentage - New percentage value
      */
     setPercentage(percentage) {
         this.percentage = percentage;
@@ -33,8 +33,8 @@ class StatusBar extends DrawableObjekt {
     }
 
     /**
-     * Ermittelt den Bildindex basierend auf dem aktuellen Prozentsatz.
-     * @returns {number} Index des anzuzeigenden Bildes
+     * Gets the image index based on the current percentage.
+     * @returns {number} Index of the image to display
      */
     resolveImageIndex() {
         if (this.percentage == 100) {
