@@ -169,7 +169,7 @@ class Character extends MovableObject {
 
 
     /**
-     * Startet die Animationsschleife für Charakteraktionen.
+     * Starts the animation loop for character actions.
      */
     startAnimationLoop() {
         setInterval(() => {
@@ -181,7 +181,7 @@ class Character extends MovableObject {
 
 
     /**
-     * Verarbeitet den aktuellen Zustand des Charakters.
+     * Handles the current state of the character.
      */
     handleCharacterState() {
         if (this.isDead()) {
@@ -201,7 +201,7 @@ class Character extends MovableObject {
 
 
     /**
-     * Verarbeitet den Angriffszustand.
+     * Handles the attack state.
      */
     handleAttackState() {
         this.setOffset(100, 45);
@@ -211,7 +211,7 @@ class Character extends MovableObject {
 
 
     /**
-     * Verarbeitet den Blasen-Angriffszustand.
+     * Handles the bubble attack state.
      */
     handleBubbleAttackState() {
         this.bubbleAttack();
@@ -220,7 +220,7 @@ class Character extends MovableObject {
 
 
     /**
-     * Verarbeitet den Verletztenzustand.
+     * Handles the hurt state.
      */
     handleHurtState() {
         this.playHurtAnimation();
@@ -229,7 +229,7 @@ class Character extends MovableObject {
 
 
     /**
-     * Verarbeitet den Schwimmzustand.
+     * Handles the swimming state.
      */
     handleSwimmingState() {
         this.setOffset(100, 45);
@@ -239,7 +239,7 @@ class Character extends MovableObject {
 
 
     /**
-     * Verarbeitet den Idle-Zustand.
+     * Handles the idle state.
      */
     handleIdleState() {
         if (this.isIdleTooLong) {
@@ -268,11 +268,17 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Performs a fin slap attack.
+     */
     attack() {
         this.playActionAnimation(this.IMAGES_ATTACK_FIN_SLAP, 'sharkIsAttacking');
     }
 
 
+    /**
+     * Performs a bubble attack if poison bottles are available.
+     */
     bubbleAttack() {
         if (this.sharkIsBubbleAttacking) return;
 
@@ -283,7 +289,7 @@ class Character extends MovableObject {
 
 
     /**
-     * Initialisiert den Blasen-Angriff.
+     * Initializes the bubble attack.
      */
     initializeBubbleAttack() {
         this.sharkIsBubbleAttacking = true;
@@ -292,7 +298,7 @@ class Character extends MovableObject {
 
 
     /**
-     * Bereitet den Zustand für den Blasen-Angriff vor.
+     * Prepares the state for the bubble attack.
      */
     prepareBubbleAttackState() {
         const hasPoisonBottles = this.collectedPoisonBottles > 0;
@@ -302,7 +308,7 @@ class Character extends MovableObject {
 
 
     /**
-     * Startet die Blasen-Angriffs-Animation.
+     * Starts the bubble attack animation.
      */
     startBubbleAttackAnimation(bubbleState) {
         const interval = setInterval(() => {
@@ -315,7 +321,7 @@ class Character extends MovableObject {
 
 
     /**
-     * Behandelt das Spawnen der Blase.
+     * Handles spawning of the bubble.
      */
     handleBubbleSpawn(bubbleState) {
         if (this.currentImage === 7 && bubbleState.hasPoisonBottles && !bubbleState.bubbleSpawned) {
@@ -326,7 +332,7 @@ class Character extends MovableObject {
 
 
     /**
-     * Spielt ein Frame der Blasen-Angriffs-Animation ab.
+     * Plays one frame of the bubble attack animation.
      */
     playBubbleAttackFrame(images, interval) {
         this.playAnimationFrame(images, () => {
@@ -337,6 +343,9 @@ class Character extends MovableObject {
     }
 
  
+    /**
+     * Spawns a bubble projectile from the character.
+     */
     spawnBubble() {
         if (!this.world) return;
 
@@ -375,6 +384,9 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Plays the hurt animation for the character.
+     */
     playHurtAnimation() {
         if (!this.currentHurtImages) return;
 
@@ -389,7 +401,7 @@ class Character extends MovableObject {
 
 
     /**
-     * Setzt die Verletzungsanimation zurück.
+     * Resets the hurt animation.
      */
     resetHurtAnimation() {
         this.currentHurtImages = null;
@@ -398,7 +410,7 @@ class Character extends MovableObject {
 
 
     /**
-     * Zeigt das aktuelle Frame der Verletzungsanimation an.
+     * Displays the current frame of the hurt animation.
      */
     displayHurtFrame() {
         const images = this.currentHurtImages;
@@ -409,7 +421,7 @@ class Character extends MovableObject {
 
 
     /**
-     * Geht zum nächsten Frame der Verletzungsanimation.
+     * Advances to the next frame of the hurt animation.
      */
     advanceHurtFrame() {
         this.hurtAnimationFrame++;
@@ -419,6 +431,9 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Handles character death animation based on damage type.
+     */
     dieCharacter() {
         if (this.lastDamageFrom == 'poison') {
             this.playAnimationOnce(this.IMAGES_DEAD_POISONED);
@@ -520,6 +535,9 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Sets a timer for the long idle animation.
+     */
     setTimerLongIdle() {
         this.idleTimeout = setTimeout(() => {
             this.isIdleTooLong = true;
@@ -530,6 +548,9 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Resets the long idle timer.
+     */
     resetTimerLongIdle() {
         clearTimeout(this.idleTimeout);
         this.idleTimeout = null;
@@ -542,6 +563,10 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Checks if the character is in idle state.
+     * @returns {boolean} True if character is idle
+     */
     isIdle() {
         return !this.world.keyboard.SPACE &&
             !this.world.keyboard.UP &&
@@ -552,16 +577,28 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Checks if the character is attacking.
+     * @returns {boolean} True if character is attacking
+     */
     isAttacking() {
         return this.world.keyboard.SPACE || this.sharkIsAttacking;
     }
 
 
+    /**
+     * Checks if the character is bubble attacking.
+     * @returns {boolean} True if character is bubble attacking
+     */
     isBubbleAttacking() {
         return this.world.keyboard.D || this.sharkIsBubbleAttacking;
     }
 
 
+    /**
+     * Checks if the character is swimming.
+     * @returns {boolean} True if character is swimming
+     */
     isSwimming() {
         return this.world.keyboard.UP || 
             this.world.keyboard.DOWN || 
@@ -570,6 +607,11 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Sets the collision offset for the character.
+     * @param {number} top - Top offset
+     * @param {number} bottom - Bottom offset
+     */
     setOffset(top, bottom) {
         this.offset.top = top;
         this.offset.bottom = bottom;
