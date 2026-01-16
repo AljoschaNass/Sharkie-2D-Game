@@ -143,12 +143,10 @@ class Endboss extends MovableObject {
 
 
     /**
-     * Checks the state of the boss (death/activation).
+     * Checks the state of the boss activation.
      */
     checkBossState() {
-        if (this.energy <= 0 && !this.isDying) {
-            this.die();
-        } else if (this.world.character.x > 3100) {
+        if (this.world.character.x > 3100) {
             this.characterReachedEndboss = true;
         }
     }
@@ -276,6 +274,7 @@ class Endboss extends MovableObject {
 
     /**
      * Plays the hurt animation.
+     * After the animation completes, checks if the boss should die.
      */
     playHurtAnimation() {
         if (this.isHurtAnimating || this.isDying) return;
@@ -288,6 +287,10 @@ class Endboss extends MovableObject {
                     clearInterval(interval);
                     this.isHurtAnimating = false;
                     this.currentImage = 0;
+
+                    if (this.energy <= 0) {
+                        this.die();
+                    }
                 });
             }
         }, 150);

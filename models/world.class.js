@@ -331,11 +331,13 @@ class World {
      */
     damageEnemy(enemy, enemyIndex) {
         if (enemy instanceof Endboss) {
+            if (enemy.isDying || enemy.isHurtAnimating) return;
+
             enemy.energy -= 20;
-            enemy.playHurtAnimation();
             if (enemy.energy <= 0) {
                 enemy.energy = 0;
             }
+            enemy.playHurtAnimation();
         } else {
             this.removeEnemy(enemyIndex);
         }
