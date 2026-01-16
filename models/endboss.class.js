@@ -76,7 +76,7 @@ class Endboss extends MovableObject {
 
 
     /**
-     * Erstellt einen neuen Endboss.
+     * Creates a new endboss.
      */
     constructor(){
         super().loadImages(this.IMAGES_INTRODUCE);
@@ -89,7 +89,7 @@ class Endboss extends MovableObject {
 
 
     /**
-     * Setzt den Endboss auf Anfangswerte zurück.
+     * Resets the endboss to initial values.
      */
     restart() {
         this.x = 3500;
@@ -108,7 +108,7 @@ class Endboss extends MovableObject {
 
 
     /**
-     * Startet die Animationen und Bewegung des Endbosses.
+     * Starts the animations and movement of the endboss.
      */
     animate() {
         this.startAnimationLoop();
@@ -117,7 +117,7 @@ class Endboss extends MovableObject {
 
 
     /**
-     * Startet die Hauptanimationsschleife.
+     * Starts the main animation loop.
      */
     startAnimationLoop() {
         setInterval(() => {
@@ -131,7 +131,7 @@ class Endboss extends MovableObject {
 
 
     /**
-     * Startet die Bewegungsschleife.
+     * Starts the movement loop.
      */
     startMovementLoop() {
         setInterval(() => {
@@ -143,7 +143,7 @@ class Endboss extends MovableObject {
 
 
     /**
-     * Überprüft den Zustand des Bosses (Tod/Aktivierung).
+     * Checks the state of the boss (death/activation).
      */
     checkBossState() {
         if (this.energy <= 0 && !this.isDying) {
@@ -155,7 +155,7 @@ class Endboss extends MovableObject {
 
 
     /**
-     * Behandelt die Aktivierung des Bosses.
+     * Handles the activation of the boss.
      */
     handleBossActivation() {
         if (this.characterReachedEndboss && !this.isDying) {
@@ -166,7 +166,7 @@ class Endboss extends MovableObject {
 
 
     /**
-     * Spielt die aktuelle Animation basierend auf dem Zustand ab.
+     * Plays the current animation based on the state.
      */
     playCurrentAnimation() {
         if (this.animationIsPlayed && !this.isAttacking && !this.isHurtAnimating && !this.isDying) {
@@ -178,7 +178,7 @@ class Endboss extends MovableObject {
 
 
     /**
-     * Zeigt die Einführungsanimation des Endbosses.
+     * Shows the introduction animation of the endboss.
      */
     showEndboss() {
         this.playAnimationOnce(this.IMAGES_INTRODUCE);
@@ -186,12 +186,11 @@ class Endboss extends MovableObject {
 
 
     /**
-     * Aktualisiert das Phasensystem zwischen Angriff und Ruhe.
+     * Updates the phase system between attack and rest.
      */
     updatePhaseSystem() {
         const now = Date.now();
         const elapsed = (now - this.phaseStartTime) / 1000;
-
         if (this.phase === 'idle' && this.animationIsPlayed) {
             this.phase = 'attack';
             this.phaseStartTime = now;
@@ -205,7 +204,7 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Führt die Bewegung entsprechend der aktuellen Phase aus.
+     * Executes movement according to the current phase.
      */
     executePhaseMovement() {
         if (this.phase === 'attack') {
@@ -217,7 +216,7 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Bewegt den Endboss auf den Charakter zu.
+     * Moves the endboss towards the character.
      */
     moveTowardsCharacter() {
         const distance = this.world.character.x - this.x;
@@ -227,7 +226,7 @@ class Endboss extends MovableObject {
     }
 
     /**
-     * Passt die Höhe des Endbosses an die Charakterhöhe an.
+     * Adjusts the endboss height to match the character height.
      */
     matchCharacterHeight() {
         const targetY = this.world.character.y - 50;
@@ -239,7 +238,7 @@ class Endboss extends MovableObject {
 
 
     /**
-     * Führt eine Angriffsanimation aus.
+     * Executes an attack animation.
      */
     attack() {
         if (this.isAttacking) return;
@@ -259,7 +258,7 @@ class Endboss extends MovableObject {
 
 
     /**
-     * Spielt ein einzelnes Animationsbild ab und ruft Callback bei Fertigstellung auf.
+     * Plays a single animation frame and calls callback on completion.
      * @param {string[]} images - Array mit Bildpfaden
      * @param {Function} onComplete - Callback nach Abschluss der Animation
      */
@@ -276,7 +275,7 @@ class Endboss extends MovableObject {
 
 
     /**
-     * Spielt die Verletzungsanimation ab.
+     * Plays the hurt animation.
      */
     playHurtAnimation() {
         if (this.isHurtAnimating || this.isDying) return;
@@ -296,7 +295,7 @@ class Endboss extends MovableObject {
 
 
     /**
-     * Startet die Todesanimation und zeigt anschließend den Gewinnbildschirm.
+     * Starts the death animation and then shows the win screen.
      */
     die() {
         this.isDying = true;
@@ -319,7 +318,7 @@ class Endboss extends MovableObject {
 
 
     /**
-     * Zeigt den Gewinnbildschirm an.
+     * Shows the win screen.
      */
     showWinningScreen() {
         if (typeof showWinScreen === 'function') {
