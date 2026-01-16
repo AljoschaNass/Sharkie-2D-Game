@@ -21,6 +21,7 @@ class Character extends MovableObject {
     introLongIdleDone = false;
     currentHurtImages = null;
     hurtAnimationFrame = 0;
+    isDying = false;
     IMAGES_IDLE = CHARACTER_IMAGES.IDLE;
     IMAGES_LONG_IDLE = CHARACTER_IMAGES.LONG_IDLE;
     IMAGES_SWIM = CHARACTER_IMAGES.SWIM;
@@ -86,6 +87,7 @@ class Character extends MovableObject {
         this.introLongIdleDone = false;
         this.currentHurtImages = null;
         this.hurtAnimationFrame = 0;
+        this.isDying = false;
         this.loadImage(this.IMAGES_IDLE[0]);
         this.img = this.imageCache[this.IMAGES_IDLE[0]];
     }
@@ -184,7 +186,9 @@ class Character extends MovableObject {
      * Handles the current state of the character.
      */
     handleCharacterState() {
-        if (this.isDead()) {
+        if (this.isDying) {
+            CharacterActions.playDeathAnimation(this);
+        } else if (this.isDead()) {
             this.dieCharacter();
         } else if (this.isAttacking()) {
             this.handleAttackState();

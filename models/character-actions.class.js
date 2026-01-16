@@ -86,8 +86,11 @@ class CharacterActions {
     static hurtCharacter(character, enemy) {
         if (!gamePaused) {
             character.currentHurtImages = character.IMAGES_HURT_POISONED;
+            character.lastDamageFrom = 'poison';
+
             if (enemy instanceof Jellyfish) {
                 character.currentHurtImages = character.IMAGES_HURT_ELECTIC_SHOCKED;
+                character.lastDamageFrom = 'electric';
             }
             character.hurtAnimationFrame = 0;
         }
@@ -95,16 +98,38 @@ class CharacterActions {
 
 
     /**
-     * Handles character death animation based on damage type.
+     * Triggers the death sequence.
+     * Sets the dying flag and determines which death animation to use.
      * @param {Character} character - The character instance
      */
     static dieCharacter(character) {
-        if (character.lastDamageFrom == 'poison') {
-            character.playAnimationOnce(character.IMAGES_DEAD_POISONED);
+        if (!character.isDying) {
+            character.isDying = true;
+            character.currentImage = 0;
         }
-        if (character.lastDamageFrom == 'electric') {
-            character.playAnimationOnce(character.IMAGES_DEAD_ELECTIC_SHOCKED);
+    }
+
+
+    /**
+     * Plays the death animation based on damage type.
+     * After the animation completes, shows the game over screen.
+     * @param {Character} character - The character instance
+     */
+    static playDeathAnimation(character) {
+        const deathImages = character.lastDamageFrom === 'electric'
+            ? character.IMAGES_DEAD_ELECTIC_SHOCKED
+            : character.IMAGES_DEAD_POISONED;
+
+        const i = character.currentImage % deathImages.length;
+        const path = deathImages[i];
+        character.img = character.imageCache[path];
+        character.currentImage++;
+
+        if (character.currentImage >= deathImages.length) {
+            gamePaused = true;
+            setTimeout(() => {
+                showGameOverScreen();
+            }, 500);
         }
-        showGameOverScreen();
     }
 }
