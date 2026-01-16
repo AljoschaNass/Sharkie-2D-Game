@@ -119,12 +119,10 @@ class CharacterActions {
         const deathImages = character.lastDamageFrom === 'electric'
             ? character.IMAGES_DEAD_ELECTIC_SHOCKED
             : character.IMAGES_DEAD_POISONED;
-
         const i = character.currentImage % deathImages.length;
         const path = deathImages[i];
         character.img = character.imageCache[path];
         character.currentImage++;
-
         if (character.currentImage >= deathImages.length) {
             gamePaused = true;
             setTimeout(() => {

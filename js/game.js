@@ -4,6 +4,17 @@ let world;
 let keyboard = new Keyboard();
 let gamePaused = false;
 
+const KEY_MAP = {
+    "ArrowLeft": "LEFT",
+    "ArrowRight": "RIGHT",
+    "ArrowUp": "UP",
+    "ArrowDown": "DOWN",
+    "Space": "SPACE",
+    "Enter": "ENTER",
+    "Escape": "ESCAPE",
+    "KeyD": "D"
+};
+
 /**
  * Initializes the game world and starts the game.
  * Creates a new world instance, resets character and endboss, and starts background music.
@@ -22,18 +33,6 @@ function init() {
     world.audioManager.playLoop('background');
     bindMobileButtons();
 }
-
-
-const KEY_MAP = {
-    "ArrowLeft": "LEFT",
-    "ArrowRight": "RIGHT",
-    "ArrowUp": "UP",
-    "ArrowDown": "DOWN",
-    "Space": "SPACE",
-    "Enter": "ENTER",
-    "Escape": "ESCAPE",
-    "KeyD": "D"
-};
 
 window.addEventListener("keydown", (event) => {
     const key = KEY_MAP[event.code];

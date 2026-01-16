@@ -1,5 +1,20 @@
 const pauseBtnGlobal = document.getElementById('pause-btn');
 
+const shark = document.getElementById("shark");
+const sharkWin = document.getElementById("shark-win");
+const sharkFrames = generateFrames("img/1.Sharkie/3.Swim", 6);
+let currentFrame = 0;
+
+const muteBtn = document.getElementById('mute-btn');
+const muteImg = muteBtn.querySelector('img');
+const muteBtnStart = document.getElementById('mute-btn-start');
+const muteImgStart = muteBtnStart?.querySelector('img');
+
+const canvasRef = document.getElementById('game-container');
+const startScreen = document.getElementById('startScreen');
+const winScreen = document.getElementById('winScreen');
+const gameOverScreen = document.getElementById('gameOverScreen');
+
 if (pauseBtnGlobal) {
   pauseBtnGlobal.addEventListener('click', () => {
     gamePaused = true;
@@ -10,9 +25,6 @@ if (pauseBtnGlobal) {
   });
 }
 
-const shark = document.getElementById("shark");
-const sharkWin = document.getElementById("shark-win");
-
 /**
  * Generates an array of frame paths for animation.
  * @param {string} folder - Path to the folder containing frames
@@ -22,9 +34,6 @@ const sharkWin = document.getElementById("shark-win");
 function generateFrames(folder, count) {
   return Array.from({ length: count }, (_, i) => `${folder}/${i + 1}.png`);
 }
-
-const sharkFrames = generateFrames("img/1.Sharkie/3.Swim", 6);
-let currentFrame = 0;
 
 setInterval(() => {
   const frame = `url(${sharkFrames[currentFrame]})`;
@@ -132,12 +141,6 @@ function isClickInsideDialog(event, dialog) {
          event.clientY <= rect.bottom;
 }
 
-
-const muteBtn = document.getElementById('mute-btn');
-const muteImg = muteBtn.querySelector('img');
-const muteBtnStart = document.getElementById('mute-btn-start');
-const muteImgStart = muteBtnStart?.querySelector('img');
-
 /**
  * Gets the current audio muted state from world or localStorage.
  * @returns {boolean} True if audio is muted
@@ -184,12 +187,6 @@ if (muteBtnStart) {
 }
 
 updateMuteIcons();
-
-
-const canvasRef = document.getElementById('game-container');
-const startScreen = document.getElementById('startScreen');
-const winScreen = document.getElementById('winScreen');
-const gameOverScreen = document.getElementById('gameOverScreen');
 
 /**
  * Hides one screen and shows another.
