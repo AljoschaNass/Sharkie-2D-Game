@@ -40,19 +40,31 @@ class Character extends MovableObject {
         this.animate();     
     }
 
-        restart() {
+
+    /**
+     * Restarts the character by resetting position, stats, and animations.
+     */
+    restart() {
         this.resetPosition();
         this.resetStats();
         this.resetAnimation();
         this.resetTimerLongIdle();
     }
 
+
+    /**
+     * Resets the character's position to the starting point.
+     */
     resetPosition() {
         this.x = 0;
         this.y = 100;
         this.otherDirection = false;
     }
 
+
+    /**
+     * Resets the character's health and collected items.
+     */
     resetStats() {
         this.energy = 100;
         this.collectedPoisonBottles = 0;
@@ -61,6 +73,10 @@ class Character extends MovableObject {
         this.lastHit = 0;
     }
 
+
+    /**
+     * Resets all animation states to initial values.
+     */
     resetAnimation() {
         this.currentImage = 0;
         this.currentImageSet = this.IMAGES_IDLE;
@@ -75,6 +91,9 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Loads all image sets for character animations.
+     */
     loadAllImages() {
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_LONG_IDLE);
@@ -90,6 +109,9 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Starts the character animation and movement loops.
+     */
     animate() {
         this.startMovementLoop();
         this.startAnimationLoop();
@@ -97,7 +119,7 @@ class Character extends MovableObject {
 
 
     /**
-     * Startet die Bewegungsschleife für Tastatureingaben.
+     * Starts the movement loop for keyboard input.
      */
     startMovementLoop() {
         setInterval(() => {
@@ -110,7 +132,7 @@ class Character extends MovableObject {
 
 
     /**
-     * Verarbeitet Bewegungseingaben von der Tastatur.
+     * Handles movement input from the keyboard.
      */
     handleMovementInput() {
         if (this.world.keyboard.UP && this.y > -90) {
@@ -124,7 +146,7 @@ class Character extends MovableObject {
 
 
     /**
-     * Verarbeitet horizontale Bewegung (links/rechts).
+     * Handles horizontal movement (left/right).
      */
     handleHorizontalMovement() {
         if (this.world.keyboard.LEFT && this.x > -600) {
@@ -139,7 +161,7 @@ class Character extends MovableObject {
 
 
     /**
-     * Aktualisiert die Kameraposition.
+     * Updates the camera position.
      */
     updateCamera() {
         this.world.camera_x = -this.x + 50;
