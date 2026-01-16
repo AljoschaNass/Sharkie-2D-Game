@@ -254,27 +254,64 @@ class Character extends MovableObject {
     bubbleAttack() {
         if (this.sharkIsBubbleAttacking) return;
 
+        this.initializeBubbleAttack();
+        const bubbleState = this.prepareBubbleAttackState();
+        this.startBubbleAttackAnimation(bubbleState);
+    }
+
+
+    /**
+     * Initialisiert den Blasen-Angriff.
+     */
+    initializeBubbleAttack() {
         this.sharkIsBubbleAttacking = true;
         this.currentImage = 0;
-        let bubbleSpawned = false;
+    }
 
+
+    /**
+     * Bereitet den Zustand für den Blasen-Angriff vor.
+     */
+    prepareBubbleAttackState() {
         const hasPoisonBottles = this.collectedPoisonBottles > 0;
         const images = hasPoisonBottles ? this.IMAGES_ATTACK_BUBBLE_TRAP_POISONED : this.IMAGES_ATTACK_BUBBLE_TRAP_WITHOUT;
+        return { hasPoisonBottles, images, bubbleSpawned: false };
+    }
 
+
+    /**
+     * Startet die Blasen-Angriffs-Animation.
+     */
+    startBubbleAttackAnimation(bubbleState) {
         const interval = setInterval(() => {
             if (!gamePaused) {
-                if (this.currentImage === 7 && hasPoisonBottles && !bubbleSpawned) {
-                    this.spawnBubble();
-                    bubbleSpawned = true;
-                }
-
-                this.playAnimationFrame(images, () => {
-                    clearInterval(interval);
-                    this.sharkIsBubbleAttacking = false;
-                    this.currentImage = 0;
-                });
+                this.handleBubbleSpawn(bubbleState);
+                this.playBubbleAttackFrame(bubbleState.images, interval);
             }
         }, 70);
+    }
+
+
+    /**
+     * Behandelt das Spawnen der Blase.
+     */
+    handleBubbleSpawn(bubbleState) {
+        if (this.currentImage === 7 && bubbleState.hasPoisonBottles && !bubbleState.bubbleSpawned) {
+            this.spawnBubble();
+            bubbleState.bubbleSpawned = true;
+        }
+    }
+
+
+    /**
+     * Spielt ein Frame der Blasen-Angriffs-Animation ab.
+     */
+    playBubbleAttackFrame(images, interval) {
+        this.playAnimationFrame(images, () => {
+            clearInterval(interval);
+            this.sharkIsBubbleAttacking = false;
+            this.currentImage = 0;
+        });
     }
 
  
