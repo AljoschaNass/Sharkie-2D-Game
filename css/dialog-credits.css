@@ -43,3 +43,23 @@
 .credits-content a:hover {
   text-decoration: underline;
 }
+
+@media (max-height: 600px) and (orientation: landscape) {
+  .credits-content {
+    gap: 1rem;
+    font-size: 0.85rem;
+  }
+
+  .credits-left h3,
+  .credits-right h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .credits-left p,
+  .credits-right p,
+  .credits-right ul {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+}

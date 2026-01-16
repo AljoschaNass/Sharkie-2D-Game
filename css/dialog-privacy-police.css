@@ -32,3 +32,22 @@
   line-height: 1.45;
   font-size: 0.98rem;
 }
+
+@media (max-height: 600px) and (orientation: landscape) {
+  .privacy-content {
+    gap: 1rem;
+    font-size: 0.85rem;
+  }
+
+  .privacy-left h3,
+  .privacy-right h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .privacy-left p,
+  .privacy-right p {
+    line-height: 1.4;
+    font-size: 0.85rem;
+  }
+}

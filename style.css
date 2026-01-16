@@ -131,6 +131,19 @@ h2 {
   }
 }
 
+@media (max-height: 600px) and (orientation: landscape) {
+  .allDialogs {
+    max-height: 90vh;
+    padding: 1rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  h2 {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    margin-bottom: 0.5rem;
+  }
+}
+
 @media (orientation: portrait) {
   #game-container,
   .startScreen,
