@@ -1,4 +1,4 @@
-class CollectableObject extends BackgroundObject {
+class CollectableObject extends MovableObject {
     width = 40;
     height = 50;
     offset = {
