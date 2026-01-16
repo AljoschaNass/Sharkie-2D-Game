@@ -42,7 +42,9 @@ class DrawableObjekt {
      * @param {CanvasRenderingContext2D} ctx - Canvas-Kontext
      */
     draw(ctx) {
-        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+        if (this.img && this.img instanceof HTMLImageElement) {
+            ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+        }
     }
 
     /**
