@@ -31,33 +31,53 @@ class World {
     }
 
 
+    /**
+     * Initializes the canvas and context.
+     * @param {HTMLCanvasElement} canvas - The game canvas
+     */
     initializeCanvas(canvas) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
     }
 
 
+    /**
+     * Initializes the keyboard handler.
+     * @param {Keyboard} keyboard - Keyboard input handler
+     */
     initializeKeyboard(keyboard) {
         this.keyboard = keyboard;
     }
 
 
+    /**
+     * Initializes the audio manager.
+     */
     initializeManagers() {
         this.audioManager = new AudioManager();
     }
 
 
+    /**
+     * Initializes the game level.
+     */
     initializeLevel() {
         this.level = createLevel1();
     }
 
 
+    /**
+     * Initializes the main character.
+     */
     initializeCharacter() {
         this.character = new Character();
         this.character.energy = 100;
     }
 
 
+    /**
+     * Initializes all status bars for the game.
+     */
     initializeStatusBars() {
         this.poisonStatusBar = new StatusBar(0, POISON_IMAGES, 0);
         this.healthStatusBar = new StatusBar(80, HEALTH_IMAGES, 100);
@@ -65,11 +85,17 @@ class World {
     }
 
 
+    /**
+     * Initializes the bubble array.
+     */
     initializeBubbles() {
         this.bubble = [];
     }
 
 
+    /**
+     * Starts the game world by drawing and checking collisions.
+     */
     startWorld() {
         this.draw();
         this.setWorld();
@@ -78,6 +104,9 @@ class World {
     }
 
 
+    /**
+     * Clears the collision check interval.
+     */
     clearCollisionInterval() {
         if (this.collisionIntervalId) {
             clearInterval(this.collisionIntervalId);
@@ -86,6 +115,9 @@ class World {
     }
 
 
+    /**
+     * Sets the world reference for character and endboss.
+     */
     setWorld() {
         this.character.world = this;
         const endboss = this.level.enemies.find(enemy => enemy instanceof Endboss);
@@ -95,6 +127,9 @@ class World {
     }
 
 
+    /**
+     * Starts checking for collisions at regular intervals.
+     */
     checkCollisions() {
         this.collisionIntervalId = setInterval(() => {
             if (typeof gamePaused !== 'undefined' && gamePaused) return;
@@ -107,7 +142,10 @@ class World {
     }
 
 
-    draw() {        
+    /**
+     * Draws all game objects on the canvas.
+     */
+    draw() {
         if (typeof gamePaused !== 'undefined' && gamePaused) {
             let self = this;
             requestAnimationFrame(function() { self.draw(); });
@@ -138,10 +176,14 @@ class World {
         let self = this;
         requestAnimationFrame(function() {
             self.draw();
-        });        
+        });
     }
 
 
+    /**
+     * Adds multiple objects to the map.
+     * @param {Array} objects - Array of objects to add
+     */
     addObjectsToMap(objects){
         objects.forEach(o => {
             this.addToMap(o);
@@ -149,6 +191,10 @@ class World {
     }
 
 
+    /**
+     * Adds a single object to the map.
+     * @param {DrawableObjekt} mo - Object to add
+     */
     addToMap(mo) {
         if (mo.otherDirection) {
             this.flipImage(mo);
@@ -160,6 +206,10 @@ class World {
     }
 
 
+    /**
+     * Flips an image horizontally for drawing.
+     * @param {DrawableObjekt} mo - Object to flip
+     */
     flipImage(mo) {
         this.ctx.save();
             this.ctx.translate(mo.width, 0);
@@ -168,12 +218,19 @@ class World {
     }
 
 
+    /**
+     * Flips an image back to normal orientation.
+     * @param {DrawableObjekt} mo - Object to flip back
+     */
     flipImageBack(mo) {
         mo.x = mo.x * -1;
         this.ctx.restore();
     }
 
 
+    /**
+     * Checks for collisions between character and enemies.
+     */
     collisionWithEnemy() {
         this.level.enemies.forEach( (enemy) => {
             if (this.character.isCollding(enemy) && !this.character.isHurt() && !this.character.sharkIsAttacking) {
@@ -189,6 +246,9 @@ class World {
     }
 
 
+    /**
+     * Checks if fin slap attack hits an enemy.
+     */
     finSlapHitsEnemy() {
         if (this.character.sharkIsAttacking) {
             this.level.enemies.forEach((enemy, enemyIndex) => {
@@ -201,6 +261,9 @@ class World {
     }
 
 
+    /**
+     * Checks if bubbles hit enemies.
+     */
     bubbleHitsEnemy() {
         this.bubble.forEach((bubble, bubbleIndex) => {
             this.level.enemies.forEach((enemy, enemyIndex) => {
@@ -212,6 +275,12 @@ class World {
     }
 
 
+    /**
+     * Handles collision between bubble and enemy.
+     * @param {MovableObject} enemy - The enemy that was hit
+     * @param {number} enemyIndex - Index of the enemy
+     * @param {number} bubbleIndex - Index of the bubble
+     */
     handleBubbleEnemyCollision(enemy, enemyIndex, bubbleIndex) {
         this.damageEnemy(enemy, enemyIndex);
         this.removeBubble(bubbleIndex);
@@ -219,6 +288,11 @@ class World {
     }
 
 
+    /**
+     * Damages an enemy or removes it if not an endboss.
+     * @param {MovableObject} enemy - The enemy to damage
+     * @param {number} enemyIndex - Index of the enemy
+     */
     damageEnemy(enemy, enemyIndex) {
         if (enemy instanceof Endboss) {
             enemy.energy -= 20;
@@ -232,16 +306,27 @@ class World {
     }
 
 
+    /**
+     * Removes an enemy from the level.
+     * @param {number} enemyIndex - Index of the enemy to remove
+     */
     removeEnemy(enemyIndex) {
         this.level.enemies.splice(enemyIndex, 1);
     }
 
 
+    /**
+     * Removes a bubble from the game.
+     * @param {number} bubbleIndex - Index of the bubble to remove
+     */
     removeBubble(bubbleIndex) {
         this.bubble.splice(bubbleIndex, 1);
     }
 
 
+    /**
+     * Checks for and handles poison water collection.
+     */
     collectPoisonWater() {
         for (let i = this.level.poisonWaterItems.length - 1; i >= 0; i--) {
             const poisonWater = this.level.poisonWaterItems[i];
@@ -255,6 +340,9 @@ class World {
     }
 
 
+    /**
+     * Checks for and handles coin collection.
+     */
     collectCoin() {
         for (let i = this.level.coins.length - 1; i >= 0; i--) {
             const coin = this.level.coins[i];

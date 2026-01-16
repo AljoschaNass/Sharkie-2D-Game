@@ -1,3 +1,6 @@
+/**
+ * Tracks keyboard input states for game controls.
+ */
 class Keyboard {
     UP = false;
     DOWN = false;
