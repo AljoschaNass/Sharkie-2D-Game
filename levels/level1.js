@@ -1,4 +1,7 @@
-
+/**
+ * Creates and returns the first game level with enemies, items, and background.
+ * @returns {Level} The configured level 1
+ */
 function createLevel1() {
     return new Level(
         [
