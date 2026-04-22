@@ -1,4 +1,17 @@
-# IDE
-.vscode/
+# OS
+.DS_Store
+**/.DS_Store
+Thumbs.db
 
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# AI tooling
 .claude/
+
+# Logs
+*.log
+npm-debug.log*
