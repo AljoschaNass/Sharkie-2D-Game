@@ -1,4 +1,4 @@
-class MovableObject extends DrawableObjekt{
+class MovableObject extends DrawableObject {
     speed = 0.5
     energy = 100;
     lastHit = 0;
@@ -12,7 +12,7 @@ class MovableObject extends DrawableObjekt{
      * @param {MovableObject} mo - Object to check collision with
      * @returns {boolean} True if collision exists
      */
-    isCollding(mo) {
+    isColliding(mo) {
         return (
             this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
             this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&

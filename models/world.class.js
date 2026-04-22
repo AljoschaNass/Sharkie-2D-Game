@@ -229,7 +229,7 @@ class World {
 
     /**
      * Adds a single object to the map.
-     * @param {DrawableObjekt} mo - Object to add
+     * @param {DrawableObject} mo - Object to add
      */
     addToMap(mo) {
         if (mo.otherDirection) {
@@ -244,7 +244,7 @@ class World {
 
     /**
      * Flips an image horizontally for drawing.
-     * @param {DrawableObjekt} mo - Object to flip
+     * @param {DrawableObject} mo - Object to flip
      */
     flipImage(mo) {
         this.ctx.save();
@@ -256,7 +256,7 @@ class World {
 
     /**
      * Flips an image back to normal orientation.
-     * @param {DrawableObjekt} mo - Object to flip back
+     * @param {DrawableObject} mo - Object to flip back
      */
     flipImageBack(mo) {
         mo.x = mo.x * -1;
@@ -269,7 +269,7 @@ class World {
      */
     collisionWithEnemy() {
         this.level.enemies.forEach( (enemy) => {
-            if (this.character.isCollding(enemy) && !this.character.isHurt() && !this.character.sharkIsAttacking) {
+            if (this.character.isColliding(enemy) && !this.character.isHurt() && !this.character.sharkIsAttacking) {
                 this.character.hit(enemy);
                 this.healthStatusBar.setPercentage(this.character.energy);
                 this.character.hurtCharacter(enemy);
@@ -288,7 +288,7 @@ class World {
     finSlapHitsEnemy() {
         if (this.character.sharkIsAttacking) {
             this.level.enemies.forEach((enemy, enemyIndex) => {
-                if (this.character.isCollding(enemy)) {
+                if (this.character.isColliding(enemy)) {
                     this.damageEnemy(enemy, enemyIndex);
                     this.audioManager.play('bubbleHit');
                 }
@@ -303,7 +303,7 @@ class World {
     bubbleHitsEnemy() {
         this.bubble.forEach((bubble, bubbleIndex) => {
             this.level.enemies.forEach((enemy, enemyIndex) => {
-                if (bubble.isCollding(enemy)) {
+                if (bubble.isColliding(enemy)) {
                     this.handleBubbleEnemyCollision(enemy, enemyIndex, bubbleIndex);
                 }
             });
@@ -368,7 +368,7 @@ class World {
     collectPoisonWater() {
         for (let i = this.level.poisonWaterItems.length - 1; i >= 0; i--) {
             const poisonWater = this.level.poisonWaterItems[i];
-            if (this.character.isCollding(poisonWater)) {
+            if (this.character.isColliding(poisonWater)) {
                 this.character.collectedPoisonBottles = this.character.collectedPoisonBottles + 12.5;
                 this.poisonStatusBar.setPercentage(this.character.collectedPoisonBottles);
                 this.level.poisonWaterItems.splice(i, 1);
@@ -384,7 +384,7 @@ class World {
     collectCoin() {
         for (let i = this.level.coins.length - 1; i >= 0; i--) {
             const coin = this.level.coins[i];
-            if (this.character.isCollding(coin)) {
+            if (this.character.isColliding(coin)) {
                 this.character.collectedCoins = this.character.collectedCoins + 12.5;
                 this.coinStatusBar.setPercentage(this.character.collectedCoins);
                 this.level.coins.splice(i, 1);
