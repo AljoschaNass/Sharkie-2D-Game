@@ -17,9 +17,9 @@ class CharacterAnimations {
         character[flag] = true;
         character.currentImage = 0;
 
-        const interval = setInterval(() => {
+        const id = IntervalManager.setInterval(() => {
             CharacterAnimations.playAnimationFrame(character, images, () => {
-                clearInterval(interval);
+                IntervalManager.clear(id);
                 character[flag] = false;
                 character.currentImage = 0;
             });
@@ -53,11 +53,9 @@ class CharacterAnimations {
      * @param {Object} bubbleState - State object containing animation data
      */
     static startBubbleAttackAnimation(character, bubbleState) {
-        const interval = setInterval(() => {
-            if (!gamePaused) {
-                CharacterAnimations.handleBubbleSpawn(character, bubbleState);
-                CharacterAnimations.playBubbleAttackFrame(character, bubbleState.images, interval);
-            }
+        const id = IntervalManager.setInterval(() => {
+            CharacterAnimations.handleBubbleSpawn(character, bubbleState);
+            CharacterAnimations.playBubbleAttackFrame(character, bubbleState.images, id);
         }, 70);
     }
 
@@ -81,9 +79,9 @@ class CharacterAnimations {
      * @param {string[]} images - Array of image paths
      * @param {number} interval - Interval ID to clear when done
      */
-    static playBubbleAttackFrame(character, images, interval) {
+    static playBubbleAttackFrame(character, images, intervalId) {
         CharacterAnimations.playAnimationFrame(character, images, () => {
-            clearInterval(interval);
+            IntervalManager.clear(intervalId);
             character.sharkIsBubbleAttacking = false;
             character.currentImage = 0;
         });

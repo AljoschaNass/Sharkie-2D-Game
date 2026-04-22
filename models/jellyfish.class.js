@@ -1,12 +1,19 @@
-class Jellyfish extends MovableObject {
+/**
+ * Floats left through the level with a sinusoidal up/down wave motion.
+ * Comes in four color variants; green and pink are "super-dangerous" and deal
+ * electric damage instead of poison (see `MovableObject.hit`).
+ */
+class Jellyfish extends Enemy {
+    static COLORS = ['LILA', 'YELLOW', 'GREEN', 'PINK'];
+    static TYPES = ['SWIM', 'DEAD'];
+    static ANIMATION_INTERVAL_MS = 250;
+    static WAVE_AMPLITUDE = 40;
+    static WAVE_PERIOD_MS = 300;
+
     height = 80;
     width = 60;
-    offset = {
-        top: 10,
-        left: 10,
-        bottom: 10,
-        right: 10
-    };
+    offset = { top: 10, left: 10, bottom: 10, right: 10 };
+
     IMAGES_SWIM = [];
     IMAGES_DEAD = [];
 
@@ -58,85 +65,34 @@ class Jellyfish extends MovableObject {
         'img/2.Enemy/2.Jellyfish/Dead/Pink/P3.png',
         'img/2.Enemy/2.Jellyfish/Dead/Pink/P4.png'
     ];
-    repeatCounter = 0;
-
 
     /**
-     * Creates a new jellyfish.
-     * @param {string} color - Color of the jellyfish (lila, yellow, green or pink)
+     * @param {'lila'|'yellow'|'green'|'pink'} color
      */
-    constructor(color){
-        super().loadImage("img/2.Enemy/2.Jellyfish/Regular damage/Lila 1.png");
-        this.loadAllImages();
+    constructor(color) {
+        super().loadImage('img/2.Enemy/2.Jellyfish/Regular damage/Lila 1.png');
         this.color = color;
-        this.selectColor();
-        this.calculatePosition();
+        this.loadColorVariants(Jellyfish.COLORS, Jellyfish.TYPES);
+        this.selectColorImages(Jellyfish.TYPES);
+        this.randomizeSpawn({ xMin: 600, xRange: 3400 });
         this.waveOffset = Math.random() * 1000;
         this.baseY = this.y;
         this.animate();
     }
 
-
     /**
-     * Starts the movement and animation of the jellyfish.
+     * Start movement and animation loops.
      */
     animate() {
-        setInterval(() => {
-            if (!gamePaused) {
-                this.moveLeftWithWave();
-            }
-        }, 1000 / 60);
-
-        setInterval(() => {
-            if (!gamePaused) {
-                this.playAnimation(this.IMAGES_SWIM);
-            }
-        }, 250);
+        IntervalManager.setInterval(() => this.moveLeftWithWave(), FRAME_INTERVAL);
+        IntervalManager.setInterval(() => this.playAnimation(this.IMAGES_SWIM), Jellyfish.ANIMATION_INTERVAL_MS);
     }
 
-
     /**
-     * Loads all images for all colors and animation types.
-     */
-    loadAllImages() {
-        const colors = ['LILA', 'YELLOW', 'GREEN', 'PINK'];
-        const types = ['SWIM', 'DEAD'];
-
-        colors.forEach(color => {
-            types.forEach(type => {
-                const key = `IMAGES_${type}_${color}`;
-                this.loadImages(this[key]);
-            });
-        });
-    }
-
-
-    /**
-     * Calculates random position and speed.
-     */
-    calculatePosition() {
-        this.x = 600 + Math.random() * 3400;
-        this.y = Math.random() * 480 * 0.75;
-        this.speed = 0.6 + Math.random() * 0.5;
-    }
-
-
-    /**
-     * Selects the images based on the color.
-     */
-    selectColor() {
-        const suffix = this.color.toUpperCase();
-
-        this.IMAGES_SWIM = this[`IMAGES_SWIM_${suffix}`] || [];
-        this.IMAGES_DEAD = this[`IMAGES_DEAD_${suffix}`] || [];
-    }
-
-
-    /**
-     * Moves the jellyfish left with wave-like up and down movement.
+     * Drift left with a vertical sine wave around `baseY`.
      */
     moveLeftWithWave() {
         this.x -= this.speed;
-        this.y = this.baseY + Math.sin((Date.now() + this.waveOffset) / 300) * 40;
+        this.y = this.baseY + Math.sin((Date.now() + this.waveOffset) / Jellyfish.WAVE_PERIOD_MS) * Jellyfish.WAVE_AMPLITUDE;
     }
 }

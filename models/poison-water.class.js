@@ -1,5 +1,9 @@
-class PoisonWater extends CollectableObject {
-    IMAGES_WATER = [
+/**
+ * Poison bottle pickup. Refills the ammunition used by the bubble attack.
+ */
+class PoisonWater extends AnimatedCollectable {
+    static ANIMATION_INTERVAL_MS = 200;
+    static IMAGES = [
         'img/4.Marcadores/Posion/Animada/1.png',
         'img/4.Marcadores/Posion/Animada/2.png',
         'img/4.Marcadores/Posion/Animada/3.png',
@@ -9,35 +13,10 @@ class PoisonWater extends CollectableObject {
         'img/4.Marcadores/Posion/Animada/7.png',
         'img/4.Marcadores/Posion/Animada/8.png'
     ];
-    x = 400;
-    y = 200;
-    offset = {
-        top: 20,
-        left: 5,
-        bottom: 0,
-        right: 5
-    };
 
+    offset = { top: 20, left: 5, bottom: 0, right: 5 };
 
-    /**
-     * Creates a new poison bottle in the water.
-     */
-    constructor(){
-        super().loadImage("img/4.Marcadores/Posion/Animada/1.png");
-        this.loadImages(this.IMAGES_WATER);
-        this.calculateXPosition();
-        this.calculateYPosition();
-        this.animate();
-    }
-
-    /**
-     * Starts the poison bottle animation.
-     */
-    animate() {
-        setInterval(() => {
-            if (!gamePaused) {
-                this.playAnimation(this.IMAGES_WATER);
-            }
-        }, 200);
+    constructor() {
+        super({ images: PoisonWater.IMAGES, interval: PoisonWater.ANIMATION_INTERVAL_MS });
     }
 }

@@ -1,51 +1,45 @@
+/**
+ * Poison bubble projectile spawned by the bubble attack.
+ * Flies horizontally in the direction the character was facing and
+ * self-destructs when it leaves the level bounds.
+ */
 class Bubble extends MovableObject {
-    world;
-    x;
-    y;
+    static OFF_SCREEN_MARGIN = 200;
+
     speed = 3.5;
     width = 35;
     height = 35;
-    otherDirection;
 
     /**
-     * Creates a new bubble as a projectile.
-     * @param {World} world - Reference to the game world
-     * @param {number} x - Starting X position
-     * @param {number} y - Starting Y position
-     * @param {boolean} otherDirection - True if the bubble flies to the left
+     * @param {World} world
+     * @param {number} x - Starting x position.
+     * @param {number} y - Starting y position.
+     * @param {boolean} [otherDirection=false] - True if the bubble flies left.
      */
     constructor(world, x, y, otherDirection = false) {
         super().loadImage('img/1.Sharkie/4.Attack/bubble-trap/poisoned-bubble.png');
         this.world = world;
-        this.calculatePosition(x, y);
-        this.otherDirection = otherDirection;
-        this.moveBubble();
-    }
-
-
-    /**
-     * Moves the bubble horizontally and removes it at the level end.
-     */
-    moveBubble() {
-        const interval = setInterval(() => {
-            if (!gamePaused) {
-                this.x += this.otherDirection ? -this.speed : this.speed;
-
-                if (this.x < -200 || this.x > this.world.level.levelEnd_x + 200) {
-                    clearInterval(interval);
-                }
-            }
-        }, 1000 / 60);
-    }
-
-
-    /**
-     * Sets the starting position of the bubble.
-     * @param {number} x - X position
-     * @param {number} y - Y position
-     */
-    calculatePosition(x, y) {
         this.x = x;
         this.y = y;
+        this.otherDirection = otherDirection;
+        this.startMovement();
+    }
+
+    /**
+     * Fly horizontally and remove self once off-screen.
+     */
+    startMovement() {
+        const id = IntervalManager.setInterval(() => {
+            this.x += this.otherDirection ? -this.speed : this.speed;
+            if (this.isOffScreen()) IntervalManager.clear(id);
+        }, FRAME_INTERVAL);
+    }
+
+    /**
+     * True once the bubble has flown past either level edge.
+     */
+    isOffScreen() {
+        const levelEnd = this.world.level.levelEnd_x;
+        return this.x < -Bubble.OFF_SCREEN_MARGIN || this.x > levelEnd + Bubble.OFF_SCREEN_MARGIN;
     }
 }

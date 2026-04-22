@@ -1,19 +1,20 @@
 /**
- * Main character.
+ * Player character (Sharkie). Reads input from the world's keyboard,
+ * drives the camera, and delegates animation/action logic to
+ * {@link CharacterActions} and {@link CharacterAnimations}.
  */
 class Character extends MovableObject {
+    static MOVEMENT_TICK_MS = FRAME_INTERVAL;
+    static ANIMATION_TICK_MS = 150;
+    static LONG_IDLE_DELAY_MS = 8000;
+
     world;
     speed = 3;
-    energy = 100000;
+    energy = PLAYER_MAX_ENERGY;
     collectedPoisonBottles = 0;
     collectedCoins = 0;
-    offset = {
-        top: 110,
-        left: 50,
-        bottom: 55,
-        right: 45
-    };
-    currentImageSet = this.IMAGES_IDLE;
+    offset = { top: 110, left: 50, bottom: 55, right: 45 };
+
     sharkIsAttacking = false;
     sharkIsBubbleAttacking = false;
     idleTimeout;
@@ -22,6 +23,7 @@ class Character extends MovableObject {
     currentHurtImages = null;
     hurtAnimationFrame = 0;
     isDying = false;
+
     IMAGES_IDLE = CHARACTER_IMAGES.IDLE;
     IMAGES_LONG_IDLE = CHARACTER_IMAGES.LONG_IDLE;
     IMAGES_SWIM = CHARACTER_IMAGES.SWIM;
@@ -30,20 +32,20 @@ class Character extends MovableObject {
     IMAGES_ATTACK_BUBBLE_TRAP_POISONED = CHARACTER_IMAGES.ATTACK_BUBBLE_TRAP_POISONED;
     IMAGES_ATTACK_FIN_SLAP = CHARACTER_IMAGES.ATTACK_FIN_SLAP;
     IMAGES_HURT_POISONED = CHARACTER_IMAGES.HURT_POISONED;
-    IMAGES_HURT_ELECTIC_SHOCKED = CHARACTER_IMAGES.HURT_ELECTRIC_SHOCKED;
+    IMAGES_HURT_ELECTRIC_SHOCKED = CHARACTER_IMAGES.HURT_ELECTRIC_SHOCKED;
     IMAGES_DEAD_POISONED = CHARACTER_IMAGES.DEAD_POISONED;
-    IMAGES_DEAD_ELECTIC_SHOCKED = CHARACTER_IMAGES.DEAD_ELECTRIC_SHOCKED;
+    IMAGES_DEAD_ELECTRIC_SHOCKED = CHARACTER_IMAGES.DEAD_ELECTRIC_SHOCKED;
 
+    currentImageSet = this.IMAGES_IDLE;
 
-    constructor(){
+    constructor() {
         super().loadImage(this.IMAGES_IDLE[0]);
         this.loadAllImages();
-        this.animate();     
+        this.animate();
     }
 
-
     /**
-     * Restarts the character by resetting position, stats, and animations.
+     * Reset character to its starting state (used after a game over).
      */
     restart() {
         this.resetPosition();
@@ -52,32 +54,20 @@ class Character extends MovableObject {
         this.resetTimerLongIdle();
     }
 
-
-    /**
-     * Resets the character's position to the starting point.
-     */
     resetPosition() {
         this.x = 0;
         this.y = 100;
         this.otherDirection = false;
     }
 
-
-    /**
-     * Resets the character's health and collected items.
-     */
     resetStats() {
-        this.energy = 100;
+        this.energy = PLAYER_MAX_ENERGY;
         this.collectedPoisonBottles = 0;
         this.collectedCoins = 0;
         this.lastDamageFrom = 'poison';
         this.lastHit = 0;
     }
 
-
-    /**
-     * Resets all animation states to initial values.
-     */
     resetAnimation() {
         this.currentImage = 0;
         this.currentImageSet = this.IMAGES_IDLE;
@@ -88,70 +78,51 @@ class Character extends MovableObject {
         this.currentHurtImages = null;
         this.hurtAnimationFrame = 0;
         this.isDying = false;
-        this.loadImage(this.IMAGES_IDLE[0]);
         this.img = this.imageCache[this.IMAGES_IDLE[0]];
     }
 
-
     /**
-     * Loads all image sets for character animations.
+     * Preload every animation set so frame swaps never hit a cold image.
      */
     loadAllImages() {
-        this.loadImages(this.IMAGES_IDLE);
-        this.loadImages(this.IMAGES_LONG_IDLE);
-        this.loadImages(this.IMAGES_SWIM);
-        this.loadImages(this.IMAGES_ATTACK_BUBBLE_TRAP_WITH);
-        this.loadImages(this.IMAGES_ATTACK_BUBBLE_TRAP_WITHOUT);
-        this.loadImages(this.IMAGES_ATTACK_BUBBLE_TRAP_POISONED);
-        this.loadImages(this.IMAGES_ATTACK_FIN_SLAP);
-        this.loadImages(this.IMAGES_HURT_POISONED);
-        this.loadImages(this.IMAGES_HURT_ELECTIC_SHOCKED);
-        this.loadImages(this.IMAGES_DEAD_POISONED);
-        this.loadImages(this.IMAGES_DEAD_ELECTIC_SHOCKED);
+        [
+            this.IMAGES_IDLE,
+            this.IMAGES_LONG_IDLE,
+            this.IMAGES_SWIM,
+            this.IMAGES_ATTACK_BUBBLE_TRAP_WITH,
+            this.IMAGES_ATTACK_BUBBLE_TRAP_WITHOUT,
+            this.IMAGES_ATTACK_BUBBLE_TRAP_POISONED,
+            this.IMAGES_ATTACK_FIN_SLAP,
+            this.IMAGES_HURT_POISONED,
+            this.IMAGES_HURT_ELECTRIC_SHOCKED,
+            this.IMAGES_DEAD_POISONED,
+            this.IMAGES_DEAD_ELECTRIC_SHOCKED
+        ].forEach(set => this.loadImages(set));
     }
 
-
     /**
-     * Starts the character animation and movement loops.
+     * Start the two main interval loops — one reading input, one driving animations.
      */
     animate() {
-        this.startMovementLoop();
-        this.startAnimationLoop();
+        IntervalManager.setInterval(() => {
+            this.handleMovementInput();
+            this.updateCamera();
+        }, Character.MOVEMENT_TICK_MS);
+
+        IntervalManager.setInterval(() => this.handleCharacterState(), Character.ANIMATION_TICK_MS);
     }
 
-
     /**
-     * Starts the movement loop for keyboard input.
-     */
-    startMovementLoop() {
-        setInterval(() => {
-            if (!gamePaused) {
-                this.handleMovementInput();
-                this.updateCamera();
-            }
-        }, 1000 / 60);
-    }
-
-
-    /**
-     * Handles movement input from the keyboard.
+     * Translate keyboard state into movement within the world bounds.
      */
     handleMovementInput() {
-        if (this.world.keyboard.UP && this.y > -90) {
-            this.moveUp();
-        }
-        if (this.world.keyboard.DOWN && this.y < 300) {
-            this.moveDown();
-        }
+        if (this.world.keyboard.UP && this.y > PLAYER_MIN_Y) this.moveUp();
+        if (this.world.keyboard.DOWN && this.y < PLAYER_MAX_Y) this.moveDown();
         this.handleHorizontalMovement();
     }
 
-
-    /**
-     * Handles horizontal movement (left/right).
-     */
     handleHorizontalMovement() {
-        if (this.world.keyboard.LEFT && this.x > -600) {
+        if (this.world.keyboard.LEFT && this.x > PLAYER_MIN_X) {
             this.moveLeft();
             this.otherDirection = true;
         }
@@ -161,210 +132,105 @@ class Character extends MovableObject {
         }
     }
 
-
-    /**
-     * Updates the camera position.
-     */
     updateCamera() {
         this.world.camera_x = -this.x + 50;
     }
 
-
     /**
-     * Starts the animation loop for character actions.
-     */
-    startAnimationLoop() {
-        setInterval(() => {
-            if (!gamePaused) {
-                this.handleCharacterState();
-            }
-        }, 150);
-    }
-
-
-    /**
-     * Handles the current state of the character.
+     * Pick the right animation for the current state.
+     * Order matters: death overrides everything, then attacks, then hurt/swim/idle.
      */
     handleCharacterState() {
-        if (this.isDying) {
-            CharacterActions.playDeathAnimation(this);
-        } else if (this.isDead()) {
-            this.dieCharacter();
-        } else if (this.isAttacking()) {
-            this.handleAttackState();
-        } else if (this.isBubbleAttacking()) {
-            this.handleBubbleAttackState();
-        } else if (this.isHurt()) {
-            this.handleHurtState();
-        } else if (this.isSwimming()) {
-            this.handleSwimmingState();
-        } else if (this.isIdle()) {
-            this.handleIdleState();
-        }
+        if (this.isDying)                 return CharacterActions.playDeathAnimation(this);
+        if (this.isDead())                return this.dieCharacter();
+        if (this.isAttacking())           return this.handleAttackState();
+        if (this.isBubbleAttacking())     return this.handleBubbleAttackState();
+        if (this.isHurt())                return this.handleHurtState();
+        if (this.isSwimming())            return this.handleSwimmingState();
+        if (this.isIdle())                return this.handleIdleState();
     }
 
-
-    /**
-     * Handles the attack state.
-     */
     handleAttackState() {
         this.setOffset(100, 45);
         CharacterActions.attack(this);
         this.resetTimerLongIdle();
     }
 
-
-    /**
-     * Handles the bubble attack state.
-     */
     handleBubbleAttackState() {
         CharacterActions.bubbleAttack(this);
         this.resetTimerLongIdle();
     }
 
-
-    /**
-     * Handles the hurt state.
-     */
     handleHurtState() {
         CharacterAnimations.playHurtAnimation(this);
         this.resetTimerLongIdle();
     }
 
-
-    /**
-     * Handles the swimming state.
-     */
     handleSwimmingState() {
         this.setOffset(100, 45);
         this.playAnimation(this.IMAGES_SWIM);
         this.resetTimerLongIdle();
     }
 
-
-    /**
-     * Handles the idle state.
-     */
     handleIdleState() {
         if (this.isIdleTooLong) {
             CharacterAnimations.playLongIdleAnimation(this, this.IMAGES_LONG_IDLE);
         } else {
             this.playAnimation(this.IMAGES_IDLE);
         }
-        if (!this.idleTimeout) {
-            this.setTimerLongIdle();
-        }
+        if (!this.idleTimeout) this.setTimerLongIdle();
     }
 
+    /* ---------- Thin wrappers kept for the public API ---------- */
 
-
-    /**
-     * Spawns a bubble projectile from the character.
-     */
     spawnBubble() {
         CharacterActions.spawnBubble(this);
     }
 
-
-    /**
-     * Triggers the hurt animation for the character.
-     * Selects the correct hurt images based on the enemy type and resets the animation frame.
-     *
-     * @param {Object} enemy - The enemy causing damage to the character
-     */
     hurtCharacter(enemy) {
         CharacterActions.hurtCharacter(this, enemy);
     }
 
-
-
-
-    /**
-     * Handles character death animation based on damage type.
-     */
     dieCharacter() {
         CharacterActions.dieCharacter(this);
     }
 
+    /* ---------- Long-idle timer ---------- */
 
-
-    /**
-     * Sets a timer for the long idle animation.
-     */
     setTimerLongIdle() {
         this.idleTimeout = setTimeout(() => {
             this.isIdleTooLong = true;
-            if (this.world && this.world.audioManager) {
-                this.world.audioManager.playLoop('snoring');
-            }
-        }, 8000);
+            this.world?.audioManager?.playLoop('snoring');
+        }, Character.LONG_IDLE_DELAY_MS);
     }
 
-
-    /**
-     * Resets the long idle timer.
-     */
     resetTimerLongIdle() {
         clearTimeout(this.idleTimeout);
         this.idleTimeout = null;
-        if (this.isIdleTooLong) {
-            if (this.world && this.world.audioManager) {
-                this.world.audioManager.stop('snoring');
-            }
-        }
+        if (this.isIdleTooLong) this.world?.audioManager?.stop('snoring');
         this.isIdleTooLong = false;
     }
 
+    /* ---------- State predicates ---------- */
 
-    /**
-     * Checks if the character is in idle state.
-     * @returns {boolean} True if character is idle
-     */
     isIdle() {
-        return !this.world.keyboard.SPACE &&
-            !this.world.keyboard.UP &&
-            !this.world.keyboard.DOWN &&
-            !this.world.keyboard.LEFT &&
-            !this.world.keyboard.RIGHT &&
-            !this.sharkIsAttacking;
+        const kb = this.world.keyboard;
+        return !kb.SPACE && !kb.UP && !kb.DOWN && !kb.LEFT && !kb.RIGHT && !this.sharkIsAttacking;
     }
 
-
-    /**
-     * Checks if the character is attacking.
-     * @returns {boolean} True if character is attacking
-     */
     isAttacking() {
         return this.world.keyboard.SPACE || this.sharkIsAttacking;
     }
 
-
-    /**
-     * Checks if the character is bubble attacking.
-     * @returns {boolean} True if character is bubble attacking
-     */
     isBubbleAttacking() {
         return this.world.keyboard.D || this.sharkIsBubbleAttacking;
     }
 
-
-    /**
-     * Checks if the character is swimming.
-     * @returns {boolean} True if character is swimming
-     */
     isSwimming() {
-        return this.world.keyboard.UP || 
-            this.world.keyboard.DOWN || 
-            this.world.keyboard.LEFT || 
-            this.world.keyboard.RIGHT;
+        const kb = this.world.keyboard;
+        return kb.UP || kb.DOWN || kb.LEFT || kb.RIGHT;
     }
 
-
-    /**
-     * Sets the collision offset for the character.
-     * @param {number} top - Top offset
-     * @param {number} bottom - Bottom offset
-     */
     setOffset(top, bottom) {
         this.offset.top = top;
         this.offset.bottom = bottom;

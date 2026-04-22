@@ -1,3 +1,7 @@
+/**
+ * Game entry point. Owns the top-level globals (`canvas`, `world`, `keyboard`,
+ * `gamePaused`) and wires keyboard + touch input to the Keyboard handler.
+ */
 
 let canvas;
 let world;
@@ -5,94 +9,77 @@ let keyboard = new Keyboard();
 let gamePaused = false;
 
 const KEY_MAP = {
-    "ArrowLeft": "LEFT",
-    "ArrowRight": "RIGHT",
-    "ArrowUp": "UP",
-    "ArrowDown": "DOWN",
-    "Space": "SPACE",
-    "Enter": "ENTER",
-    "Escape": "ESCAPE",
-    "KeyD": "D"
+    ArrowLeft: 'LEFT',
+    ArrowRight: 'RIGHT',
+    ArrowUp: 'UP',
+    ArrowDown: 'DOWN',
+    Space: 'SPACE',
+    Enter: 'ENTER',
+    Escape: 'ESCAPE',
+    KeyD: 'D'
 };
 
+const MOBILE_BUTTONS = [
+    { id: 'btn-left',  key: 'LEFT'  },
+    { id: 'btn-right', key: 'RIGHT' },
+    { id: 'btn-up',    key: 'UP'    },
+    { id: 'btn-down',  key: 'DOWN'  },
+    { id: 'btn-space', key: 'SPACE' },
+    { id: 'btn-d',     key: 'D'     }
+];
+
 /**
- * Initializes the game world and starts the game.
- * Creates a new world instance, resets character and endboss, and starts background music.
+ * (Re)initialize the game world and start the game.
+ * Clears any timers left over from the previous round before spinning up a fresh World.
  */
 function init() {
+    IntervalManager.clearAll();
     gamePaused = false;
-    canvas = document.getElementById("canvas");
-    canvas.classList.remove("d_none");
-    const gameContainer = document.getElementById("game-container");
-    gameContainer.classList.remove("d_none");
-    if (world) {
-        world.clearCollisionInterval();
-    }
+
+    canvas = document.getElementById('canvas');
+    canvas.classList.remove('d_none');
+    document.getElementById('game-container').classList.remove('d_none');
+
     world = new World(canvas, keyboard);
-    document.getElementById("startScreen").classList.add("d_none");
+    document.getElementById('startScreen').classList.add('d_none');
     world.audioManager.playLoop('background');
+
     bindMobileButtons();
 }
 
-window.addEventListener("keydown", (event) => {
+/* ---------- Keyboard input ---------- */
+
+window.addEventListener('keydown', event => {
     const key = KEY_MAP[event.code];
     if (key) keyboard[key] = true;
 });
 
-window.addEventListener("keyup", (event) => {
+window.addEventListener('keyup', event => {
     const key = KEY_MAP[event.code];
     if (key) keyboard[key] = false;
 });
 
-/**
- * Binds touch event handlers to all mobile control buttons.
- */
+/* ---------- Touch input ---------- */
+
 function bindMobileButtons() {
-    const mapping = getMobileButtonMapping();
-    mapping.forEach(m => bindMobileButton(m));
+    MOBILE_BUTTONS.forEach(({ id, key }) => {
+        const btn = document.getElementById(id);
+        if (btn) addTouchHandlers(btn, key);
+    });
 }
 
 /**
- * Returns the mapping configuration for mobile buttons.
- * @returns {Array<{id: string, key: string}>} Array of button mappings
- */
-function getMobileButtonMapping() {
-    return [
-        { id: "btn-left", key: "LEFT" },
-        { id: "btn-right", key: "RIGHT" },
-        { id: "btn-up", key: "UP" },
-        { id: "btn-down", key: "DOWN" },
-        { id: "btn-space", key: "SPACE" },
-        { id: "btn-d", key: "D" }
-    ];
-}
-
-/**
- * Binds touch handlers to a single mobile button.
- * @param {{id: string, key: string}} mapping - Button mapping configuration
- */
-function bindMobileButton(mapping) {
-    const btn = document.getElementById(mapping.id);
-    if (!btn) return;
-
-    addTouchHandlers(btn, mapping.key);
-}
-
-/**
- * Adds touchstart and touchend event handlers to a button.
- * @param {HTMLElement} btn - The button element
- * @param {string} key - The keyboard key to simulate
+ * Wire `touchstart`/`touchend` on a button to a virtual key press.
  */
 function addTouchHandlers(btn, key) {
-    btn.addEventListener("touchstart", e => {
+    btn.addEventListener('touchstart', e => {
         e.preventDefault();
         keyboard[key] = true;
-        btn.classList.add("pressed");
+        btn.classList.add('pressed');
     });
-
-    btn.addEventListener("touchend", e => {
+    btn.addEventListener('touchend', e => {
         e.preventDefault();
         keyboard[key] = false;
-        btn.classList.remove("pressed");
+        btn.classList.remove('pressed');
     });
 }

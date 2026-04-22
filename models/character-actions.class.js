@@ -71,7 +71,7 @@ class CharacterActions {
 
         const bubble = new Bubble(character.world, bubbleX, bubbleY, character.otherDirection);
         character.world.bubble.push(bubble);
-        character.collectedPoisonBottles = character.collectedPoisonBottles - 12.5;
+        character.collectedPoisonBottles -= COLLECTABLE_VALUE_PERCENT;
         character.world.poisonStatusBar.setPercentage(character.collectedPoisonBottles);
     }
 
@@ -89,7 +89,7 @@ class CharacterActions {
             character.lastDamageFrom = 'poison';
 
             if (enemy instanceof Jellyfish) {
-                character.currentHurtImages = character.IMAGES_HURT_ELECTIC_SHOCKED;
+                character.currentHurtImages = character.IMAGES_HURT_ELECTRIC_SHOCKED;
                 character.lastDamageFrom = 'electric';
             }
             character.hurtAnimationFrame = 0;
@@ -117,7 +117,7 @@ class CharacterActions {
      */
     static playDeathAnimation(character) {
         const deathImages = character.lastDamageFrom === 'electric'
-            ? character.IMAGES_DEAD_ELECTIC_SHOCKED
+            ? character.IMAGES_DEAD_ELECTRIC_SHOCKED
             : character.IMAGES_DEAD_POISONED;
         const i = character.currentImage % deathImages.length;
         const path = deathImages[i];

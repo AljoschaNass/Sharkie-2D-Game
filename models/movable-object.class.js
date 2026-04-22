@@ -1,16 +1,20 @@
+/**
+ * Base class for anything that moves or can be hit.
+ * Extends {@link DrawableObject} with movement helpers, a hit/hurt model,
+ * and generic animation playback.
+ */
 class MovableObject extends DrawableObject {
-    speed = 0.5
-    energy = 100;
+    speed = 0.5;
+    energy = PLAYER_MAX_ENERGY;
     lastHit = 0;
     otherDirection = false;
     animationIsPlayed = false;
     lastDamageFrom = 'poison';
 
-
     /**
-     * Checks if this object collides with another object.
-     * @param {MovableObject} mo - Object to check collision with
-     * @returns {boolean} True if collision exists
+     * AABB collision check against another object.
+     * @param {MovableObject} mo - Opponent to test against.
+     * @returns {boolean}
      */
     isColliding(mo) {
         return (
@@ -21,111 +25,74 @@ class MovableObject extends DrawableObject {
         );
     }
 
+    moveUp()    { this.y -= this.speed; }
+    moveDown()  { this.y += this.speed; }
+    moveLeft()  { this.x -= this.speed; }
+    moveRight() { this.x += this.speed; }
 
     /**
-     * Moves the object up.
-     */
-    moveUp() {
-        this.y -= this.speed;
-    }
-
-
-    /**
-     * Moves the object down.
-     */
-    moveDown(){
-        this.y += this.speed;
-    }
-
-
-    /**
-     * Moves the object right.
-     */
-    moveRight() {
-        this.x += this.speed;
-    }
-
-
-    /**
-     * Moves the object left.
-     */
-    moveLeft(){
-        this.x -= this.speed;
-    }
-
-
-    /**
-     * Processes a hit from an enemy and reduces energy.
-     * @param {MovableObject} enemy - Enemy that caused the hit
+     * Take damage from an enemy. Respects the post-hit invulnerability window
+     * and writes the damage source so the right hurt/death animation plays.
+     * @param {MovableObject} enemy
      */
     hit(enemy) {
-        if (!gamePaused && !this.isHurt()) {
-            let damage = 5;
-            this.lastDamageFrom = 'poison';
-            switch (true) {
-            case enemy instanceof Endboss:
-                this.lastDamageFrom = 'poison';
-                damage = 15;
-                break;
-            case enemy instanceof Jellyfish && (enemy.color === 'green' || enemy.color === 'pink'):
-                damage = 10;
-                this.lastDamageFrom = 'electric';
-                break;
-            }
-            this.energy -= damage;
-            if (this.energy < 0) {
-                this.energy = 0;
-            } else {
-                this.lastHit = new Date().getTime();
-            }
-        }
+        if (gamePaused || this.isHurt()) return;
+
+        const { amount, source } = this.resolveDamage(enemy);
+        this.lastDamageFrom = source;
+        this.energy = Math.max(0, this.energy - amount);
+        if (this.energy > 0) this.lastHit = Date.now();
     }
 
+    /**
+     * Look up the damage amount and source for a given attacker.
+     * @param {MovableObject} enemy
+     * @returns {{ amount: number, source: 'poison' | 'electric' }}
+     */
+    resolveDamage(enemy) {
+        if (enemy instanceof Endboss) {
+            return { amount: DAMAGE.ENDBOSS, source: 'poison' };
+        }
+        if (enemy instanceof Jellyfish && (enemy.color === 'green' || enemy.color === 'pink')) {
+            return { amount: DAMAGE.ELECTRIC, source: 'electric' };
+        }
+        return { amount: DAMAGE.POISON, source: 'poison' };
+    }
 
     /**
-     * Checks if the object is currently hurt.
-     * @returns {boolean} True if hurt
+     * True while the post-hit invulnerability window is still active.
      */
     isHurt() {
-        let timePassed = new Date().getTime() - this.lastHit;
-        return timePassed < 1000;
+        return Date.now() - this.lastHit < HURT_COOLDOWN_MS;
     }
 
-
     /**
-     * Checks if the object is dead.
-     * @returns {boolean} True if energy is 0
+     * True when energy has been depleted.
      */
     isDead() {
-        return this.energy == 0;
+        return this.energy === 0;
     }
 
-
     /**
-     * Plays an animation in a continuous loop.
-     * @param {string[]} images - Array with image paths for the animation
+     * Cycle through `images` on each call, wrapping at the end.
+     * @param {string[]} images
      */
     playAnimation(images) {
-        let i = this.currentImage % images.length;
-        let path = images[i];
-        this.img = this.imageCache[path];
+        const i = this.currentImage % images.length;
+        this.img = this.imageCache[images[i]];
         this.currentImage++;
     }
 
-
     /**
-     * Plays an animation once.
-     * @param {string[]} images - Array with image paths for the animation
+     * Play `images` once and latch; further calls are ignored.
+     * @param {string[]} images
      */
     playAnimationOnce(images) {
-        if (!this.animationIsPlayed) {
-            let i = this.currentImage % images.length;
-            let path = images[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;
-            if (this.currentImage == images.length) {
-                this.animationIsPlayed = true;
-            }
-        }
+        if (this.animationIsPlayed) return;
+
+        const i = this.currentImage % images.length;
+        this.img = this.imageCache[images[i]];
+        this.currentImage++;
+        if (this.currentImage === images.length) this.animationIsPlayed = true;
     }
 }

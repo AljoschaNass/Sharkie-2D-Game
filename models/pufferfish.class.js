@@ -1,12 +1,16 @@
-class Pufferfish extends MovableObject {
+/**
+ * Swims left across the level and plays a four-phase animation loop
+ * (swim → transition → bubble-swim → transition reversed).
+ */
+class Pufferfish extends Enemy {
+    static COLORS = ['GREEN', 'ORANGE', 'RED'];
+    static TYPES = ['SWIM', 'TRANSITION', 'BUBBLESWIM'];
+    static ANIMATION_INTERVAL_MS = 200;
+
     height = 60;
     width = 70;
-    offset = {
-        top: 5,
-        left: 10,
-        bottom: 15,
-        right: 10
-    };
+    offset = { top: 5, left: 10, bottom: 15, right: 10 };
+
     IMAGES_SWIM = [];
     IMAGES_TRANSITION = [];
     IMAGES_BUBBLESWIM = [];
@@ -74,146 +78,78 @@ class Pufferfish extends MovableObject {
         'img/2.Enemy/1.Pufferfish/3.Bubbleeswim/3.bubbleswim4.png',
         'img/2.Enemy/1.Pufferfish/3.Bubbleeswim/3.bubbleswim5.png',
     ];
-    
-    repeatCounter = 0;
-
 
     /**
-     * Creates a new pufferfish.
-     * @param {string} color - Color of the pufferfish (green, orange or red)
+     * @param {'green'|'orange'|'red'} color
      */
-    constructor(color){
-        super().loadImage("img/2.Enemy/1.Pufferfish/1.Swim/1.swim1.png");
-        this.loadAllImages();
+    constructor(color) {
+        super().loadImage('img/2.Enemy/1.Pufferfish/1.Swim/1.swim1.png');
         this.color = color;
-        this.selectColor();
+        this.loadColorVariants(Pufferfish.COLORS, Pufferfish.TYPES);
+        this.selectColorImages(Pufferfish.TYPES);
         this.setSequences();
-        this.calculatePosition();
+        this.randomizeSpawn({ xMin: 400, xRange: 3600 });
         this.animate();
     }
 
-
     /**
-     * Starts the movement and animation of the pufferfish.
+     * Start movement and animation loops.
      */
     animate() {
-        setInterval(() => {
-            if (!gamePaused) {
-                this.moveLeft();
-            }
-        }, 1000 / 60);
+        IntervalManager.setInterval(() => this.moveLeft(), FRAME_INTERVAL);
         this.loopAnimationSequence();
     }
 
-
     /**
-     * Loads all images for all colors and animation types.
-     */
-    loadAllImages() {
-        const colors = ['GREEN', 'ORANGE', 'RED'];
-        const types = ['SWIM', 'TRANSITION', 'BUBBLESWIM'];
-
-        colors.forEach(color => {
-            types.forEach(type => {
-                const key = `IMAGES_${type}_${color}`;
-                this.loadImages(this[key]);
-            });
-        });
-    }
-
-
-    /**
-     * Plays the animation sequence in a continuous loop.
+     * Continuously cycle through the animation sequences.
      */
     loopAnimationSequence() {
-        let currentSequenceIndex = 0;
+        let sequenceIndex = 0;
         let frameIndex = 0;
-
-        setInterval(() => {
-            if (gamePaused) return;
-
-            const result = this.playSequenceFrame(currentSequenceIndex, frameIndex);
-            frameIndex = result.frameIndex;
-            currentSequenceIndex = result.sequenceIndex;
-        }, 200);
+        IntervalManager.setInterval(() => {
+            const next = this.playSequenceFrame(sequenceIndex, frameIndex);
+            sequenceIndex = next.sequenceIndex;
+            frameIndex = next.frameIndex;
+        }, Pufferfish.ANIMATION_INTERVAL_MS);
     }
 
-
     /**
-     * Plays a single frame of the current sequence.
-     * @param {number} sequenceIndex - Index of the current sequence
-     * @param {number} frameIndex - Index of the current frame
-     * @returns {Object} New sequence and frame index
+     * Play a single frame of the given sequence and advance state.
+     * @returns {{ sequenceIndex: number, frameIndex: number }}
      */
     playSequenceFrame(sequenceIndex, frameIndex) {
         const current = this.sequences[sequenceIndex];
-        const currentImages = current.images;
-
-        this.updateFrameImage(currentImages, frameIndex);
-        frameIndex++;
-
-        return this.handleSequenceProgress(sequenceIndex, frameIndex, current);
+        this.updateFrameImage(current.images, frameIndex);
+        return this.handleSequenceProgress(sequenceIndex, frameIndex + 1, current);
     }
 
-
     /**
-     * Updates the currently displayed image.
-     * @param {string[]} images - Array with image paths
-     * @param {number} frameIndex - Index of the image to display
+     * Swap the sprite and adjust the offset for the current animation type.
      */
     updateFrameImage(images, frameIndex) {
-        const path = images[frameIndex];
-        this.img = this.imageCache[path];
+        this.img = this.imageCache[images[frameIndex]];
         this.setOffset(images);
     }
 
-
     /**
-     * Manages the progress of the animation sequence.
-     * @param {number} sequenceIndex - Current sequence index
-     * @param {number} frameIndex - Current frame index
-     * @param {Object} current - Current sequence data
-     * @returns {Object} New indices for sequence and frame
+     * Advance the sequence counter once the current animation has played
+     * its configured number of repeats.
      */
     handleSequenceProgress(sequenceIndex, frameIndex, current) {
-        if (frameIndex >= current.images.length) {
-            frameIndex = 0;
-            this.repeatCounter++;
+        if (frameIndex < current.images.length) return { sequenceIndex, frameIndex };
 
-            if (this.repeatCounter >= current.repeat) {
-                this.repeatCounter = 0;
-                sequenceIndex = (sequenceIndex + 1) % this.sequences.length;
-            }
-        }
+        this.repeatCounter++;
+        if (this.repeatCounter < current.repeat) return { sequenceIndex, frameIndex: 0 };
 
-        return { sequenceIndex, frameIndex };
+        this.repeatCounter = 0;
+        return {
+            sequenceIndex: (sequenceIndex + 1) % this.sequences.length,
+            frameIndex: 0
+        };
     }
 
-
     /**
-     * Calculates random position and speed.
-     */
-    calculatePosition() {
-        this.x = 400 + Math.random() * 3600;
-        this.y = Math.random() * 480 * 0.75;
-        this.speed = 0.6 + Math.random() * 0.5;
-    }
-
-
-    /**
-     * Selects the images based on the color.
-     */
-    selectColor() {
-        const suffix = this.color.toUpperCase();
-
-        this.IMAGES_SWIM = this[`IMAGES_SWIM_${suffix}`] || [];
-        this.IMAGES_TRANSITION = this[`IMAGES_TRANSITION_${suffix}`] || [];
-        this.IMAGES_BUBBLESWIM = this[`IMAGES_BUBBLESWIM_${suffix}`] || [];
-    }
-
-
-    /**
-     * Defines the animation sequences with repetitions.
+     * Build the animation sequence — swim → transition → bubble-swim → transition reversed.
      */
     setSequences() {
         this.sequences = [
@@ -224,16 +160,10 @@ class Pufferfish extends MovableObject {
         ];
     }
 
-
     /**
-     * Adjusts the offset based on animation type.
-     * @param {string[]} currentImages - Currently used image array
+     * Bubble-swim animation has a different hitbox than the other sequences.
      */
     setOffset(currentImages) {
-        if (currentImages != this.IMAGES_BUBBLESWIM) {
-            this.offset.bottom = 15;
-        } else if (currentImages === this.IMAGES_BUBBLESWIM) {
-            this.offset.bottom = 0;
-        }
+        this.offset.bottom = currentImages === this.IMAGES_BUBBLESWIM ? 0 : 15;
     }
 }

@@ -1,21 +1,33 @@
 /**
- * Final boss enemy.
+ * Final boss enemy. Enters after the character crosses
+ * `ENDBOSS_ACTIVATION_X`, then cycles between attack and rest phases.
  */
 class Endboss extends MovableObject {
+    static ANIMATION_TICK_MS = 200;
+    static MOVEMENT_TICK_MS = FRAME_INTERVAL;
+    static ATTACK_FRAME_MS = 150;
+    static HURT_FRAME_MS = 150;
+    static DEATH_FRAME_MS = 350;
+    static WIN_DELAY_MS = 500;
+    static ATTACK_PHASE_S = 3;
+    static REST_PHASE_S = 2;
+
     world;
     height = 300;
     width = 300;
-    x = 3500;
+    x = ENDBOSS_SPAWN_X;
     y = 50;
-    offset = {
-        top: 95,
-        left: 12,
-        bottom: 40,
-        right: 18
-    };
+    offset = { top: 95, left: 12, bottom: 40, right: 18 };
     currentImage = 0;
     characterReachedEndboss = false;
 
+    isAttacking = false;
+    isHurtAnimating = false;
+    isDying = false;
+    phase = 'idle';
+    phaseStartTime = 0;
+    attackSpeed = 2.7;
+    normalSpeed = 0.5;
 
     IMAGES_INTRODUCE = [
         'img/2.Enemy/3.FinalEnemy/1.Introduce/1.png',
@@ -27,7 +39,7 @@ class Endboss extends MovableObject {
         'img/2.Enemy/3.FinalEnemy/1.Introduce/7.png',
         'img/2.Enemy/3.FinalEnemy/1.Introduce/8.png',
         'img/2.Enemy/3.FinalEnemy/1.Introduce/9.png',
-        'img/2.Enemy/3.FinalEnemy/1.Introduce/10.png',
+        'img/2.Enemy/3.FinalEnemy/1.Introduce/10.png'
     ];
     IMAGES_FLOATING = [
         'img/2.Enemy/3.FinalEnemy/2.floating/1.png',
@@ -42,7 +54,7 @@ class Endboss extends MovableObject {
         'img/2.Enemy/3.FinalEnemy/2.floating/10.png',
         'img/2.Enemy/3.FinalEnemy/2.floating/11.png',
         'img/2.Enemy/3.FinalEnemy/2.floating/12.png',
-        'img/2.Enemy/3.FinalEnemy/2.floating/13.png',
+        'img/2.Enemy/3.FinalEnemy/2.floating/13.png'
     ];
     IMAGES_ATTACK = [
         'img/2.Enemy/3.FinalEnemy/Attack/1.png',
@@ -50,51 +62,41 @@ class Endboss extends MovableObject {
         'img/2.Enemy/3.FinalEnemy/Attack/3.png',
         'img/2.Enemy/3.FinalEnemy/Attack/4.png',
         'img/2.Enemy/3.FinalEnemy/Attack/5.png',
-        'img/2.Enemy/3.FinalEnemy/Attack/6.png',
+        'img/2.Enemy/3.FinalEnemy/Attack/6.png'
     ];
     IMAGES_HURT = [
         'img/2.Enemy/3.FinalEnemy/Hurt/1.png',
         'img/2.Enemy/3.FinalEnemy/Hurt/2.png',
         'img/2.Enemy/3.FinalEnemy/Hurt/3.png',
-        'img/2.Enemy/3.FinalEnemy/Hurt/4.png',
+        'img/2.Enemy/3.FinalEnemy/Hurt/4.png'
     ];
     IMAGES_DEAD = [
         'img/2.Enemy/3.FinalEnemy/Dead/6.png',
         'img/2.Enemy/3.FinalEnemy/Dead/7.png',
         'img/2.Enemy/3.FinalEnemy/Dead/8.png',
         'img/2.Enemy/3.FinalEnemy/Dead/9.png',
-        'img/2.Enemy/3.FinalEnemy/Dead/10.png',
+        'img/2.Enemy/3.FinalEnemy/Dead/10.png'
     ];
+
     currentImageSet = this.IMAGES_INTRODUCE;
-    isAttacking = false;
-    isHurtAnimating = false;
-    isDying = false;
-    phase = 'idle';
-    phaseStartTime = 0;
-    attackSpeed = 2.7;
-    normalSpeed = 0.5;
 
-
-    /**
-     * Creates a new endboss.
-     */
-    constructor(){
+    constructor() {
         super().loadImages(this.IMAGES_INTRODUCE);
         this.loadImages(this.IMAGES_FLOATING);
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
+        this.energy = ENDBOSS_MAX_ENERGY;
         this.animate();
     }
 
-
     /**
-     * Resets the endboss to initial values.
+     * Reset to initial state for a fresh round.
      */
     restart() {
-        this.x = 3500;
+        this.x = ENDBOSS_SPAWN_X;
         this.y = 50;
-        this.energy = 100;
+        this.energy = ENDBOSS_MAX_ENERGY;
         this.currentImage = 0;
         this.characterReachedEndboss = false;
         this.currentImageSet = this.IMAGES_INTRODUCE;
@@ -106,55 +108,32 @@ class Endboss extends MovableObject {
         this.phaseStartTime = 0;
     }
 
-
     /**
-     * Starts the animations and movement of the endboss.
+     * Start the animation and movement loops.
      */
     animate() {
-        this.startAnimationLoop();
-        this.startMovementLoop();
-    }
+        IntervalManager.setInterval(() => {
+            this.checkBossState();
+            this.handleBossActivation();
+            this.playCurrentAnimation();
+        }, Endboss.ANIMATION_TICK_MS);
 
-
-    /**
-     * Starts the main animation loop.
-     */
-    startAnimationLoop() {
-        setInterval(() => {
-            if (!gamePaused) {
-                this.checkBossState();
-                this.handleBossActivation();
-                this.playCurrentAnimation();
-            }
-        }, 200);
-    }
-
-
-    /**
-     * Starts the movement loop.
-     */
-    startMovementLoop() {
-        setInterval(() => {
-            if (!gamePaused && this.characterReachedEndboss && !this.isDying && this.animationIsPlayed) {
+        IntervalManager.setInterval(() => {
+            if (this.characterReachedEndboss && !this.isDying && this.animationIsPlayed) {
                 this.executePhaseMovement();
             }
-        }, 1000 / 60);
+        }, Endboss.MOVEMENT_TICK_MS);
     }
 
-
     /**
-     * Checks the state of the boss activation.
+     * Latch activation once the player has crossed the threshold.
      */
     checkBossState() {
-        if (this.world.character.x > 3100) {
+        if (this.world.character.x > ENDBOSS_ACTIVATION_X) {
             this.characterReachedEndboss = true;
         }
     }
 
-
-    /**
-     * Handles the activation of the boss.
-     */
     handleBossActivation() {
         if (this.characterReachedEndboss && !this.isDying) {
             this.showEndboss();
@@ -162,48 +141,44 @@ class Endboss extends MovableObject {
         }
     }
 
-
     /**
-     * Plays the current animation based on the state.
+     * Pick the animation for the current state. Intro plays once (latched
+     * via `animationIsPlayed`), then we float unless attacking/hurt/dying.
      */
     playCurrentAnimation() {
-        if (this.animationIsPlayed && !this.isAttacking && !this.isHurtAnimating && !this.isDying) {
-            this.playAnimation(this.IMAGES_FLOATING);
-        } else if (this.isDying) {
+        if (this.isDying) {
             this.playAnimation(this.IMAGES_DEAD);
+            return;
+        }
+        if (this.animationIsPlayed && !this.isAttacking && !this.isHurtAnimating) {
+            this.playAnimation(this.IMAGES_FLOATING);
         }
     }
 
-
-    /**
-     * Shows the introduction animation of the endboss.
-     */
     showEndboss() {
         this.playAnimationOnce(this.IMAGES_INTRODUCE);
     }
 
-
     /**
-     * Updates the phase system between attack and rest.
+     * Cycle through idle → attack → rest → attack.
      */
     updatePhaseSystem() {
-        const now = Date.now();
-        const elapsed = (now - this.phaseStartTime) / 1000;
+        const elapsed = (Date.now() - this.phaseStartTime) / 1000;
+
         if (this.phase === 'idle' && this.animationIsPlayed) {
-            this.phase = 'attack';
-            this.phaseStartTime = now;
-        } else if (this.phase === 'attack' && elapsed > 3) {
-            this.phase = 'rest';
-            this.phaseStartTime = now;
-        } else if (this.phase === 'rest' && elapsed > 2) {
-            this.phase = 'attack';
-            this.phaseStartTime = now;
+            this.enterPhase('attack');
+        } else if (this.phase === 'attack' && elapsed > Endboss.ATTACK_PHASE_S) {
+            this.enterPhase('rest');
+        } else if (this.phase === 'rest' && elapsed > Endboss.REST_PHASE_S) {
+            this.enterPhase('attack');
         }
     }
 
-    /**
-     * Executes movement according to the current phase.
-     */
+    enterPhase(phase) {
+        this.phase = phase;
+        this.phaseStartTime = Date.now();
+    }
+
     executePhaseMovement() {
         if (this.phase === 'attack') {
             this.moveTowardsCharacter();
@@ -213,9 +188,6 @@ class Endboss extends MovableObject {
         }
     }
 
-    /**
-     * Moves the endboss towards the character.
-     */
     moveTowardsCharacter() {
         const distance = this.world.character.x - this.x;
         if (Math.abs(distance) > 50) {
@@ -223,109 +195,85 @@ class Endboss extends MovableObject {
         }
     }
 
-    /**
-     * Adjusts the endboss height to match the character height.
-     */
     matchCharacterHeight() {
-        const targetY = this.world.character.y - 50;
-        const diff = targetY - this.y;
+        const diff = (this.world.character.y - 50) - this.y;
         if (Math.abs(diff) > 5) {
             this.y += diff > 0 ? 2 : -2;
         }
     }
 
+    /* ---------- Attack / hurt / death sequences ---------- */
 
     /**
-     * Executes an attack animation.
+     * Play the one-shot attack animation. Guarded against re-entry.
      */
     attack() {
         if (this.isAttacking) return;
-        this.isAttacking = true;
-        this.currentImage = 0;
-
-        const interval = setInterval(() => {
-            if (!gamePaused) {
-                this.playAnimationFrame(this.IMAGES_ATTACK, () => {
-                    clearInterval(interval);
-                    this.isAttacking = false;
-                    this.currentImage = 0;
-                });
-            }
-        }, 150);
+        this.runOneShotAnimation({
+            images: this.IMAGES_ATTACK,
+            intervalMs: Endboss.ATTACK_FRAME_MS,
+            stateFlag: 'isAttacking'
+        });
     }
 
-
     /**
-     * Plays a single animation frame and calls callback on completion.
-     * @param {string[]} images - Array mit Bildpfaden
-     * @param {Function} onComplete - Callback nach Abschluss der Animation
-     */
-    playAnimationFrame(images, onComplete) {
-        const i = this.currentImage;
-        const path = images[i];
-        this.img = this.imageCache[path];
-        this.currentImage++;
-
-        if (this.currentImage >= images.length) {
-            onComplete?.();
-        }
-    }
-
-
-    /**
-     * Plays the hurt animation.
-     * After the animation completes, checks if the boss should die.
+     * Play the hurt animation; trigger death when energy is depleted.
      */
     playHurtAnimation() {
         if (this.isHurtAnimating || this.isDying) return;
-        this.isHurtAnimating = true;
-        this.currentImage = 0;
-
-        const interval = setInterval(() => {
-            if (!gamePaused) {
-                this.playAnimationFrame(this.IMAGES_HURT, () => {
-                    clearInterval(interval);
-                    this.isHurtAnimating = false;
-                    this.currentImage = 0;
-
-                    if (this.energy <= 0) {
-                        this.die();
-                    }
-                });
-            }
-        }, 150);
+        this.runOneShotAnimation({
+            images: this.IMAGES_HURT,
+            intervalMs: Endboss.HURT_FRAME_MS,
+            stateFlag: 'isHurtAnimating',
+            onComplete: () => { if (this.energy <= 0) this.die(); }
+        });
     }
 
+    /**
+     * Generic runner for attack/hurt that flips a flag, plays an animation once,
+     * and cleans up. An optional `onComplete` runs after the final frame.
+     * @param {{ images: string[], intervalMs: number, stateFlag: string, onComplete?: () => void }} cfg
+     */
+    runOneShotAnimation(cfg) {
+        this[cfg.stateFlag] = true;
+        this.currentImage = 0;
+
+        const id = IntervalManager.setInterval(() => {
+            this.playAnimationFrame(cfg.images, () => {
+                IntervalManager.clear(id);
+                this[cfg.stateFlag] = false;
+                this.currentImage = 0;
+                cfg.onComplete?.();
+            });
+        }, cfg.intervalMs);
+    }
 
     /**
-     * Starts the death animation and then shows the win screen.
+     * Play a single frame and fire `onComplete` once the sequence ends.
+     */
+    playAnimationFrame(images, onComplete) {
+        this.img = this.imageCache[images[this.currentImage]];
+        this.currentImage++;
+        if (this.currentImage >= images.length) onComplete?.();
+    }
+
+    /**
+     * Death sequence — plays once, then pauses the game and shows the win screen.
      */
     die() {
         this.isDying = true;
         this.currentImage = 0;
-        let deathAnimationPlayed = false;
 
-        const interval = setInterval(() => {
-            if (!gamePaused && !deathAnimationPlayed) {
-                this.playAnimationFrame(this.IMAGES_DEAD, () => {
-                    deathAnimationPlayed = true;
-                    clearInterval(interval);
-                    gamePaused = true;
-                    setTimeout(() => {
-                        this.showWinningScreen();
-                    }, 500);
-                });
-            }
-        }, 350);
+        const id = IntervalManager.setInterval(() => {
+            this.playAnimationFrame(this.IMAGES_DEAD, () => {
+                IntervalManager.clear(id);
+                gamePaused = true;
+                setTimeout(() => this.showWinningScreen(), Endboss.WIN_DELAY_MS);
+            });
+        }, Endboss.DEATH_FRAME_MS);
     }
 
-
-    /**
-     * Shows the win screen.
-     */
     showWinningScreen() {
-        if (typeof showWinScreen === 'function') {
-            showWinScreen();
-        }
+        if (typeof showWinScreen === 'function') showWinScreen();
     }
 }
