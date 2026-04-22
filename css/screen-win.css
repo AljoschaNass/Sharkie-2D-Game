@@ -1,17 +1,19 @@
+/* ============================================================
+ * Victory screen — oversized "You Win" backdrop with restart + menu buttons.
+ * ============================================================ */
+
 .winScreen {
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  background: url('../img/Buttons/Tittles/you-win/winning-shark.png') no-repeat center/cover;
-  font-family: 'Bubblegum Sans', sans-serif;
-  padding: 4%;
-  gap: 3%;
-  background-position: bottom;
-  background-size: 130%;
-  aspect-ratio: 3 / 2;
-  max-width: 100vw;
-  max-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    background: url('../img/Buttons/Tittles/you-win/winning-shark.png') no-repeat bottom / 130%;
+    font-family: var(--font-display);
+    padding: 4%;
+    gap: 3%;
+    aspect-ratio: 3 / 2;
+    max-width: 100vw;
+    max-height: 100vh;
 }

@@ -1,30 +1,34 @@
+/* ============================================================
+ * Game-over screen — "GAME OVER" title, failed-sharkie art, menu buttons.
+ * ============================================================ */
+
 .gameOverScreen {
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Bubblegum Sans', sans-serif;
-  padding: 4%;
-  gap: 5%;
-  aspect-ratio: 3 / 2;
-  max-width: 100vw;
-  max-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-display);
+    padding: 4%;
+    gap: 5%;
+    aspect-ratio: 3 / 2;
+    max-width: 100vw;
+    max-height: 100vh;
 }
 
 .gameOverTitle {
-  font-size: 3.5rem;
-  color: #ff4f4f;
-  text-shadow: 0 0 25px #ff0000, 0 0 10px #cc0000;
-  margin: 0;
-  flex-shrink: 0;
+    font-size: 3.5rem;
+    color: var(--color-red);
+    text-shadow: var(--shadow-text-danger);
+    margin: 0;
+    flex-shrink: 0;
 }
 
 .gameOverScreen img {
-  max-height: 45%;
-  max-width: 80%;
-  object-fit: contain;
-  opacity: 0.8;
-  flex-shrink: 0;
+    max-height: 45%;
+    max-width: 80%;
+    object-fit: contain;
+    opacity: 0.8;
+    flex-shrink: 0;
 }

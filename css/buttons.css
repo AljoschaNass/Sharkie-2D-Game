@@ -1,135 +1,138 @@
+/* ============================================================
+ * Button system.
+ * A single base `.btn` provides the common appearance.
+ * Size/weight variants (.btn-start, .btn-controls, .btn-small) override
+ * dimensions and animation intensity only.
+ * ============================================================ */
+
 .btn {
-  background: rgba(0, 51, 102, 0.7);
-  border: 2px solid #4fd1ff;
-  border-radius: 15px;
-  color: #fff;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 2;
-  animation: float 5s ease-in-out infinite, wave 8s ease-in-out infinite;
+    background: var(--color-navy-panel);
+    border: 2px solid var(--color-primary);
+    border-radius: var(--radius-md);
+    color: #fff;
+    cursor: pointer;
+    transition: var(--transition-base);
+    z-index: 2;
+    animation: float 5s ease-in-out infinite, wave 8s ease-in-out infinite;
 }
 
 .btn:hover {
-  background: #4fd1ff;
-  color: #001a33;
-  transform: scale(1.07);
-  box-shadow: 0 0 25px #00bfff;
+    background: var(--color-primary);
+    color: var(--color-navy);
+    transform: scale(1.07);
+    box-shadow: var(--shadow-glow-sm);
 }
 
+/* ---------- Primary CTA ---------- */
 .btn-start {
-  width: 260px;
-  font-size: 1.5rem;
-  padding: 1rem 1.5rem;
-  background: #4fd1ff;
-  color: #001a33;
-  box-shadow: 0 0 25px #00bfff;
-  animation: float-strong 3.5s ease-in-out infinite, wave-strong 6s ease-in-out infinite;
-  transform-origin: center;
-  transition: all 0.3s ease;
+    width: 260px;
+    font-size: 1.5rem;
+    padding: var(--space-md) var(--space-lg);
+    background: var(--color-primary);
+    color: var(--color-navy);
+    box-shadow: var(--shadow-glow-sm);
+    animation: float-strong 3.5s ease-in-out infinite, wave-strong 6s ease-in-out infinite;
+    transform-origin: center;
 }
 
 .btn-start:hover {
-  transform: scale(1.1);
-  background: rgba(0, 51, 102, 0.6);
-  border: 2px solid #4fd1ff;
-  color: #fff;
+    transform: scale(1.1);
+    background: var(--color-navy-panel-muted);
+    color: #fff;
 }
 
+/* ---------- Secondary ---------- */
 .btn-controls {
-  width: 180px;
-  font-size: 1.2rem;
-  padding: 0.7rem 1rem;
-  background: rgba(0, 51, 102, 0.6);
-  border: 2px solid #4fd1ff;
-  color: #fff;
-  animation: float 6s ease-in-out infinite, wave 9s ease-in-out infinite;
-  transition: all 0.3s ease;
+    width: 180px;
+    font-size: 1.2rem;
+    padding: 0.7rem var(--space-md);
+    background: var(--color-navy-panel-muted);
+    animation: float 6s ease-in-out infinite, wave 9s ease-in-out infinite;
 }
 
-.btn-controls:hover {
-  background: #4fd1ff;
-  color: #001a33;
-  transform: scale(1.07);
-}
-
+/* ---------- Small / tertiary ---------- */
 .btn-small {
-  width: 120px;
-  font-size: 0.9rem;
-  padding: 0.6rem;
-  background: rgba(0, 51, 102, 0.6);
-  border: 1px solid #4fd1ff;
-  color: #b3e5ff;
-  animation: float-light 7s ease-in-out infinite, wave-light 10s ease-in-out infinite;
-  transition: all 0.3s ease;
+    width: 120px;
+    font-size: 0.9rem;
+    padding: 0.6rem;
+    background: var(--color-navy-panel-muted);
+    border-width: 1px;
+    color: var(--color-text);
+    animation: float-light 7s ease-in-out infinite, wave-light 10s ease-in-out infinite;
 }
 
 .btn-small:hover {
-  background: #4fd1ff;
-  color: #001a33;
-  transform: scale(1.05);
+    transform: scale(1.05);
 }
 
-#pause-btn, #mute-btn {
-  border-radius: 8px;
-  padding: 4px 10px;
-  background: none;
-  border: none;
+/* ---------- Chromeless pause/mute buttons ---------- */
+#pause-btn,
+#mute-btn {
+    border-radius: var(--radius-sm);
+    padding: 4px 10px;
+    background: none;
+    border: none;
 }
 
-#pause-btn:hover, #mute-btn:hover {
-  background: none;
-  box-shadow: none;
+#pause-btn:hover,
+#mute-btn:hover {
+    background: none;
+    box-shadow: none;
 }
+
+/* ---------- Float + wave animations ---------- */
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-6px); }
 }
 
 @keyframes wave {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-1.2deg); }
-  75% { transform: rotate(1.2deg); }
+    0%, 100% { transform: rotate(0deg); }
+    25%      { transform: rotate(-1.2deg); }
+    75%      { transform: rotate(1.2deg); }
 }
 
 @keyframes float-strong {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
 }
 
 @keyframes wave-strong {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-2deg); }
-  75% { transform: rotate(2deg); }
+    0%, 100% { transform: rotate(0deg); }
+    25%      { transform: rotate(-2deg); }
+    75%      { transform: rotate(2deg); }
 }
 
 @keyframes float-light {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-3px); }
 }
 
 @keyframes wave-light {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-0.8deg); }
-  75% { transform: rotate(0.8deg); }
+    0%, 100% { transform: rotate(0deg); }
+    25%      { transform: rotate(-0.8deg); }
+    75%      { transform: rotate(0.8deg); }
 }
 
+/* ---------- Responsive sizing ---------- */
+
 @media (max-height: 600px) and (orientation: landscape) {
-  .btn-start {
-    width: clamp(180px, 30vw, 220px);
-    font-size: clamp(1rem, 2.5vw, 1.3rem);
-    padding: 0.7rem 1rem;
-  }
+    .btn-start {
+        width: clamp(180px, 30vw, 220px);
+        font-size: clamp(1rem, 2.5vw, 1.3rem);
+        padding: 0.7rem var(--space-md);
+    }
 
-  .btn-controls {
-    width: clamp(140px, 25vw, 160px);
-    font-size: clamp(0.9rem, 2vw, 1.1rem);
-    padding: 0.5rem 0.8rem;
-  }
+    .btn-controls {
+        width: clamp(140px, 25vw, 160px);
+        font-size: clamp(0.9rem, 2vw, 1.1rem);
+        padding: var(--space-sm) 0.8rem;
+    }
 
-  .btn-small {
-    width: clamp(90px, 18vw, 110px);
-    font-size: clamp(0.75rem, 1.8vw, 0.85rem);
-    padding: 0.4rem 0.5rem;
-  }
+    .btn-small {
+        width: clamp(90px, 18vw, 110px);
+        font-size: clamp(0.75rem, 1.8vw, 0.85rem);
+        padding: var(--space-xs) var(--space-sm);
+    }
 }

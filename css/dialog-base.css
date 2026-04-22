@@ -1,0 +1,75 @@
+/* ============================================================
+ * Shared dialog content styles.
+ * Used by credits, privacy policy, and legal notice — which share a
+ * two-column layout with headings, paragraphs, and links.
+ * (The controls dialog has a grid-of-cards structure and keeps its own file.)
+ * ============================================================ */
+
+.dialog-content {
+    text-align: left;
+    width: 100%;
+}
+
+.dialog-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    align-items: start;
+}
+
+.dialog-column h3 {
+    color: var(--color-heading);
+    margin-bottom: var(--space-sm);
+    font-size: 1.3rem;
+}
+
+.dialog-column p,
+.dialog-column ul {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--color-text);
+}
+
+.dialog-column ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.dialog-column li::before {
+    content: "✨ ";
+    color: var(--color-primary);
+}
+
+.dialog-content a {
+    color: var(--color-link);
+    text-decoration: none;
+}
+
+.dialog-content a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive — collapse to a single column on narrow screens. */
+@media (max-width: 600px) {
+    .dialog-columns {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+    }
+}
+
+@media (max-height: 600px) and (orientation: landscape) {
+    .dialog-columns {
+        gap: var(--space-md);
+        font-size: 0.85rem;
+    }
+
+    .dialog-column h3 {
+        font-size: 1rem;
+    }
+
+    .dialog-column p,
+    .dialog-column ul {
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+}

@@ -1,86 +1,83 @@
+/* ============================================================
+ * Global styles — reset, typography base, dialog frame, and
+ * viewport/orientation handling.
+ * ============================================================ */
+
 @font-face {
-  font-family: 'Bubblegum Sans';
-  src: url('fonts/Bubblegum_Sans/BubblegumSans-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'Bubblegum Sans';
+    src: url('fonts/Bubblegum_Sans/BubblegumSans-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html, body {
-  padding: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 html,
 body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
 }
 
 body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-image: url("img/3.Background/hintergrund-meer-hell.png");
-  background-size: cover;
-  font-family: 'Bubblegum Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: url("img/3.Background/hintergrund-meer-hell.png") center/cover;
+    font-family: var(--font-display);
 }
 
 .d_none {
     display: none !important;
 }
 
+/* ---------- Headings used inside dialogs ---------- */
+
 h2 {
-  text-align: center;
-  color: #4fd1ff;
-  font-size: clamp(1.5rem, 4vw, 2.2rem);
-  letter-spacing: 1px;
-  text-shadow: 0 0 20px #00bfff;
-  margin-bottom: 1rem;
+    text-align: center;
+    color: var(--color-primary);
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    letter-spacing: 1px;
+    text-shadow: var(--shadow-text);
+    margin-bottom: var(--space-md);
 }
 
+/* ---------- Native <dialog> shell ---------- */
+
 .allDialogs {
-  border: none;
-  border-radius: 20px;
-  background: rgba(0, 25, 50, 0.2); 
-  color: #b3e5ff;
-  width: 90vw;
-  height: auto;
-  max-width: 690px;
-  max-height: 460px;
-  box-shadow: 0 0 30px #00bfff;
-  font-family: 'Bubblegum Sans', sans-serif;
-  overflow: hidden;
-  margin: auto;
-  padding: 1.5rem 2rem; 
-  animation: fadeIn 0.5s ease-in forwards;
-  opacity: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  overflow-y: auto;
+    border: none;
+    border-radius: var(--radius-lg);
+    background: rgba(0, 25, 50, 0.2);
+    color: var(--color-text);
+    width: 90vw;
+    height: auto;
+    max-width: 690px;
+    max-height: 460px;
+    box-shadow: var(--shadow-glow-md);
+    font-family: var(--font-display);
+    margin: auto;
+    padding: var(--space-lg) var(--space-xl);
+    animation: fadeIn 0.5s ease-in forwards;
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden auto;
 }
 
 .allDialogs:not([open]) {
-  display: none;
+    display: none;
 }
 
 .allDialogs::backdrop {
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(3px);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
 }
 
 .dialogsFooters {
@@ -88,101 +85,104 @@ h2 {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.98); }
-  to { opacity: 1; transform: scale(1); }
+    from { opacity: 0; transform: scale(0.98); }
+    to   { opacity: 1; transform: scale(1); }
 }
+
+/* ---------- Orientation lock ---------- */
 
 .rotate-message {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 30, 0.9);
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  z-index: 9999;
-  font-size: 1.5rem;
-  padding: 2rem;
-}
-
-@media (max-width: 480px) {
-  body {
-    background-size: contain;
-  }
-
-  .menu {
-    gap: 1rem;
-  }
-
-  .bottom-menu {
-    bottom: 10px;
-    right: 10px;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .btn {
-    font-size: 0.9rem;
-    padding: 0.4rem 0.8rem;
-  }
-}
-
-@media (max-height: 600px) and (orientation: landscape) {
-  .allDialogs {
-    max-height: 90vh;
-    padding: 1rem 1.5rem;
-    font-size: 0.9rem;
-  }
-
-  h2 {
-    font-size: clamp(1.2rem, 3vw, 1.8rem);
-    margin-bottom: 0.5rem;
-  }
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 30, 0.9);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 9999;
+    font-size: 1.5rem;
+    padding: var(--space-xl);
 }
 
 @media (orientation: portrait) {
-  #game-container,
-  .startScreen,
-  .winScreen,
-  .gameOverScreen {
-    display: none;
-  }
+    #game-container,
+    .startScreen,
+    .winScreen,
+    .gameOverScreen {
+        display: none;
+    }
 
-  #rotate-message {
-    display: flex !important;
-  }
+    #rotate-message {
+        display: flex !important;
+    }
 }
 
 @media (orientation: landscape) {
-  #rotate-message {
-    display: none !important;
-  }
+    #rotate-message {
+        display: none !important;
+    }
 }
 
+/* ---------- Responsive tweaks ---------- */
+
+@media (max-width: 480px) {
+    body {
+        background-size: contain;
+    }
+
+    .menu {
+        gap: var(--space-md);
+    }
+
+    .bottom-menu {
+        bottom: 10px;
+        right: 10px;
+        flex-direction: column;
+        gap: var(--space-sm);
+    }
+
+    .btn {
+        font-size: 0.9rem;
+        padding: var(--space-xs) var(--space-sm);
+    }
+}
+
+@media (max-height: 600px) and (orientation: landscape) {
+    .allDialogs {
+        max-height: 90vh;
+        padding: var(--space-md) var(--space-lg);
+        font-size: 0.9rem;
+    }
+
+    h2 {
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        margin-bottom: var(--space-sm);
+    }
+}
+
+/* ---------- Canvas + screens fill their container ---------- */
+
 @media (min-aspect-ratio: 3/2) {
-  #game-container {
-    height: 100vh;
-    width: calc(100vh * 3 / 2);
-  }
+    #game-container {
+        height: 100vh;
+        width: calc(100vh * 3 / 2);
+    }
 }
 
 @media (max-aspect-ratio: 3/2) {
-  #game-container {
-    width: 100vw;
-    height: calc(100vw * 2 / 3);
-  }
+    #game-container {
+        width: 100vw;
+        height: calc(100vw * 2 / 3);
+    }
 }
 
 #canvas,
 .startScreen,
 .winScreen,
 .gameOverScreen {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: contain;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
 }

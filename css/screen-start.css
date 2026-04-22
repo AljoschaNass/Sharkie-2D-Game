@@ -1,121 +1,89 @@
+/* ============================================================
+ * Start screen — title, subtitle, main menu, and the animated shark.
+ * ============================================================ */
+
 .startScreen {
-  position: relative;
-  width: 100vw;
-  height: calc(100vw * 2 / 3);
-  max-height: 100vh;
-  max-width: calc(100vh * 3 / 2);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  overflow: hidden;
-  font-family: 'Bubblegum Sans', sans-serif;
-  background-image: url("../img/3.Background/Dark/1.png");
-  background-size: cover;
-  animation: fadeIn 1.5s ease-in forwards;
-  opacity: 0;
+    position: relative;
+    width: 100vw;
+    height: calc(100vw * 2 / 3);
+    max-height: 100vh;
+    max-width: calc(100vh * 3 / 2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    font-family: var(--font-display);
+    background: url("../img/3.Background/Dark/1.png") center/cover;
+    animation: fadeIn 1.5s ease-in forwards;
+    opacity: 0;
 }
 
 .title {
-  font-size: clamp(2.5rem, 7vw, 5rem);
-  letter-spacing: 3px;
-  margin-bottom: 0.5rem;
-  color: #4fd1ff;
-  text-shadow: 0 0 25px #00bfff, 0 0 10px #0099ff;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    letter-spacing: 3px;
+    margin-bottom: var(--space-sm);
+    color: var(--color-primary);
+    text-shadow: var(--shadow-text-title);
 }
 
 .subtitle {
-  font-size: clamp(1rem, 3vw, 1.3rem);
-  margin-bottom: 3rem;
-  color: #b3e5ff;
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    margin-bottom: var(--space-2xl);
+    color: var(--color-text);
 }
 
 .menu {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
 }
 
+/* ---------- Corner mute button ---------- */
+
 .mute-btn-corner {
-  position: absolute;
-  top: 20px;
-  right: 25px;
-  z-index: 10;
-  padding: 0.5rem;
-  background: none !important;
-  border: none;
-  transition: filter 0.3s ease;
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    z-index: 10;
+    padding: var(--space-sm);
+    background: none !important;
+    border: none;
+    transition: filter 0.3s ease;
 }
 
 .mute-btn-corner:hover {
-  cursor: pointer;
-  filter: drop-shadow(0 0 15px rgba(79, 209, 255, 0.8)) drop-shadow(0 0 25px rgba(0, 191, 255, 0.6));
+    cursor: pointer;
+    filter: drop-shadow(0 0 15px rgba(79, 209, 255, 0.8))
+            drop-shadow(0 0 25px rgba(0, 191, 255, 0.6));
 }
+
+/* ---------- Bottom corner menu (credits / privacy / impressum) ---------- */
 
 .bottom-menu {
-  position: absolute;
-  bottom: 20px;
-  right: 25px;
-  display: flex;
-  gap: 1rem;
+    position: absolute;
+    bottom: 20px;
+    right: 25px;
+    display: flex;
+    gap: var(--space-md);
 }
 
-@media (max-width: 600px) {
-  .bottom-menu {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    bottom: 15px;
-    right: 50%;
-    transform: translateX(50%);
-    width: 90%;
-    justify-content: center;
-  }
-
-  .mute-btn-corner {
-    top: 15px;
-    right: 15px;
-  }
-}
-
-@media (max-height: 600px) and (orientation: landscape) {
-  .subtitle {
-    margin-bottom: 1.5rem;
-  }
-
-  .menu {
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .bottom-menu {
-    bottom: 10px;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: 80%;
-  }
-
-  .mute-btn-corner {
-    top: 10px;
-    right: 15px;
-  }
-}
+/* ---------- Animated shark background ---------- */
 
 .shark {
-  position: absolute;
-  bottom: 5%;
-  left: -300px;
-  width: 300px;
-  height: 180px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  animation: swimAcross 20s linear infinite;
-  z-index: 1;
-  opacity: 0.95;
+    position: absolute;
+    bottom: 5%;
+    left: -300px;
+    width: 300px;
+    height: 180px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: swimAcross 20s linear infinite;
+    z-index: 1;
+    opacity: 0.95;
 }
 
 .shark-win {
@@ -124,8 +92,52 @@
 }
 
 @keyframes swimAcross {
-  0% { transform: translateX(-300px) scaleX(1); }
-  50% { transform: translateX(calc(100vw + 300px)) scaleX(1); }
-  50.01% { transform: translateX(calc(100vw + 300px)) scaleX(-1); }
-  100% { transform: translateX(-300px) scaleX(-1); }
+    0%      { transform: translateX(-300px) scaleX(1); }
+    50%     { transform: translateX(calc(100vw + 300px)) scaleX(1); }
+    50.01%  { transform: translateX(calc(100vw + 300px)) scaleX(-1); }
+    100%    { transform: translateX(-300px) scaleX(-1); }
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 600px) {
+    .bottom-menu {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+        bottom: 15px;
+        right: 50%;
+        transform: translateX(50%);
+        width: 90%;
+        justify-content: center;
+    }
+
+    .mute-btn-corner {
+        top: 15px;
+        right: 15px;
+    }
+}
+
+@media (max-height: 600px) and (orientation: landscape) {
+    .subtitle {
+        margin-bottom: var(--space-lg);
+    }
+
+    .menu {
+        gap: var(--space-md);
+        margin-bottom: var(--space-md);
+    }
+
+    .bottom-menu {
+        bottom: 10px;
+        gap: var(--space-sm);
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 80%;
+    }
+
+    .mute-btn-corner {
+        top: 10px;
+        right: 15px;
+    }
 }

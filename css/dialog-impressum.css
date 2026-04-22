@@ -1,69 +1,15 @@
+/* ============================================================
+ * Legal notice dialog — content is styled via `dialog-base.css`.
+ * Only wider layout tweak specific to the "Impressum" dialog frame.
+ * ============================================================ */
+
 .dialogImpressum {
     max-width: 700px;
     width: 90%;
 }
 
-.impressum-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    padding: 1.5rem;
-    max-height: 60vh;
-    overflow-y: auto;
-}
-
-.impressum-left,
-.impressum-right {
-    display: flex;
-    flex-direction: column;
-}
-
-.impressum-content h3 {
-    color: var(--primary-color, #4ecdc4);
-    margin-bottom: 0.8rem;
-    font-size: 1.2rem;
-}
-
-.impressum-content p {
-    line-height: 1.6;
-    margin-bottom: 1rem;
-}
-
-.impressum-content a {
-    color: var(--primary-color, #4ecdc4);
-    text-decoration: none;
-}
-
-.impressum-content a:hover {
-    text-decoration: underline;
-}
-
-@media (max-width: 768px) {
-    .impressum-content {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-}
-
 @media (max-height: 600px) and (orientation: landscape) {
     .dialogImpressum {
         max-height: 85vh;
-    }
-
-    .impressum-content {
-        padding: 0.8rem;
-        gap: 1rem;
-        font-size: 0.85rem;
-        max-height: 65vh;
-    }
-
-    .impressum-content h3 {
-        font-size: 1rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .impressum-content p {
-        margin-bottom: 0.5rem;
-        line-height: 1.4;
     }
 }
