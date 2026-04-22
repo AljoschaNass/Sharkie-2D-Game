@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sharkie</title>
+
     <link rel="stylesheet" href="css/tokens.css">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="css/buttons.css">
@@ -49,22 +50,22 @@
     <script src="models/world.class.js"></script>
     <script src="levels/level1.js"></script>
 
+    <script src="js/i18n.js"></script>
     <script src="js/menu.js" defer></script>
     <script src="js/game.js"></script>
 </head>
 <body>
-<div id="rotate-message" class="rotate-message d_none">
-  <p>Bitte drehe dein Gerät ins Querformat,
-    <br> um zu spielen.</p>
-</div>
+    <div id="rotate-message" class="rotate-message d_none">
+        <p data-i18n="rotateMsg">Please rotate your device to landscape to play.</p>
+    </div>
 
     <section id="game-container" class="d_none">
         <div class="status-bar">
             <button id="mute-btn" class="btn">
-                <img class="status-bar-img" src="img/Buttons/Key/sound_on.png" alt="">
+                <img class="status-bar-img" src="img/Buttons/Key/sound_on.png" alt="Toggle sound">
             </button>
             <button id="pause-btn" class="btn">
-                <img class="status-bar-img" src="img/Buttons/Key/options.png" alt="">
+                <img class="status-bar-img" src="img/Buttons/Key/options.png" alt="Pause">
             </button>
         </div>
 
@@ -72,215 +73,206 @@
 
         <div class="mobile-controls">
             <div class="controls-left">
-                <button class="control-btn" id="btn-left">
-                    <img src="img/Buttons/Key/key_left.png" alt="Left">
-                </button>
-                <button class="control-btn" id="btn-right">
-                    <img src="img/Buttons/Key/key_right.png" alt="Right">
-                </button>
+                <button class="control-btn" id="btn-left"><img src="img/Buttons/Key/key_left.png" alt="Left"></button>
+                <button class="control-btn" id="btn-right"><img src="img/Buttons/Key/key_right.png" alt="Right"></button>
             </div>
-
             <div class="controls-center">
-                <button class="control-btn" id="btn-d">
-                    <img src="img/Buttons/Key/D key.png" alt="D">
-                </button>
-                <button class="control-btn" id="btn-space">
-                    <img src="img/Buttons/Key/Space Bar key.png" alt="Space">
-                </button>
+                <button class="control-btn" id="btn-d"><img src="img/Buttons/Key/D key.png" alt="D"></button>
+                <button class="control-btn" id="btn-space"><img src="img/Buttons/Key/Space Bar key.png" alt="Space"></button>
             </div>
-
             <div class="controls-right">
-                <button class="control-btn" id="btn-up">
-                    <img src="img/Buttons/Key/key_up.png" alt="Up">
-                </button>
-                <button class="control-btn" id="btn-down">
-                    <img src="img/Buttons/Key/key_down.png" alt="Down">
-                </button>
+                <button class="control-btn" id="btn-up"><img src="img/Buttons/Key/key_up.png" alt="Up"></button>
+                <button class="control-btn" id="btn-down"><img src="img/Buttons/Key/key_down.png" alt="Down"></button>
             </div>
         </div>
     </section>
 
     <section class="startScreen" id="startScreen">
-            <button id="mute-btn-start" class="btn mute-btn-corner">
-                <img class="status-bar-img" src="img/Buttons/Key/sound_on.png" alt="">
-            </button>
+        <button id="mute-btn-start" class="btn mute-btn-corner">
+            <img class="status-bar-img" src="img/Buttons/Key/sound_on.png" alt="Toggle sound">
+        </button>
 
-            <h1 class="title">Sharkie</h1>
-            <p class="subtitle">Join Sharkie on an adventure through the depths of the ocean!</p>
+        <h1 class="title" data-i18n="title">Sharkie</h1>
+        <p class="subtitle" data-i18n="subtitle">Join Sharkie on an adventure through the depths of the ocean!</p>
 
-            <div class="menu">
-                <button class="btn btn-start" id="start-btn">Start Game</button>
-                <button class="btn btn-controls">Controls</button>
-            </div>
+        <div class="menu">
+            <button class="btn btn-start" id="start-btn" data-i18n="startBtn">Start Game</button>
+            <button class="btn btn-controls" data-i18n="controlsBtn">Controls</button>
+        </div>
 
-            <div class="bottom-menu">
-                <button class="btn btn-small btn-credits">Credits</button>
-                <button class="btn btn-small btn-privacy">Privacy Policy</button>
-                <button class="btn btn-small btn-impressum">Legal Notice</button>
-            </div>
+        <div class="bottom-menu">
+            <button class="btn btn-small btn-credits" data-i18n="creditsBtn">Credits</button>
+            <button class="btn btn-small btn-privacy" data-i18n="privacyBtn">Privacy Policy</button>
+            <button class="btn btn-small btn-impressum" data-i18n="impressumBtn">Legal Notice</button>
+            <button class="btn btn-small" id="lang-toggle" data-i18n="langToggle">🇩🇪 Deutsch</button>
+        </div>
 
-            <div class="shark" id="shark"></div>
-
+        <div class="shark" id="shark"></div>
     </section>
 
+    <!-- ========= Controls ========= -->
     <dialog class="allDialogs dialogControls" id="controlsMenu">
         <header class="dialogHeaders">
-        <h2>CONTROLS</h2>
+            <h2 data-i18n="controlsTitle">CONTROLS</h2>
         </header>
 
         <section class="controls-content">
             <div class="controls-layout">
                 <div class="controls-section">
-                    <h3>Movement</h3>
+                    <h3 data-i18n="movement">Movement</h3>
                     <div class="control-item">
                         <img src="img/Buttons/Key/arrow keys.png" alt="Arrow keys" class="key-img key-img-arrows">
-                        <span>Move Sharkie</span>
+                        <span data-i18n="moveSharkie">Move Sharkie</span>
                     </div>
                 </div>
                 <div class="controls-section">
-                    <h3>Attacks</h3>
+                    <h3 data-i18n="attacks">Attacks</h3>
                     <div class="control-item">
                         <img src="img/Buttons/Key/D key.png" alt="Key D" class="key-img key-img-single">
-                        <span>Bubble Attack</span>
+                        <span data-i18n="bubbleAttack">Bubble Attack</span>
                     </div>
                     <div class="control-item">
                         <img src="img/Buttons/Key/Space Bar key.png" alt="Space key" class="key-img key-img-single">
-                        <span>Fin Slap</span>
+                        <span data-i18n="finSlap">Fin Slap</span>
                     </div>
                 </div>
             </div>
         </section>
 
         <footer class="dialogFooters">
-        <button id="closeControls" class="btn btn-small">X Close</button>
+            <button id="closeControls" class="btn btn-small" data-i18n="close">✕ Close</button>
         </footer>
     </dialog>
 
+    <!-- ========= Credits ========= -->
     <dialog class="allDialogs dialogCredits" id="creditsMenu">
-    <header class="dialogHeaders">
-        <h2>CREDITS</h2>
-    </header>
+        <header class="dialogHeaders">
+            <h2 data-i18n="creditsTitle">CREDITS</h2>
+        </header>
 
-    <section class="dialog-content dialog-columns">
-        <div class="dialog-column">
-        <h3>A Game By</h3>
-        <p>
-            <strong>Aljoscha Naß</strong><br>
-            Developed as part of the Developer Academy Challenge<br>
-            Contact: 
-            <a href="mailto:nassaljoscha@gmail.com">nassaljoscha@gmail.com</a>
-        </p>
-        <br>
-        <h3>Idea & Concept</h3>
-        <p>A friendly shark on an adventure through the depths of the ocean.</p>
-        </div>
+        <section class="dialog-content dialog-columns">
+            <div class="dialog-column">
+                <h3 data-i18n="aGameBy">A Game By</h3>
+                <p>
+                    <strong>Aljoscha Naß</strong><br>
+                    <span data-i18n="creditsAuthorNote">Developed as part of the Developer Academy Challenge</span><br>
+                    <span data-i18n="creditsContact">Contact</span>:
+                    <a href="mailto:nassaljoscha@gmail.com">nassaljoscha@gmail.com</a>
+                </p>
+                <br>
+                <h3 data-i18n="ideaHeading">Idea & Concept</h3>
+                <p data-i18n="ideaBody">A friendly shark on an adventure through the depths of the ocean.</p>
+            </div>
 
-        <div class="dialog-column">
-        <h3>Special Thanks</h3>
-        <ul>
-            <li>Developer Academy Team</li>
-            <li>Community Feedback</li>
-            <li>All Players & Testers</li>
-        </ul>
-        <br>
-        <h3>🎵 Music & Sound</h3>
-        <p>All sound effects are from royalty-free sources (Pixabay / Mixkit).</p>
-        </div>
-    </section>
+            <div class="dialog-column">
+                <h3 data-i18n="thanksHeading">Special Thanks</h3>
+                <ul>
+                    <li data-i18n="thanksDA">Developer Academy Team</li>
+                    <li data-i18n="thanksCommunity">Community Feedback</li>
+                    <li data-i18n="thanksPlayers">All Players & Testers</li>
+                </ul>
+                <br>
+                <h3 data-i18n="musicHeading">🎵 Music & Sound</h3>
+                <p data-i18n="musicBody">All sound effects are from royalty-free sources (Pixabay / Mixkit).</p>
+            </div>
+        </section>
 
-    <footer class="dialogFooters">
-        <button id="closeCreditsMenu" class="btn btn-small">X Close</button>
-    </footer>
+        <footer class="dialogFooters">
+            <button id="closeCreditsMenu" class="btn btn-small" data-i18n="close">✕ Close</button>
+        </footer>
     </dialog>
 
+    <!-- ========= Privacy Policy ========= -->
     <dialog class="allDialogs dialogPrivacy" id="privacyMenu" aria-labelledby="privacyTitle">
-    <header class="dialogHeaders">
-        <h2>PRIVACY POLICY</h2>
-    </header>
+        <header class="dialogHeaders">
+            <h2 id="privacyTitle" data-i18n="privacyTitle">PRIVACY POLICY</h2>
+        </header>
 
-    <section class="dialog-content dialog-columns">
-        <div class="dialog-column">
-        <h3>Data & Privacy</h3>
-        <p>
-            This game does <strong>not</strong> collect, store or transmit any personal
-            data from players. No login, cookies, analytics or tracking technologies
-            are used by the game itself.
-        </p>
-        <br>
-        <h3>Local Data</h3>
-        <p>
-            Any local data (e.g. settings, volume) is stored only in your browser's
-            localStorage and is used solely to remember your preferences on this device.
-            You can clear it anytime via your browser settings.
-        </p>
-        </div>
+        <section class="dialog-content dialog-columns">
+            <div class="dialog-column">
+                <h3 data-i18n="privacyDataHeading">Data & Privacy</h3>
+                <p data-i18n-html="privacyDataBody">
+                    This game does <strong>not</strong> collect, store or transmit any personal
+                    data from players. No login, cookies, analytics or tracking technologies
+                    are used by the game itself.
+                </p>
+                <br>
+                <h3 data-i18n="privacyLocalHeading">Local Data</h3>
+                <p data-i18n="privacyLocalBody">
+                    Any local data (e.g. settings, volume) is stored only in your browser's
+                    localStorage and is used solely to remember your preferences on this device.
+                    You can clear it anytime via your browser settings.
+                </p>
+            </div>
 
-        <div class="dialog-column">
-        <h3>Audio & Third-Party Assets</h3>
-        <p>
-            Sounds and music included are licensed from royalty-free providers
-            (e.g. Pixabay, Mixkit) or are original assets. Third-party libraries,
-            if any, are used only for UI/helpers and do not collect user data.
-        </p>
-        <br>
-        <h3>Contact</h3>
-        <p>
-            If you have questions or requests concerning privacy, please contact:
-            <br><a href="mailto:nassaljoscha@gmail.com">nassaljoscha@gmail.com</a>
-        </p>
-        </div>
-    </section>
+            <div class="dialog-column">
+                <h3 data-i18n="privacyAudioHeading">Audio & Third-Party Assets</h3>
+                <p data-i18n="privacyAudioBody">
+                    Sounds and music included are licensed from royalty-free providers
+                    (e.g. Pixabay, Mixkit) or are original assets. Third-party libraries,
+                    if any, are used only for UI/helpers and do not collect user data.
+                </p>
+                <br>
+                <h3 data-i18n="privacyContactHeading">Contact</h3>
+                <p>
+                    <span data-i18n="privacyContactBody">If you have questions or requests concerning privacy, please contact:</span>
+                    <br><a href="mailto:nassaljoscha@gmail.com">nassaljoscha@gmail.com</a>
+                </p>
+            </div>
+        </section>
 
-    <footer class="dialogFooters">
-        <button id="closePrivacyMenu" class="btn btn-small">X Close</button>
-    </footer>
+        <footer class="dialogFooters">
+            <button id="closePrivacyMenu" class="btn btn-small" data-i18n="close">✕ Close</button>
+        </footer>
     </dialog>
 
+    <!-- ========= Legal Notice ========= -->
     <dialog class="allDialogs dialogImpressum" id="impressumMenu">
-    <header class="dialogHeaders">
-        <h2>LEGAL NOTICE</h2>
-    </header>
+        <header class="dialogHeaders">
+            <h2 data-i18n="impressumTitle">LEGAL NOTICE</h2>
+        </header>
 
-    <section class="dialog-content dialog-columns">
-        <div class="dialog-column">
-        <h3>Created By</h3>
-        <p>
-            <strong>Aljoscha Naß</strong><br>
-            Contact: <a href="mailto:nassaljoscha@gmail.com">nassaljoscha@gmail.com</a>
-        </p>
-        <br>
-        <h3>Purpose</h3>
-        <p>
-            This project was created for educational purposes as part of the Developer Academy training program.
-        </p>
-        </div>
+        <section class="dialog-content dialog-columns">
+            <div class="dialog-column">
+                <h3 data-i18n="impressumCreatedBy">Created By</h3>
+                <p>
+                    <strong>Aljoscha Naß</strong><br>
+                    <span data-i18n="creditsContact">Contact</span>:
+                    <a href="mailto:nassaljoscha@gmail.com">nassaljoscha@gmail.com</a>
+                </p>
+                <br>
+                <h3 data-i18n="impressumPurposeHeading">Purpose</h3>
+                <p data-i18n="impressumPurposeBody">
+                    This project was created for educational purposes as part of the Developer Academy training program.
+                </p>
+            </div>
 
-        <div class="dialog-column">
-        <h3>Assets & Copyright</h3>
-        <p>
-            Graphics and sounds are from royalty-free sources (Pixabay, Mixkit). All content is used for educational purposes only.
-        </p>
-        </div>
-    </section>
+            <div class="dialog-column">
+                <h3 data-i18n="impressumAssetsHeading">Assets & Copyright</h3>
+                <p data-i18n="impressumAssetsBody">
+                    Graphics and sounds are from royalty-free sources (Pixabay, Mixkit). All content is used for educational purposes only.
+                </p>
+            </div>
+        </section>
 
-    <footer class="dialogFooters">
-        <button id="closeImpressumMenu" class="btn btn-small">X Close</button>
-    </footer>
+        <footer class="dialogFooters">
+            <button id="closeImpressumMenu" class="btn btn-small" data-i18n="close">✕ Close</button>
+        </footer>
     </dialog>
 
+    <!-- ========= Win screen ========= -->
     <section id="winScreen" class="winScreen d_none">
         <div class="shark shark-win" id="shark-win"></div>
-        <button id="btnRestart" class="btn btn-start">Restart Game</button>
-        <button id="btnMenu" class="btn btn-small">Main Menu</button>
+        <button id="btnRestart" class="btn btn-start" data-i18n="restartBtn">Restart Game</button>
+        <button id="btnMenu" class="btn btn-small" data-i18n="mainMenuBtn">Main Menu</button>
     </section>
 
+    <!-- ========= Game over screen ========= -->
     <section id="gameOverScreen" class="gameOverScreen d_none">
-        <h1 class="gameOverTitle">GAME OVER</h1>
-
-        <button id="btnRestartGameOver" class="btn btn-start">Restart Game</button>
-        <button id="btnMenuGameOver" class="btn btn-small">Main Menu</button>
+        <h1 class="gameOverTitle" data-i18n="gameOver">GAME OVER</h1>
+        <button id="btnRestartGameOver" class="btn btn-start" data-i18n="restartBtn">Restart Game</button>
+        <button id="btnMenuGameOver" class="btn btn-small" data-i18n="mainMenuBtn">Main Menu</button>
         <img src="img/1.Sharkie/6.dead/1.Poisoned/12.png" alt="Dead Sharkie">
     </section>
-
 </body>
 </html>
