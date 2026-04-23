@@ -23,6 +23,7 @@ class Character extends MovableObject {
     currentHurtImages = null;
     hurtAnimationFrame = 0;
     isDying = false;
+    isFalling = false;
 
     IMAGES_IDLE = CHARACTER_IMAGES.IDLE;
     IMAGES_LONG_IDLE = CHARACTER_IMAGES.LONG_IDLE;
@@ -78,6 +79,7 @@ class Character extends MovableObject {
         this.currentHurtImages = null;
         this.hurtAnimationFrame = 0;
         this.isDying = false;
+        this.isFalling = false;
         this.img = this.imageCache[this.IMAGES_IDLE[0]];
     }
 
@@ -141,6 +143,7 @@ class Character extends MovableObject {
      * Order matters: death overrides everything, then attacks, then hurt/swim/idle.
      */
     handleCharacterState() {
+        if (this.isFalling)               return CharacterActions.playFallingDownAnimation(this);
         if (this.isDying)                 return CharacterActions.playDeathAnimation(this);
         if (this.isDead())                return this.dieCharacter();
         if (this.isAttacking())           return this.handleAttackState();

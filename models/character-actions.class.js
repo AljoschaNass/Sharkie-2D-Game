@@ -112,22 +112,34 @@ class CharacterActions {
 
     /**
      * Plays the death animation based on damage type.
-     * After the animation completes, shows the game over screen.
+     * When the last frame is reached, hands off to the falling phase.
      * @param {Character} character - The character instance
      */
     static playDeathAnimation(character) {
         const deathImages = character.lastDamageFrom === 'electric'
             ? character.IMAGES_DEAD_ELECTRIC_SHOCKED
             : character.IMAGES_DEAD_POISONED;
-        const i = character.currentImage % deathImages.length;
-        const path = deathImages[i];
-        character.img = character.imageCache[path];
-        character.currentImage++;
-        if (character.currentImage >= deathImages.length) {
+        if (character.currentImage < deathImages.length) {
+            character.img = character.imageCache[deathImages[character.currentImage]];
+            character.currentImage++;
+            return;
+        }
+        character.img = character.imageCache[deathImages[deathImages.length - 1]];
+        character.isDying = false;
+        character.isFalling = true;
+    }
+
+    /**
+     * Sinks the dead character toward the ocean floor. Once past the fall
+     * threshold, pauses the world and shows the game over screen.
+     * @param {Character} character - The character instance
+     */
+    static playFallingDownAnimation(character) {
+        character.y += DEATH_FALL_SPEED;
+        if (character.y >= DEATH_FALL_END_Y) {
+            character.isFalling = false;
             gamePaused = true;
-            setTimeout(() => {
-                showGameOverScreen();
-            }, 500);
+            setTimeout(() => showGameOverScreen(), DEATH_GAMEOVER_DELAY_MS);
         }
     }
 }

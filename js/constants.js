@@ -59,6 +59,15 @@ const PLAYER_MAX_Y = 300;
 /** Collectable value, expressed as a percentage of the status bar (1 bottle = 12.5%). */
 const COLLECTABLE_VALUE_PERCENT = 12.5;
 
+/** Fall speed of Sharkie's corpse after the death animation (px per animation tick). */
+const DEATH_FALL_SPEED = 25;
+
+/** Y threshold: once the character has sunk past this, the game over screen is shown. */
+const DEATH_FALL_END_Y = 500;
+
+/** Delay between the fall finishing and the game over screen appearing (ms). */
+const DEATH_GAMEOVER_DELAY_MS = 400;
+
 /* ---- Status bar images ---- */
 
 /**
