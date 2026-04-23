@@ -30,9 +30,10 @@ const MOBILE_BUTTONS = [
 
 /**
  * (Re)initialize the game world and start the game.
- * Clears any timers left over from the previous round before spinning up a fresh World.
+ * Stops the previous World and clears leftover timers before spinning up a fresh one.
  */
 function init() {
+    world?.stop();
     IntervalManager.clearAll();
     gamePaused = false;
 
@@ -45,6 +46,18 @@ function init() {
     world.audioManager.playLoop('background');
 
     bindMobileButtons();
+}
+
+/**
+ * Tear down the running game so the user can return to the start menu cleanly.
+ * Stops the render loop, clears every tracked interval and drops the World reference
+ * so nothing keeps animating or playing audio in the background.
+ */
+function returnToMenu() {
+    world?.stop();
+    IntervalManager.clearAll();
+    gamePaused = true;
+    world = null;
 }
 
 /* ---------- Keyboard input ---------- */

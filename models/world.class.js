@@ -19,6 +19,7 @@ class World {
     keyboard;
     camera_x = 0;
     collisionIntervalId;
+    stopped = false;
 
     /**
      * @param {HTMLCanvasElement} canvas
@@ -74,6 +75,7 @@ class World {
      * Main render step. Clears, draws layered content, then schedules the next frame.
      */
     draw() {
+        if (this.stopped) return;
         if (gamePaused) {
             this.scheduleNextFrame();
             return;
@@ -83,6 +85,15 @@ class World {
         this.drawObjectsAndCharacter();
         this.drawStatusBars();
         this.scheduleNextFrame();
+    }
+
+    /**
+     * Halt the render loop and any active audio.
+     * After calling this the World is inert — drop the reference.
+     */
+    stop() {
+        this.stopped = true;
+        this.audioManager?.stopAll?.();
     }
 
     clearAndTranslate() {

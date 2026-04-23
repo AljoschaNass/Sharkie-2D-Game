@@ -153,6 +153,7 @@ function showWinScreen() {
 }
 
 function showGameOverScreen() {
+    if (!world) return;
     showScreen(canvasRef, gameOverScreen);
     gamePaused = true;
     world?.audioManager?.stopAll?.();
@@ -172,8 +173,9 @@ document.getElementById('btnRestart').addEventListener('click', () => {
 });
 
 document.getElementById('btnMenu').addEventListener('click', () => {
+    returnToMenu();
     showScreen(winScreen, startScreen);
-    world?.audioManager?.stopAll?.();
+    canvasRef.classList.add('d_none');
 });
 
 document.getElementById('btnRestartGameOver').addEventListener('click', () => {
@@ -182,6 +184,7 @@ document.getElementById('btnRestartGameOver').addEventListener('click', () => {
 });
 
 document.getElementById('btnMenuGameOver').addEventListener('click', () => {
+    returnToMenu();
     showScreen(gameOverScreen, startScreen);
     canvasRef.classList.add('d_none');
 });
