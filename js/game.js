@@ -62,11 +62,19 @@ function returnToMenu() {
 
 /* ---------- Keyboard input ---------- */
 
+/**
+ * Map a physical key down to its virtual keyboard flag.
+ * @param {KeyboardEvent} event
+ */
 window.addEventListener('keydown', event => {
     const key = KEY_MAP[event.code];
     if (key) keyboard[key] = true;
 });
 
+/**
+ * Release a virtual keyboard flag when the matching physical key is lifted.
+ * @param {KeyboardEvent} event
+ */
 window.addEventListener('keyup', event => {
     const key = KEY_MAP[event.code];
     if (key) keyboard[key] = false;
@@ -83,13 +91,23 @@ function bindMobileButtons() {
 
 /**
  * Wire `touchstart`/`touchend` on a button to a virtual key press.
+ * @param {HTMLElement} btn
+ * @param {string} key
  */
 function addTouchHandlers(btn, key) {
+    /**
+     * Start the virtual key press; `preventDefault` suppresses scroll/zoom gestures.
+     * @param {TouchEvent} e
+     */
     btn.addEventListener('touchstart', e => {
         e.preventDefault();
         keyboard[key] = true;
         btn.classList.add('pressed');
     });
+    /**
+     * Release the virtual key press; `preventDefault` suppresses the synthetic click.
+     * @param {TouchEvent} e
+     */
     btn.addEventListener('touchend', e => {
         e.preventDefault();
         keyboard[key] = false;

@@ -49,6 +49,7 @@ setInterval(() => {
 /* ---------- Pause button ---------- */
 
 if (pauseBtnGlobal) {
+    /** Pause the game and open the controls dialog. */
     pauseBtnGlobal.addEventListener('click', () => {
         gamePaused = true;
         document.getElementById('controlsMenu')?.showModal();
@@ -57,6 +58,7 @@ if (pauseBtnGlobal) {
 
 /* ---------- Dialog wiring ---------- */
 
+/** Wire each dialog once the DOM is ready. */
 document.addEventListener('DOMContentLoaded', () => {
     DIALOGS.forEach(setupDialog);
 });
@@ -71,8 +73,14 @@ function setupDialog(config) {
     const closeBtn = document.getElementById(config.close);
     if (!dialog || !openBtns.length || !closeBtn) return;
 
+    /** Open the dialog (and pause the game if the config asks for it). */
     openBtns.forEach(btn => btn.addEventListener('click', () => openDialog(dialog, config)));
+    /** Close the dialog via its dedicated close button. */
     closeBtn.addEventListener('click', () => closeDialog(dialog, config));
+    /**
+     * Close the dialog when the backdrop (area outside the content box) is clicked.
+     * @param {MouseEvent} e
+     */
     dialog.addEventListener('click', e => {
         if (!isClickInsideDialog(e, dialog)) closeDialog(dialog, config);
     });
@@ -126,11 +134,13 @@ function updateMuteIcons() {
     if (muteImgStart) muteImgStart.src = icon;
 }
 
+/** Toggle audio from the in-game mute button. */
 muteBtn.addEventListener('click', () => {
     toggleAudioMute();
     updateMuteIcons();
 });
 
+/** Toggle audio from the start-screen mute button. */
 muteBtnStart?.addEventListener('click', () => {
     toggleAudioMute();
     updateMuteIcons();
@@ -163,6 +173,7 @@ function showGameOverScreen() {
 
 /* ---------- Button bindings ---------- */
 
+/** Restart the game directly from the win screen. */
 document.getElementById('btnRestart').addEventListener('click', () => {
     winScreen.classList.add('d_none');
     document.getElementById('game-container').classList.remove('d_none');
@@ -172,23 +183,27 @@ document.getElementById('btnRestart').addEventListener('click', () => {
     init();
 });
 
+/** Return from the win screen to the start menu and tear the game down. */
 document.getElementById('btnMenu').addEventListener('click', () => {
     returnToMenu();
     showScreen(winScreen, startScreen);
     canvasRef.classList.add('d_none');
 });
 
+/** Restart the game directly from the game over screen. */
 document.getElementById('btnRestartGameOver').addEventListener('click', () => {
     showScreen(gameOverScreen, canvasRef);
     init();
 });
 
+/** Return from the game over screen to the start menu and tear the game down. */
 document.getElementById('btnMenuGameOver').addEventListener('click', () => {
     returnToMenu();
     showScreen(gameOverScreen, startScreen);
     canvasRef.classList.add('d_none');
 });
 
+/** Start a fresh game from the start screen. */
 document.getElementById('start-btn').addEventListener('click', () => {
     showScreen(startScreen, canvasRef);
     init();

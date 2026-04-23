@@ -166,10 +166,12 @@ const I18n = {
     }
 };
 
+/** Apply the stored language once the DOM is ready and wire the language toggle. */
 document.addEventListener('DOMContentLoaded', () => {
     I18n.apply();
     const toggle = document.getElementById('lang-toggle');
     if (toggle) {
+        /** Flip between English and German and persist the choice. */
         toggle.addEventListener('click', () => {
             I18n.setLanguage(I18n.lang === 'en' ? 'de' : 'en');
         });
